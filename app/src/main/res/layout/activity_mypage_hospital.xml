@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kittyandpuppy.withallmyanimal.MypageHospitalFragment">
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_mypage_hospital"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/toolbar_mypage_hospital" />
 
-<!--    scrollView 적용하기!!-->
+    <!--    scrollView 적용하기!!-->
     <View
         android:id="@+id/view_mypage_hospital"
         android:layout_width="match_parent"
@@ -235,7 +235,7 @@
         app:layout_constraintStart_toEndOf="@id/tv_mypage_hospital_expense"
         app:layout_constraintTop_toBottomOf="@id/sp_mypage_hospital"
         />
-    
+
     <TextView
         android:id="@+id/tv_mypage_hospital_review"
         android:layout_width="wrap_content"
