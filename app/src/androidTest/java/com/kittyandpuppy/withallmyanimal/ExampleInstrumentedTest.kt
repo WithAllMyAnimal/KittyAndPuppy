@@ -1,4 +1,4 @@
-package com.example.withallmyanimal
+package com.kittyandpuppy.withallmyanimal
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
