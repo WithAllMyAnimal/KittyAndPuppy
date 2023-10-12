@@ -1,4 +1,4 @@
-package com.example.withallmyanimal
+package com.kittyandpuppy.withallmyanimal
 
 import org.junit.Test
 
