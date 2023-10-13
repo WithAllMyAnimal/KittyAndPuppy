@@ -18,6 +18,15 @@
             android:name="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity"
             android:exported="false" />
         <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypageBehavior"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypageHospital"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypagePet"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

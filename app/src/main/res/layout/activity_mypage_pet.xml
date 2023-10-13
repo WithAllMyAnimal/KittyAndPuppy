@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_mypage_pet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mypage_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24"
+        android:text="일지 작성"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_pet"
+        app:layout_constraintEnd_toEndOf="@id/toolbar_mypage_pet"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_pet"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_pet" />
+
+    <ImageButton
+        android:id="@+id/btn_mypage_pet_back"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_pet"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_pet"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_pet" />
+
+    <TextView
+        android:id="@+id/btn_mypage_pet_tag"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/mypage_btn_tag_background"
+        android:fontFamily="@font/cafe24"
+        android:gravity="center"
+        android:text="펫 용품"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_pet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_pet" />
+
+    <!--    scrollView 적용하기!!-->
+    <!--    appbar 바로 밑부분 view들-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_mypage_pet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:paddingTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/view_mypage_pet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/mypage_diary_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etv_mypage_pet_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:gravity="center_vertical"
+            android:hint="제목을 입력해주세요"
+            android:padding="20dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toTopOf="@id/view_mypage_pet"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_pet_line_top"
+            />
+
+        <View
+            android:id="@+id/view_mypage_pet_line_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_title" />
+
+        <ImageView
+            android:id="@+id/iv_mypage_pet_picture_left"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toStartOf="@id/iv_mypage_pet_picture_right"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_pet_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_pet_line_bottom"
+            />
+
+        <ImageView
+            android:id="@+id/iv_mypage_pet_picture_right"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toEndOf="@id/iv_mypage_pet_picture_left"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_pet_line_top" />
+
+        <View
+            android:id="@+id/view_mypage_pet_line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginHorizontal="30dp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/iv_mypage_pet_picture_left" />
+
+        <TextView
+            android:id="@+id/tv_mypage_pet_supplies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/cafe24"
+            android:text="펫 용품명"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_pet_line_bottom" />
+
+        <EditText
+            android:id="@+id/etv_mypage_pet_supplies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="펫 용품명을 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_supplies" />
+
+        <TextView
+            android:id="@+id/tv_mypage_pet_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/cafe24"
+            android:text="용품 가격"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_supplies" />
+
+        <EditText
+            android:id="@+id/etv_mypage_pet_price"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="용품의 가격을 작성해주세요"
+            android:paddingStart="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toTopOf="@id/rat_mypage_pet_star"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_supplies" />
+
+        <TextView
+            android:id="@+id/tv_mypage_pet_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/cafe24"
+            android:text="만족도"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_price" />
+
+        <RatingBar
+            android:id="@+id/rat_mypage_pet_star"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="2"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_price" />
+
+        <TextView
+            android:id="@+id/tv_mypage_pet_caution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="42dp"
+            android:fontFamily="@font/cafe24"
+            android:text="주의사항"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_location" />
+
+        <EditText
+            android:id="@+id/etv_mypage_pet_caution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="주의사항을 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_caution" />
+
+        <TextView
+            android:id="@+id/tv_mypage_pet_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/cafe24"
+            android:text="내용 / 후기"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_caution" />
+
+        <EditText
+            android:id="@+id/etv_mypage_pet_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="내용 / 후기를 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_review" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

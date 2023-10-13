@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_mypage_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mypage_hospital"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24"
+        android:text="일지 작성"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintEnd_toEndOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_hospital" />
+
+    <ImageButton
+        android:id="@+id/btn_mypage_hospital_back"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_hospital" />
+
+    <TextView
+        android:id="@+id/btn_mypage_hospital_tag"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/mypage_btn_tag_background"
+        android:fontFamily="@font/cafe24"
+        android:gravity="center"
+        android:text="병원"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_hospital" />
+
+    <!--    scrollView 적용하기!!-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_mypage_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:paddingTop="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <View
+            android:id="@+id/view_mypage_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/mypage_diary_background"
+            android:paddingTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <EditText
+            android:id="@+id/etv_mypage_hospital_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:gravity="center_vertical"
+            android:hint="제목을 입력해주세요"
+            android:padding="20dp"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toTopOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_hospital"
+            />
+
+        <View
+            android:id="@+id/view_mypage_hospital_line_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_title" />
+
+        <ImageView
+            android:id="@+id/iv_mypage_hospital_picture_left"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toStartOf="@id/iv_mypage_hospital_picture_right"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_hospital_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_hospital_line_bottom"
+            />
+
+        <ImageView
+            android:id="@+id/iv_mypage_hospital_picture_right"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintStart_toEndOf="@id/iv_mypage_hospital_picture_left"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_hospital_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_hospital_line_bottom"
+            />
+
+        <View
+            android:id="@+id/view_mypage_hospital_line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginHorizontal="30dp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/iv_mypage_hospital_picture_left"
+            app:layout_constraintBottom_toTopOf="@id/tv_mypage_hospital_date"
+            />
+
+        <TextView
+            android:id="@+id/tv_mypage_hospital_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/cafe24"
+            android:text="병원 방문 날짜"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_hospital_line_bottom" />
+
+        <DatePicker
+            android:id="@+id/dp_mypage_hospital"
+            android:layout_width="320dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mypage_hospital_date" />
+
+        <TextView
+            android:id="@+id/tv_mypage_hospital_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/cafe24"
+            android:text="병원 진료 비용"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/dp_mypage_hospital"
+            app:layout_constraintEnd_toStartOf="@id/etv_mypage_hospital_expense"
+            />
+
+        <EditText
+            android:id="@+id/etv_mypage_hospital_expense"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="진료 비용을 입력해주세요"
+            android:paddingStart="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_goneMarginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_hospital_expense"
+            app:layout_constraintTop_toBottomOf="@id/dp_mypage_hospital" />
+
+        <TextView
+            android:id="@+id/tv_mypage_hospital_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/cafe24"
+            android:text="병원 지역"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_expense" />
+
+        <Spinner
+            android:id="@+id/sp_mypage_hospital"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_expense" />
+
+        <TextView
+            android:id="@+id/tv_mypage_hospital_checkup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="42dp"
+            android:fontFamily="@font/cafe24"
+            android:text="질환 / 검진"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_location" />
+
+        <EditText
+            android:id="@+id/etv_mypage_hospital_checkup"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="질환 / 검진을 입력해주세요"
+            android:paddingStart="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_hospital_expense"
+            app:layout_constraintTop_toBottomOf="@id/sp_mypage_hospital" />
+
+        <TextView
+            android:id="@+id/tv_mypage_hospital_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="42dp"
+            android:fontFamily="@font/cafe24"
+            android:text="내용 / 후기"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_checkup" />
+
+        <EditText
+            android:id="@+id/etv_mypage_hospital_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="내용 / 후기를 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_review" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
