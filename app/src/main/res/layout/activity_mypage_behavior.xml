@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_mypage_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mypage_behavior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24"
+        android:text="일지 작성"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintEnd_toEndOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_behavior" />
+
+    <ImageButton
+        android:id="@+id/btn_mypage_behavior_back"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintStart_toStartOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_behavior" />
+
+    <TextView
+        android:id="@+id/btn_mypage_behavior_tag"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/mypage_btn_tag_background"
+        android:fontFamily="@font/cafe24"
+        android:gravity="center"
+        android:text="이상행동"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage_behavior" />
+
+    <!--    scrollView 적용하기!!-->
+    <!--    appbar 바로 밑부분 view들-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_mypage_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="100dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+
+
+        <View
+            android:id="@+id/view_mypage_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/mypage_diary_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/etv_mypage_behavior_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:gravity="center_vertical"
+            android:hint="제목을 입력해주세요"
+            android:padding="20dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toTopOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_behavior_line_top"
+            />
+
+        <View
+            android:id="@+id/view_mypage_behavior_line_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_behavior_title" />
+
+        <ImageView
+            android:id="@+id/iv_mypage_behavior_picture_left"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toStartOf="@id/iv_mypage_behavior_picture_right"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_behavior_line_bottom"
+            />
+
+        <ImageView
+            android:id="@+id/iv_mypage_behavior_picture_right"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/mypage_diary_picture_background"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toEndOf="@id/iv_mypage_behavior_picture_left"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top"
+            app:layout_constraintBottom_toTopOf="@id/view_mypage_behavior_line_bottom"
+            />
+
+        <View
+            android:id="@+id/view_mypage_behavior_line_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginHorizontal="30dp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/iv_mypage_behavior_picture_left"
+            app:layout_constraintBottom_toTopOf="@id/tv_mypage_behavior_title"
+            />
+
+        <TextView
+            android:id="@+id/tv_mypage_behavior_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/cafe24"
+            android:text="상황 및 행동"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_bottom" />
+
+        <EditText
+            android:id="@+id/etv_mypage_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="어떤 상황에 어떤 행동을 했는지 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_behavior_title" />
+
+        <TextView
+            android:id="@+id/tv_mypage_behavior_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/cafe24"
+            android:text="후기"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_behavior" />
+
+        <EditText
+            android:id="@+id/etv_mypage_behavior_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mypage_diary_edittext"
+            android:fontFamily="@font/cafe24"
+            android:hint="후기를 작성해주세요"
+            android:padding="20dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_behavior_review" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
