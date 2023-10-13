@@ -324,7 +324,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="20dp"
-        android:src="@drawable/cat_sole"
+        android:src="@drawable/pet_like"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view_detail_pink" />
