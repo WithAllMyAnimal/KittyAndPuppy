@@ -7,7 +7,7 @@
     tools:context="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_detail_hospital"
+        android:id="@+id/tb_detail_pet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/yellow"
@@ -16,19 +16,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/btn_detail_hospital_back"
+        android:id="@+id/btn_detail_pet_back"
         android:layout_width="70dp"
         android:layout_height="65dp"
         android:background="@android:color/transparent"
         android:padding="15dp"
         android:scaleType="fitCenter"
         android:src="@drawable/image_back"
-        app:layout_constraintBottom_toBottomOf="@id/tb_detail_hospital"
-        app:layout_constraintStart_toStartOf="@id/tb_detail_hospital"
-        app:layout_constraintTop_toTopOf="@id/tb_detail_hospital" />
+        app:layout_constraintBottom_toBottomOf="@id/tb_detail_pet"
+        app:layout_constraintStart_toStartOf="@id/tb_detail_pet"
+        app:layout_constraintTop_toTopOf="@id/tb_detail_pet" />
 
     <TextView
-        android:id="@+id/btn_detail_hospital_tag"
+        android:id="@+id/btn_detail_pet_tag"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_marginEnd="20dp"
@@ -37,12 +37,12 @@
         android:gravity="center"
         android:text="펫 용품"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/tb_detail_hospital"
+        app:layout_constraintBottom_toBottomOf="@id/tb_detail_pet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tb_detail_hospital" />
+        app:layout_constraintTop_toTopOf="@id/tb_detail_pet" />
 
     <ImageView
-        android:id="@+id/iv_detail_hospital_profile"
+        android:id="@+id/iv_detail_pet_profile"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="15dp"
@@ -52,10 +52,10 @@
         android:scaleType="centerCrop"
         android:src="@drawable/image_sample"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tb_detail_hospital" />
+        app:layout_constraintTop_toBottomOf="@+id/tb_detail_pet" />
 
     <TextView
-        android:id="@+id/tv_detail_hospital_nickname"
+        android:id="@+id/tv_detail_pet_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -63,9 +63,9 @@
         android:text="설기"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_hospital_profile"
-        app:layout_constraintStart_toEndOf="@+id/iv_detail_hospital_profile"
-        app:layout_constraintTop_toTopOf="@+id/iv_detail_hospital_profile" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_pet_profile"
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_pet_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_pet_profile" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
@@ -75,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_detail_hospital_profile">
+        app:layout_constraintTop_toBottomOf="@+id/iv_detail_pet_profile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_detail_hospital"
@@ -84,7 +84,7 @@
             android:padding="5dp">
 
             <TextView
-                android:id="@+id/tv_detail_hospital_title"
+                android:id="@+id/tv_detail_pet_title"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="20dp"
@@ -92,11 +92,11 @@
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
-                android:text="설기 돌멩이 먹은 썰"
+                android:text="설기의 새로운 장난감"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/view_detail_hospital"
-                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintBottom_toTopOf="@+id/view_detail_pet"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -109,12 +109,12 @@
                 android:gravity="right"
                 android:text="2023.10.11"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@+id/view_detail_hospital"
-                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_title" />
+                app:layout_constraintBottom_toTopOf="@+id/view_detail_pet"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_title" />
 
             <View
-                android:id="@+id/view_detail_hospital"
+                android:id="@+id/view_detail_pet"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
@@ -122,56 +122,56 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_title" />
 
             <View
-                android:id="@+id/view_detail_hospital_line_top"
+                android:id="@+id/view_detail_pet_line_top"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
                 android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
-                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
-                app:layout_constraintTop_toTopOf="@+id/view_detail_hospital" />
+                app:layout_constraintEnd_toEndOf="@id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@id/view_detail_pet"
+                app:layout_constraintTop_toTopOf="@+id/view_detail_pet" />
 
             <ImageView
-                android:id="@+id/iv_detail_hospital_picture_left"
+                android:id="@+id/iv_detail_pet_picture_left"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="20dp"
                 android:src="@drawable/image_sample2"
                 android:background="@drawable/mypage_diary_picture_background"
-                app:layout_constraintBottom_toTopOf="@id/view_detail_hospital_line_bottom"
-                app:layout_constraintEnd_toStartOf="@id/iv_detail_hospital_picture_right"
-                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_top" />
+                app:layout_constraintBottom_toTopOf="@id/view_detail_pet_line_bottom"
+                app:layout_constraintEnd_toStartOf="@id/iv_detail_pet_picture_right"
+                app:layout_constraintStart_toStartOf="@id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_pet_line_top" />
 
             <ImageView
-                android:id="@+id/iv_detail_hospital_picture_right"
+                android:id="@+id/iv_detail_pet_picture_right"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="20dp"
                 android:src="@drawable/image_sample3"
                 android:background="@drawable/mypage_diary_picture_background"
-                app:layout_constraintBottom_toTopOf="@id/view_detail_hospital_line_bottom"
-                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
-                app:layout_constraintStart_toEndOf="@id/iv_detail_hospital_picture_left"
-                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_top" />
+                app:layout_constraintBottom_toTopOf="@id/view_detail_pet_line_bottom"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_pet"
+                app:layout_constraintStart_toEndOf="@id/iv_detail_pet_picture_left"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_pet_line_top" />
 
             <View
-                android:id="@+id/view_detail_hospital_line_bottom"
+                android:id="@+id/view_detail_pet_line_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="20dp"
                 android:background="@color/black"
-                app:layout_constraintBottom_toTopOf="@id/tv_detail_hospital_date"
-                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
-                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@id/iv_detail_hospital_picture_left" />
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_name"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@id/iv_detail_pet_picture_left" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_date"
+                android:id="@+id/tv_detail_pet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -180,51 +180,51 @@
                 android:text="펫 용품명"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_bottom" />
+                app:layout_constraintStart_toStartOf="@id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_pet_line_bottom" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_date_contents"
+                android:id="@+id/tv_detail_pet_name_contents"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="2023년 10월 10일"
+                android:text="통통 튀는 낚시대"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date" />
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_name" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_disease"
+                android:id="@+id/tv_detail_pet_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/cafe24"
                 android:text="용품 가격"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintStart_toEndOf="@+id/tv_detail_hospital_date"
-                app:layout_constraintTop_toTopOf="@+id/tv_detail_hospital_date" />
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintStart_toEndOf="@+id/tv_detail_pet_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_pet_name" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_disease_contents"
+                android:id="@+id/tv_detail_pet_price_contents"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="5dp"
-                android:text="배탈"
+                android:text="15,000원"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
                 android:textSize="15sp"
-                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_disease" />
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_price" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_location"
+                android:id="@+id/tv_detail_pet_satisfaction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/cafe24"
@@ -233,38 +233,66 @@
                 android:layout_marginTop="15dp"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date_contents" />
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_name_contents" />
 
-            <TextView
-                android:id="@+id/tv_detail_hospital_location_contents"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="25dp"
+            <RatingBar
+                android:id="@+id/rat_detail_pet_star"
+                android:layout_width="240dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:text="서울 송파구"
-                android:background="@drawable/mypage_diary_edittext"
-                android:fontFamily="@font/cafe24"
-                android:gravity="center"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_location" />
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="2"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_satisfaction" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_review"
+                android:id="@+id/tv_detail_pet_caution"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/cafe24"
+                android:text="주의사항"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/rat_detail_pet_star" />
+
+            <TextView
+                android:id="@+id/tv_detail_pet_caution_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/cafe24"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="낚시대 미끼 부분에 방울이 달려있음!\n냥이들이 혹시라도 먹지 않게 조심!"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_caution" />
+
+            <TextView
+                android:id="@+id/tv_detail_pet_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/cafe24"
+                android:layout_marginTop="15dp"
                 android:text="내용 / 후기"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_location_contents" />
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_caution_contents" />
 
             <TextView
-                android:id="@+id/tv_detail_hospital_review_contents"
+                android:id="@+id/tv_detail_pet_review_contents"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="25dp"
@@ -273,12 +301,12 @@
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
-                android:text="설기가 돌멩이를 씹어먹더니 입에 병이 나서 병원에 다녀왔다...병원 원장님 너무 친절하셔서 굿굿 병원은 여기로 정착해야겠다!! 우리 설기... 앞으로 돌멩이 먹지 말고 약 꼬박꼬박 잘 챙겨먹고 얼른 낫자 ~ ♥"
+                android:text="설기가 너무 잘 가지고 놀아서 대만족!.\n미끼에 방울이 달려있어서 4점..."
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_review" />
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_review" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -294,7 +322,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/iv_detail_hospital_likes"
+        android:id="@+id/iv_detail_pet_likes"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="20dp"
@@ -304,12 +332,12 @@
         app:layout_constraintTop_toTopOf="@+id/view_detail_pink" />
 
     <ImageView
-        android:id="@+id/iv_detail_hospital_chat"
+        android:id="@+id/iv_detail_pet_chat"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/image_chat"
         android:layout_marginStart="20dp"
-        app:layout_constraintStart_toEndOf="@+id/iv_detail_hospital_likes"
-        app:layout_constraintTop_toTopOf="@+id/iv_detail_hospital_likes" />
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_pet_likes"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_pet_likes" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
