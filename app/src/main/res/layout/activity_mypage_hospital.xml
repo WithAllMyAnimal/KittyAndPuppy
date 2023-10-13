@@ -179,12 +179,11 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
             app:layout_constraintTop_toBottomOf="@id/dp_mypage_hospital"
-            app:layout_constraintEnd_toStartOf="@id/etv_mypage_hospital_expense"
             />
 
         <EditText
             android:id="@+id/etv_mypage_hospital_expense"
-            android:layout_width="220dp"
+            android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
@@ -195,9 +194,7 @@
             android:textColor="@color/grey"
             android:textSize="13sp"
             app:layout_goneMarginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
-            app:layout_constraintStart_toEndOf="@id/tv_mypage_hospital_expense"
-            app:layout_constraintTop_toBottomOf="@id/dp_mypage_hospital" />
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital" app:layout_constraintTop_toBottomOf="@id/dp_mypage_hospital" />
 
         <TextView
             android:id="@+id/tv_mypage_hospital_location"
@@ -236,9 +233,9 @@
 
         <EditText
             android:id="@+id/etv_mypage_hospital_checkup"
-            android:layout_width="220dp"
+            android:layout_width="200dp"
             android:layout_height="40dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/mypage_diary_edittext"
             android:fontFamily="@font/cafe24"
@@ -246,8 +243,7 @@
             android:paddingStart="20dp"
             android:textColor="@color/grey"
             android:textSize="13sp"
-            app:layout_constraintStart_toEndOf="@id/tv_mypage_hospital_expense"
-            app:layout_constraintTop_toBottomOf="@id/sp_mypage_hospital" />
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital" app:layout_constraintTop_toBottomOf="@id/sp_mypage_hospital" />
 
         <TextView
             android:id="@+id/tv_mypage_hospital_review"
@@ -277,6 +273,22 @@
             app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
             app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_review" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_mypage_hospital_save"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="저장"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/cafe24"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_btn_tag_background"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_review"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_hospital"
+            app:layout_constraintBottom_toBottomOf="@id/view_mypage_hospital"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

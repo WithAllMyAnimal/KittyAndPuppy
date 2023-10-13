@@ -68,7 +68,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
 
-
         <View
             android:id="@+id/view_mypage_behavior"
             android:layout_width="match_parent"
@@ -79,13 +78,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            />
 
         <EditText
             android:id="@+id/etv_mypage_behavior_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="45dp"
+            android:layout_marginHorizontal="50dp"
             android:layout_marginVertical="20dp"
             android:background="@drawable/mypage_diary_edittext"
             android:fontFamily="@font/cafe24"
@@ -164,7 +163,7 @@
             android:id="@+id/etv_mypage_behavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="45dp"
+            android:layout_marginHorizontal="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/mypage_diary_edittext"
             android:fontFamily="@font/cafe24"
@@ -193,7 +192,7 @@
             android:id="@+id/etv_mypage_behavior_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="45dp"
+            android:layout_marginHorizontal="50dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/mypage_diary_edittext"
             android:fontFamily="@font/cafe24"
@@ -204,6 +203,20 @@
             app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior"
             app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_behavior_review" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_mypage_behavior_save"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="저장"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/cafe24"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_btn_tag_background"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_behavior_review"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_behavior"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_behavior" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

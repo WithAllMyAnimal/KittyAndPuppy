@@ -124,7 +124,7 @@
             android:id="@+id/iv_mypage_pet_picture_right"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_margin="20dp"
             android:background="@drawable/mypage_diary_picture_background"
             app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
             app:layout_constraintStart_toEndOf="@id/iv_mypage_pet_picture_left"
@@ -138,7 +138,9 @@
             android:layout_marginHorizontal="30dp"
             app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
             app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
-            app:layout_constraintTop_toBottomOf="@id/iv_mypage_pet_picture_left" />
+            app:layout_constraintTop_toBottomOf="@id/iv_mypage_pet_picture_left"
+            app:layout_constraintBottom_toTopOf="@id/tv_mypage_pet_supplies"
+            />
 
         <TextView
             android:id="@+id/tv_mypage_pet_supplies"
@@ -281,6 +283,22 @@
             app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
             app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_pet_review" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_mypage_pet_save"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:text="저장"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/cafe24"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/mypage_btn_tag_background"
+            app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_review"
+            app:layout_constraintStart_toStartOf="@id/view_mypage_pet"
+            app:layout_constraintEnd_toEndOf="@id/view_mypage_pet"
+            app:layout_constraintBottom_toBottomOf="@id/view_mypage_pet"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
