@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_detail_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_detail_hospital_back"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/tb_detail_hospital"
+        app:layout_constraintStart_toStartOf="@id/tb_detail_hospital"
+        app:layout_constraintTop_toTopOf="@id/tb_detail_hospital" />
+
+    <TextView
+        android:id="@+id/btn_detail_hospital_tag"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/cafe24"
+        android:gravity="center"
+        android:text="병원"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/tb_detail_hospital"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tb_detail_hospital" />
+
+    <ImageView
+        android:id="@+id/iv_detail_hospital_profile"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/detail_circle_shape"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/image_sample"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tb_detail_hospital" />
+
+    <TextView
+        android:id="@+id/tv_detail_hospital_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/cafe24"
+        android:text="설기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_hospital_profile"
+        app:layout_constraintStart_toEndOf="@+id/iv_detail_hospital_profile"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_hospital_profile" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/diary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_detail_hospital_profile">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_detail_hospital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:gravity="center"
+                android:text="설기 돌멩이 먹은 썰"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@+id/view_detail_hospital"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_detail_date"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:fontFamily="@font/cafe24"
+                android:gravity="right"
+                android:text="2023.10.11"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@+id/view_detail_hospital"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_title" />
+
+            <View
+                android:id="@+id/view_detail_hospital"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/detail_background"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_title" />
+
+            <View
+                android:id="@+id/view_detail_hospital_line_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="10dp"
+                android:background="@color/black"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
+                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
+                app:layout_constraintTop_toTopOf="@+id/view_detail_hospital" />
+
+            <ImageView
+                android:id="@+id/iv_detail_hospital_picture_left"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/image_sample"
+                android:background="@drawable/mypage_diary_picture_background"
+                app:layout_constraintBottom_toTopOf="@id/view_detail_hospital_line_bottom"
+                app:layout_constraintEnd_toStartOf="@id/iv_detail_hospital_picture_right"
+                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_top" />
+
+            <ImageView
+                android:id="@+id/iv_detail_hospital_picture_right"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/image_sample"
+                android:background="@drawable/mypage_diary_picture_background"
+                app:layout_constraintBottom_toTopOf="@id/view_detail_hospital_line_bottom"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
+                app:layout_constraintStart_toEndOf="@id/iv_detail_hospital_picture_left"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_top" />
+
+            <View
+                android:id="@+id/view_detail_hospital_line_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_hospital_date"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
+                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@id/iv_detail_hospital_picture_left" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cafe24"
+                android:text="방문 날짜"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_bottom" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_date_contents"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="2023년 10월 10일"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_disease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cafe24"
+                android:text="질환 / 검진"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintStart_toEndOf="@+id/tv_detail_hospital_date"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_hospital_date" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_disease_contents"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="5dp"
+                android:text="배탈"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:gravity="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_disease" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cafe24"
+                android:text="병원 지역"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date_contents" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_location_contents"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:text="서울 송파구"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:gravity="center"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_location" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cafe24"
+                android:text="진료 비용"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintStart_toEndOf="@+id/tv_detail_hospital_location"
+                app:layout_constraintTop_toTopOf="@+id/tv_detail_hospital_location" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_price_contents"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="25dp"
+                android:text="55,000원"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:gravity="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_price" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/cafe24"
+                android:text="내용 / 후기"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_location_contents" />
+
+            <TextView
+                android:id="@+id/tv_detail_hospital_review_contents"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/mypage_diary_edittext"
+                android:fontFamily="@font/cafe24"
+                android:gravity="center"
+                android:text="설기가 돌멩이를 씹어먹더니 입에 병이 나서 병원에 다녀왔습니다....결과를 듣고 보니 돌멩이를 못 먹게 어떻게든 막았어야 했더라구요...병원 원장님 너무 친절하셔서 정말 좋았습니다.우리 설기... 앞으로 돌멩이는 먹지 말고 약 꼬박꼬박 잘 챙겨먹고 얼른 낫자 ~ ♥"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_review" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/image_vaccination"
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
