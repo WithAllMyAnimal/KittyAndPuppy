@@ -17,6 +17,9 @@
             android:name="com.kittyandpuppy.withallmyanimal.Mypage"
             android:exported="false" />
         <activity
+            android:name="com.kittyandpuppy.withallmyanimal.DetailBehaviorActivity"
+            android:exported="false" />
+        <activity
             android:name="com.kittyandpuppy.withallmyanimal.DetailPetActivity"
             android:exported="false" />
         <activity
