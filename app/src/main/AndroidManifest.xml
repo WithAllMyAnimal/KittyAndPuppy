@@ -17,7 +17,7 @@
             android:name="com.kittyandpuppy.withallmyanimal.MypageHospital"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.MypagePetSupplies"
+            android:name="com.kittyandpuppy.withallmyanimal.MypagePet"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

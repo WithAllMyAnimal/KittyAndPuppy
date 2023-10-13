@@ -251,6 +251,7 @@
         />
 
     <EditText
+        android:id="@+id/etv_mypage_hospital_review"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="내용 / 후기를 작성해주세요"
