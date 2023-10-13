@@ -13,7 +13,7 @@
         android:theme="@style/Theme.WithAllMyAnimal"
         tools:targetApi="31">
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.HomeHospitalActivity"
+            android:name="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
