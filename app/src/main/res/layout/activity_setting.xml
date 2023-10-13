@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_setting_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_setting_backbutton"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:scaleType="center"
+        android:src="@drawable/image_back"
+        app:layout_constraintStart_toStartOf="@+id/tb_setting_toolbar"
+        app:layout_constraintTop_toTopOf="@id/tb_setting_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_setting_toolbartext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24"
+        android:text="설정"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/tb_setting_toolbar"
+        app:layout_constraintEnd_toEndOf="@id/tb_setting_toolbar"
+        app:layout_constraintStart_toStartOf="@id/tb_setting_toolbar"
+        app:layout_constraintTop_toTopOf="@id/tb_setting_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_setting_system"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="23dp"
+        android:fontFamily="@font/cafe24"
+        android:text="시스템"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_setting_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_setting_darkmod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/cafe24"
+        android:text="다크모드"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_setting_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_setting_englishmod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/cafe24"
+        android:text="English Mode"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_darkmod" />
+
+    <TextView
+        android:id="@+id/tv_setting_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="39dp"
+        android:fontFamily="@font/cafe24"
+        android:text="알림"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_englishmod" />
+
+    <TextView
+        android:id="@+id/tv_setting_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/cafe24"
+        android:text="좋아요"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_alarm" />
+
+    <TextView
+        android:id="@+id/tv_setting_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/cafe24"
+        android:text="댓글"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_like" />
+
+    <TextView
+        android:id="@+id/tv_setting_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="39dp"
+        android:fontFamily="@font/cafe24"
+        android:text="계정"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_comment" />
+
+    <TextView
+        android:id="@+id/tv_setting_passwordchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/cafe24"
+        android:text="비밀번호 변경"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_account" />
+
+    <TextView
+        android:id="@+id/tv_setting_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/cafe24"
+        android:text="로그아웃"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_passwordchange" />
+
+    <Switch
+        android:id="@+id/sw_setting_switchbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:thumb="@drawable/switch_thumb_selector"
+        android:track="@drawable/switch_track_selector"
+        app:layout_constraintStart_toEndOf="@id/tv_setting_darkmod"
+        app:layout_constraintTop_toTopOf="@id/tv_setting_darkmod" />
+
+    <Switch
+        android:id="@+id/sw_setting_switchbutton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:thumb="@drawable/switch_thumb_selector"
+        android:track="@drawable/switch_track_selector"
+        app:layout_constraintStart_toStartOf="@id/sw_setting_switchbutton"
+        app:layout_constraintTop_toBottomOf="@id/sw_setting_switchbutton" />
+
+    <Switch
+        android:id="@+id/sw_setting_switchbutton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="220dp"
+        android:thumb="@drawable/switch_thumb_selector"
+        android:track="@drawable/switch_track_selector"
+        app:layout_constraintStart_toEndOf="@+id/tv_setting_like"
+        app:layout_constraintTop_toTopOf="@id/tv_setting_like" />
+
+    <Switch
+        android:id="@+id/sw_setting_switchbutton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:thumb="@drawable/switch_thumb_selector"
+        android:track="@drawable/switch_track_selector"
+        app:layout_constraintStart_toStartOf="@id/sw_setting_switchbutton3"
+        app:layout_constraintTop_toBottomOf="@id/sw_setting_switchbutton3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
