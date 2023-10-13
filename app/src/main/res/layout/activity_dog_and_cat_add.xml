@@ -31,8 +31,9 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
+        android:layout_marginTop="36dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/dog_cat_picture"
+        android:src="@drawable/image_sample"
         app:civ_border_color="@color/black"
         app:civ_border_overlay="true"
         app:civ_border_width="2dp"
@@ -40,6 +41,17 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_mywrite" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="104dp"
+        app:layout_constraintBottom_toBottomOf="@+id/circle_my_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appbar_mywrite"
+        app:layout_constraintVertical_bias="0.193"
+        app:srcCompat="@drawable/image_camera" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
