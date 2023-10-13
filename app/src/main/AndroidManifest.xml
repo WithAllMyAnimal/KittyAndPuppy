@@ -20,6 +20,9 @@
             android:name="com.kittyandpuppy.withallmyanimal.LoginPage.DogAndCatAddActivity"
             android:exported="false" />
         <activity
+            android:name="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
