@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity">
+    tools:context="com.kittyandpuppy.withallmyanimal.DetailPetActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_detail_pet"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_detail_pet_profile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/con_detail_hospital"
+            android:id="@+id/con_detail_pet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
