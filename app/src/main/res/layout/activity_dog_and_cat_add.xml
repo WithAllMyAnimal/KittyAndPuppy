@@ -72,7 +72,7 @@
         android:layout_width="350dp"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_smple"
+        android:background="@drawable/edit_text_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_nick" />
@@ -96,7 +96,7 @@
         android:layout_width="350dp"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/edit_text_smple"
+        android:background="@drawable/edit_text_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_petname" />
