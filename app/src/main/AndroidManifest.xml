@@ -14,9 +14,6 @@
         android:theme="@style/Theme.WithAllMyAnimal"
         tools:targetApi="31">
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.Mypage"
-            android:exported="false" />
-        <activity
             android:name="com.kittyandpuppy.withallmyanimal.DetailBehaviorActivity"
             android:exported="false" />
         <activity
