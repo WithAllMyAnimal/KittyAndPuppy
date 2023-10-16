@@ -59,9 +59,9 @@ class LoginAddItemFragment : DialogFragment() {
         binding.saveDialogBtn.setOnClickListener {
             var isGoToJoin = true
 
-            val email = binding.etIdHint.text.toString()
-            val password1 = binding.etPwHint.text.toString()
-            val password2 = binding.etPwHintCheck.text.toString()
+            val email = binding.etFindPwIdHint.text.toString()
+            val password1 = binding.etFindPwPwHint.text.toString()
+            val password2 = binding.etFindPwPwHintCheck.text.toString()
 
             if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
                 Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
