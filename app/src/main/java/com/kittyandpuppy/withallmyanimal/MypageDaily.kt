@@ -2,7 +2,6 @@ package com.kittyandpuppy.withallmyanimal
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.withallmyanimal.R
 
 class MypageDaily : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
