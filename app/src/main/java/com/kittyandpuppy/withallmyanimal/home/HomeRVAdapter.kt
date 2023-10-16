@@ -37,5 +37,4 @@ class HomeRVAdapter : ListAdapter<HomeModel, HomeRVAdapter.HomeItemViewHolder>(d
             }
         }
     }
-
 }
