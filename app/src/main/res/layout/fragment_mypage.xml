@@ -133,7 +133,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/cat_sole" />
+                android:icon="@drawable/pet_like" />
         </com.google.android.material.tabs.TabLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,7 +150,7 @@
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="병원"
@@ -165,7 +165,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="펫용품"
@@ -180,7 +180,7 @@
             android:layout_height="30dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="이상행동"
@@ -196,7 +196,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="일상"

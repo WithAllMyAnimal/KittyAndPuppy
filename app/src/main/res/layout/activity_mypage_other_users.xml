@@ -60,7 +60,6 @@
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_birth"
             />
 
-
         <TextView
             android:id="@+id/tv_mypage_nickname"
             android:layout_width="wrap_content"
@@ -88,10 +87,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con_mypage_tablayout"
+        android:id="@+id/con_mypage_other_tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage">
@@ -99,10 +98,10 @@
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/con_mypage_tablayout"
-            app:layout_constraintEnd_toEndOf="@id/con_mypage_tablayout"
-            app:layout_constraintStart_toStartOf="@id/con_mypage_tablayout"
-            app:layout_constraintTop_toTopOf="@id/con_mypage_tablayout">
+            app:layout_constraintBottom_toBottomOf="@id/con_mypage_other_tablayout"
+            app:layout_constraintEnd_toEndOf="@id/con_mypage_other_tablayout"
+            app:layout_constraintStart_toStartOf="@id/con_mypage_other_tablayout"
+            app:layout_constraintTop_toTopOf="@id/con_mypage_other_tablayout">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -112,7 +111,7 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/cat_sole" />
+                android:icon="@drawable/pet_like" />
         </com.google.android.material.tabs.TabLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -122,14 +121,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
+        app:layout_constraintTop_toBottomOf="@id/con_mypage_other_tablayout">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_mypage_tag_hospital"
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:layout_margin="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="병원"
@@ -144,7 +143,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="펫용품"
@@ -159,7 +158,7 @@
             android:layout_height="30dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="이상행동"
@@ -175,7 +174,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/mypage_btn_tag_background"
+            android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="일상"
@@ -191,7 +190,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tag"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="@id/con_mypage_list"
                 app:layout_constraintStart_toStartOf="@id/con_mypage_list"
                 app:layout_constraintTop_toTopOf="@id/con_mypage_list" />
