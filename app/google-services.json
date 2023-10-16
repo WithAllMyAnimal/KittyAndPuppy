@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "961867118180",
+    "project_id": "withallmyanimals",
+    "storage_bucket": "withallmyanimals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961867118180:android:fb24b865a9437abc801171",
+        "android_client_info": {
+          "package_name": "com.kittyandpuppy.withallmyanimal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtaKnS5gQciLR4C0dQr9U1CuAze0_8D68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
