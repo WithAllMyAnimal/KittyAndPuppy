@@ -56,4 +56,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
+
+    // coil
+    implementation("io.coil-kt:coil:2.4.0")
 }
