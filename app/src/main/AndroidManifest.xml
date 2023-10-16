@@ -29,16 +29,32 @@
             android:name="com.kittyandpuppy.withallmyanimal.MypageDaily"
             android:exported="false" />
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.LoginPage.DogAndCatAddActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypageBehavior"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypageHospital"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.MypagePet"
+            android:exported="false" />
+        <activity
             android:name="com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
-        </activity>
     </application>
+
 </manifest>

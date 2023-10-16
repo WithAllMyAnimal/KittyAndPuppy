@@ -68,6 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_detail_daily_profile" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/diary"
@@ -232,5 +233,28 @@
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_daily_likes"
         app:layout_constraintTop_toTopOf="@+id/iv_detail_daily_likes" />
-    
+
+    <ImageView
+        android:id="@+id/iv_detail_delete"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_detail_daily_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_detail_daily_nickname"
+        app:srcCompat="@drawable/image_delete" />
+
+    <ImageView
+        android:id="@+id/iv_detail_edit"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:visibility="invisible"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_delete"
+        app:layout_constraintEnd_toStartOf="@+id/iv_detail_delete"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_delete"
+        app:srcCompat="@drawable/image_edit" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

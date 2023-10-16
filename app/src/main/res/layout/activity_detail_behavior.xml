@@ -68,6 +68,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_detail_behavior_profile" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/diary"
@@ -140,8 +141,8 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="20dp"
-                android:src="@drawable/image_sample2"
                 android:background="@drawable/mypage_diary_picture_background"
+                android:src="@drawable/image_sample2"
                 app:layout_constraintBottom_toTopOf="@id/view_detail_behavior_line_bottom"
                 app:layout_constraintEnd_toStartOf="@id/iv_detail_behavior_picture_right"
                 app:layout_constraintStart_toStartOf="@id/view_detail_behavior"
@@ -152,8 +153,8 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="20dp"
-                android:src="@drawable/image_sample3"
                 android:background="@drawable/mypage_diary_picture_background"
+                android:src="@drawable/image_sample3"
                 app:layout_constraintBottom_toTopOf="@id/view_detail_behavior_line_bottom"
                 app:layout_constraintEnd_toEndOf="@id/view_detail_behavior"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_behavior_picture_left"
@@ -188,11 +189,11 @@
                 android:id="@+id/tv_detail_behavior_caution_contents"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/cafe24"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="잠깐 화장실에 간 사이에 설기가 계속 문 앞에서\n울고 있었음 ㅠㅠ 울음 소리 듣고 호다닥 나왔는데\n품에 안겨서도 계속 울던 설기ㅠㅠ"
                 android:textSize="15sp"
@@ -205,8 +206,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:fontFamily="@font/cafe24"
                 android:layout_marginTop="15dp"
+                android:fontFamily="@font/cafe24"
                 android:text="내용 / 후기"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -261,5 +262,27 @@
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_behavior_likes"
         app:layout_constraintTop_toTopOf="@+id/iv_detail_behavior_likes" />
+
+    <ImageView
+        android:id="@+id/iv_detail_delete"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_detail_behavior_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_detail_behavior_nickname"
+        app:srcCompat="@drawable/image_delete" />
+
+    <ImageView
+        android:id="@+id/iv_detail_edit"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:visibility="visible"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_delete"
+        app:layout_constraintEnd_toStartOf="@+id/iv_detail_delete"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_delete"
+        app:srcCompat="@drawable/image_edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
