@@ -61,7 +61,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/maple"
-        android:text="닉네임"
+        android:text="아이디"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,6 +77,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_nick" />
 
+
+    <Button
+        android:id="@+id/btn_signup"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="260dp"
+        android:fontFamily="@font/maple"
+        android:text="이메일\n중복확인"
+        android:textColor="@color/realblue"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_nick"
+        app:layout_constraintStart_toStartOf="@+id/et_nick"
+        app:layout_constraintTop_toTopOf="@+id/et_nick" />
 
     <TextView
         android:id="@+id/tv_petname"
