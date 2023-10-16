@@ -55,7 +55,7 @@
         app:srcCompat="@drawable/image_camera" />
 
     <TextView
-        android:id="@+id/tv_nick"
+        android:id="@+id/tv_dog_and_cat_add_nick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -68,18 +68,18 @@
         app:layout_constraintTop_toBottomOf="@+id/circle_my_iv" />
 
     <EditText
-        android:id="@+id/et_nick"
+        android:id="@+id/et_dog_and_cat_add_nick"
         android:layout_width="350dp"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_nick" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_nick" />
 
 
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_login_signup"
         style="?android:borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,12 +88,12 @@
         android:text="이메일\n중복확인"
         android:textColor="@color/realblue"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_nick"
-        app:layout_constraintStart_toStartOf="@+id/et_nick"
-        app:layout_constraintTop_toTopOf="@+id/et_nick" />
+        app:layout_constraintBottom_toBottomOf="@+id/et_dog_and_cat_add_nick"
+        app:layout_constraintStart_toStartOf="@+id/et_dog_and_cat_add_nick"
+        app:layout_constraintTop_toTopOf="@+id/et_dog_and_cat_add_nick" />
 
     <TextView
-        android:id="@+id/tv_petname"
+        android:id="@+id/tv_dog_and_cat_add_petname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -103,17 +103,17 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_nick" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_nick" />
 
     <EditText
-        android:id="@+id/et_petname"
+        android:id="@+id/et_dog_and_cat_add_petname"
         android:layout_width="350dp"
         android:layout_height="56dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/edit_text_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_petname" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_petname" />
 
     <TextView
         android:id="@+id/textView2"
@@ -126,10 +126,10 @@
         android:textColor="@color/black"
         android:fontFamily="@font/maple"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
     <Spinner
-        android:id="@+id/sp_year"
+        android:id="@+id/sp_dog_and_cat_add_year"
         android:layout_width="110dp"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
@@ -143,7 +143,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Spinner
-        android:id="@+id/sp_month"
+        android:id="@+id/sp_dog_and_cat_add_month"
         android:layout_width="105dp"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
@@ -153,11 +153,11 @@
         android:dropDownWidth="wrap_content"
         android:popupBackground="@drawable/custom_spinner_background"
         android:spinnerMode="dropdown"
-        app:layout_constraintStart_toEndOf="@+id/sp_year"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintStart_toEndOf="@+id/sp_dog_and_cat_add_year"
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
     <Spinner
-        android:id="@+id/sp_day"
+        android:id="@+id/sp_dog_and_cat_add_day"
         android:layout_width="99dp"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
@@ -167,11 +167,11 @@
         android:dropDownWidth="wrap_content"
         android:popupBackground="@drawable/custom_spinner_background"
         android:spinnerMode="dropdown"
-        app:layout_constraintStart_toEndOf="@+id/sp_month"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintStart_toEndOf="@+id/sp_dog_and_cat_add_month"
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
     <TextView
-        android:id="@+id/tv_dog_cat"
+        android:id="@+id/tv_dog_and_cat_add_dog_cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -181,10 +181,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
     <Spinner
-        android:id="@+id/sp_dog_cat"
+        android:id="@+id/sp_dog_and_cat_add_dog_cat"
         android:layout_width="99dp"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
@@ -195,11 +195,11 @@
         android:popupBackground="@drawable/custom_spinner_background"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dog_cat" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_dog_cat" />
 
 
     <TextView
-        android:id="@+id/tv_pet_type"
+        android:id="@+id/tv_dog_and_cat_add_pet_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="220dp"
@@ -209,10 +209,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
     <Spinner
-        android:id="@+id/sp_pet_type"
+        android:id="@+id/sp_dog_and_cat_add_pet_type"
         android:layout_width="99dp"
         android:layout_height="28dp"
         android:layout_centerInParent="true"
@@ -223,10 +223,10 @@
         android:popupBackground="@drawable/custom_spinner_background"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pet_type" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_pet_type" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_dog_and_cat_add_save"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
@@ -238,6 +238,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_petname" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

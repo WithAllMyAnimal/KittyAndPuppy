@@ -35,7 +35,7 @@ class FindPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_find_password, container, false)
+        return inflater.inflate(R.layout.fragment_find_pw, container, false)
     }
 
     companion object {
