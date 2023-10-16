@@ -14,7 +14,7 @@ class SettingLogoutFragment : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.withallmyanimal.R.layout.fragment_setting_logout)
+        setContentView(com.kittyandpuppy.withallmyanimal.R.layout.fragment_setting_logout)
 
 //        val tvString = "정말 로그아웃 하시겠습니까?"
 //        val tvLogout = binding.tvSettingLogouttextview
