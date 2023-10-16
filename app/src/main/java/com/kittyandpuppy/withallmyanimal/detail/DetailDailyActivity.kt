@@ -1,12 +1,12 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.withallmyanimal.R
 
-class DetailBehaviorActivity : AppCompatActivity() {
+class DetailDailyActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail_behavior)
+        setContentView(R.layout.activity_detail_daily)
     }
 }

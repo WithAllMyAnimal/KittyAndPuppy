@@ -14,10 +14,13 @@
         android:theme="@style/Theme.WithAllMyAnimal"
         tools:targetApi="31">
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.DetailBehaviorActivity"
+            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.DetailPetActivity"
+            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity"
             android:exported="false" />
         <activity
             android:name="com.kittyandpuppy.withallmyanimal.MypageDaily"
@@ -29,7 +32,7 @@
             android:name="com.kittyandpuppy.withallmyanimal.LoginPage.DogAndCatAddActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.DetailHospitalActivity"
+            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity"
             android:exported="false" />
         <activity
             android:name="com.kittyandpuppy.withallmyanimal.MypageBehavior"

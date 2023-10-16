@@ -79,7 +79,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_rv_date"
-                app:srcCompat="@drawable/cat_sole" />
+                app:srcCompat="@drawable/pet_like" />
 
             <TextView
                 android:id="@+id/tv_rv_likes"
