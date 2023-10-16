@@ -20,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/cafe24"
         android:text="필독사항"
         android:textSize="20dp"
-        android:fontFamily="@font/cafe24"
         app:layout_constraintEnd_toEndOf="@+id/ab_appbar_notice"
         app:layout_constraintStart_toStartOf="@+id/ab_appbar_notice"
         app:layout_constraintTop_toTopOf="@+id/ab_appbar_notice"
@@ -39,18 +39,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ab_appbar_notice" />
 
-    <TextView
-        android:id="@+id/tv_notice2_notice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="예방접종 정보"
-        android:fontFamily="@font/cafe24"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView" />
+        <TextView
+            android:id="@+id/tv_notice_notice1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/cafe24"
+            android:text="게시판 이용규칙"
+            app:layout_constraintStart_toStartOf="@id/tv_rectangle1_notice"
+            app:layout_constraintTop_toTopOf="@id/tv_rectangle1_notice"
+            app:layout_constraintEnd_toEndOf="@id/tv_rectangle1_notice"
+            />
+
+        <TextView
+            android:id="@+id/tv_notice1_notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/cafe24"
+            android:gravity="center"
+            android:text="상업성 게시물 금지, 비속어 사용 금지,\n반말/비아냥/인신공격성 글 금지,\n금전거래 금지,분양글 금지,음란물 유포 금지"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/tv_notice_notice1"
+            app:layout_constraintStart_toStartOf="@id/tv_notice_notice1"
+            app:layout_constraintTop_toBottomOf="@id/tv_notice_notice1" />
 
     <ImageView
+        android:id="@+id/iv_notice_maincharacter1"
         android:layout_width="42dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
@@ -58,19 +73,6 @@
         android:src="@drawable/image_maincharacter"
         app:layout_constraintBottom_toBottomOf="@+id/tv_rectangle1_notice"
         app:layout_constraintStart_toStartOf="@id/tv_rectangle1_notice"
-        app:layout_constraintTop_toTopOf="@+id/tv_rectangle1_notice" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="70dp"
-        android:src="@drawable/image_vaccination"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_rectangle1_notice"
-        app:layout_constraintEnd_toEndOf="@+id/tv_rectangle1_notice"
-        app:layout_constraintStart_toStartOf="@+id/tv_rectangle1_notice"
         app:layout_constraintTop_toTopOf="@+id/tv_rectangle1_notice" />
 
 
@@ -85,6 +87,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_rectangle1_notice" />
 
     <ImageView
+        android:id="@+id/iv_notice_maincharacter2"
         android:layout_width="42dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
@@ -95,11 +98,12 @@
         app:layout_constraintTop_toTopOf="@id/tv_rectangle2_notice" />
 
     <TextView
+        android:id="@+id/tv_notice_notice3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/cafe24"
         android:text="먹으면 안되는 것!\n1.양파:구토나 설사 혹은 급성 빈혈 유발\n2.초콜릿 :테오브로민 성분이 독성으로 작용 심장진환 유발\n3.포도: 구토,설사,복통,발작 유발\n4.닭뼈: 위에 상처 및 염증,위천공 유발\n5.우유: 설사 유발"
         app:layout_constraintBottom_toBottomOf="@id/tv_rectangle2_notice"
-        android:fontFamily="@font/cafe24"
         app:layout_constraintEnd_toEndOf="@id/tv_rectangle2_notice"
         app:layout_constraintStart_toStartOf="@id/tv_rectangle2_notice"
         app:layout_constraintTop_toTopOf="@id/tv_rectangle2_notice" />
@@ -115,7 +119,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_rectangle2_notice" />
 
     <ImageView
-        android:id="@+id/iv_maincharacter_notice"
+        android:id="@+id/iv_notice_maincharacter3"
         android:layout_width="42dp"
         android:layout_height="30dp"
         android:layout_marginStart="15dp"
@@ -125,31 +129,26 @@
         app:layout_constraintStart_toStartOf="@+id/tv_rectangle3_notice"
         app:layout_constraintTop_toTopOf="@id/tv_rectangle3_notice" />
 
-    <TextView
-        android:id="@+id/tv_notice3_notice"
+        <TextView
+            android:id="@+id/tv_notice_notice4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/cafe24"
+            android:text="예방접종 정보"
+            app:layout_constraintBottom_toTopOf="@id/iv_notice_vaccine"
+            app:layout_constraintEnd_toEndOf="@id/iv_notice_vaccine"
+            app:layout_constraintStart_toStartOf="@id/iv_notice_vaccine" />
+
+    <ImageView
+        android:id="@+id/iv_notice_vaccine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/cafe24"
-        android:text="게시판 이용규칙"
-        app:layout_constraintEnd_toEndOf="@id/tv_rectangle3_notice"
-        app:layout_constraintStart_toStartOf="@id/tv_rectangle3_notice"
-        app:layout_constraintTop_toTopOf="@id/tv_rectangle3_notice" />
-
-    <TextView
-        android:id="@+id/tv_notice4_notice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:fontFamily="@font/cafe24"
-        android:text="상업성 게시물 금지, 비속어 사용 금지,\n반말/비아냥/인신공격성 글 금지,\n금전거래 금지,분양글 금지,음란물 유포 금지"
-        app:layout_constraintEnd_toEndOf="@+id/tv_notice3_notice"
-        app:layout_constraintStart_toStartOf="@id/tv_notice3_notice"
-        app:layout_constraintTop_toBottomOf="@id/tv_notice3_notice"
-
-        />
+        android:src="@drawable/image_vaccination"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_rectangle3_notice"
+        app:layout_constraintEnd_toEndOf="@+id/tv_rectangle3_notice"
+        app:layout_constraintStart_toStartOf="@+id/tv_rectangle3_notice" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
