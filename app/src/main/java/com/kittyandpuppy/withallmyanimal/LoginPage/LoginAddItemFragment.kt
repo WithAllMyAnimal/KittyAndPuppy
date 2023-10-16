@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.MainActivity
-import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
 
 class LoginAddItemFragment : DialogFragment() {
@@ -62,9 +59,9 @@ class LoginAddItemFragment : DialogFragment() {
         binding.saveDialogBtn.setOnClickListener {
             var isGoToJoin = true
 
-            val email = binding.etIdHint.text.toString()
-            val password1 = binding.etPwHint.text.toString()
-            val password2 = binding.etPwHintCheck.text.toString()
+            val email = binding.etFindPwIdHint.text.toString()
+            val password1 = binding.etFindPwPwHint.text.toString()
+            val password2 = binding.etFindPwPwHintCheck.text.toString()
 
             if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
                 Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()

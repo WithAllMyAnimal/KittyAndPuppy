@@ -17,13 +17,13 @@
         android:layout_height="38dp"
         android:layout_marginTop="44dp"
         android:src="@drawable/pet_like"
-        app:layout_constraintEnd_toStartOf="@+id/tv_signup"
+        app:layout_constraintEnd_toStartOf="@+id/tv_find_pw_signup"
         app:layout_constraintHorizontal_bias="0.76"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_signup"
+        android:id="@+id/tv_find_pw_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -44,26 +44,26 @@
         android:src="@drawable/pet_like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
-        app:layout_constraintStart_toEndOf="@+id/tv_signup"
+        app:layout_constraintStart_toEndOf="@+id/tv_find_pw_signup"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_id"
+        android:id="@+id/tv_find_pw_login_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
+        android:fontFamily="@font/maple"
         android:text="이메일"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:fontFamily="@font/maple"
-        app:layout_constraintEnd_toStartOf="@+id/et_id_hint"
-        app:layout_constraintHorizontal_bias="0.604"
+        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_id_hint"
+        app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
-        android:id="@+id/et_id_hint"
+        android:id="@+id/et_find_pw_id_hint"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="56dp"
@@ -75,11 +75,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_signup" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_signup" />
 
 
     <Button
-        android:id="@+id/btn_signup"
+        android:id="@+id/btn_login_signup"
         style="?android:borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,13 +89,13 @@
         android:text="이메일\n중복확인"
         android:textColor="@color/realblue"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_id_hint"
-        app:layout_constraintStart_toStartOf="@+id/et_id_hint"
-        app:layout_constraintTop_toTopOf="@+id/et_id_hint"
+        app:layout_constraintBottom_toBottomOf="@+id/et_find_pw_id_hint"
+        app:layout_constraintStart_toStartOf="@+id/et_find_pw_id_hint"
+        app:layout_constraintTop_toTopOf="@+id/et_find_pw_id_hint"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/tv_pw"
+        android:id="@+id/tv_find_pw_login_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="67dp"
@@ -104,13 +104,13 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:fontFamily="@font/maple"
-        app:layout_constraintEnd_toStartOf="@+id/et_pw_hint"
+        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_id" />
 
     <EditText
-        android:id="@+id/et_pw_hint"
+        android:id="@+id/et_find_pw_pw_hint"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -122,11 +122,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_id_hint" />
+        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_id_hint" />
 
 
     <TextView
-        android:id="@+id/tv_pw_check"
+        android:id="@+id/tv_find_pw_pw_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
@@ -135,13 +135,13 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_pw_hint_check"
+        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint_check"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_pw" />
 
     <EditText
-        android:id="@+id/et_pw_hint_check"
+        android:id="@+id/et_find_pw_pw_hint_check"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -153,10 +153,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.878"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_pw_hint" />
+        app:layout_constraintTop_toBottomOf="@id/et_find_pw_pw_hint" />
 
     <TextView
-        android:id="@+id/tv_pw_question"
+        android:id="@+id/tv_find_pw_pw_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -165,10 +165,10 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_pw_hint"
+        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
         app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pw_check" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_pw_check" />
 
     <EditText
         android:id="@+id/et_pw_hint_question"
@@ -183,7 +183,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.878"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw_hint_check" />
+        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_pw_hint_check" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/save_dialog_btn"
