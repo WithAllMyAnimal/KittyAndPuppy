@@ -1,60 +1,98 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class LoginAddItemFragment : DialogFragment() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginAddItemFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LoginAddItemFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var auth: FirebaseAuth
+
+    private var _binding: FragmentLoginAddItemBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_add_item, container, false)
+        _binding = FragmentLoginAddItemBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment LoginAddItemFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginAddItemFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onResume() {
+        super.onResume()
+        //다이얼로그 size
+        val windowManager =
+            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        val deviceHeight = size.y
+        params?.width = (deviceWidth * 0.9).toInt()
+        params?.height = (deviceHeight * 0.8).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        auth = Firebase.auth
+
+        binding.saveDialogBtn.setOnClickListener {
+            var isGoToJoin = true
+
+            val email = binding.etIdHint.text.toString()
+            val password1 = binding.etPwHint.text.toString()
+            val password2 = binding.etPwHintCheck.text.toString()
+
+            if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+                Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
             }
+            if (password1 != password2) {
+                Toast.makeText(context, "비밀번호를 똑같이 입력해주세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
+            }
+            if (password1.length < 6) {
+                Toast.makeText(context, "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
+            }
+
+            if (isGoToJoin) {
+                auth.createUserWithEmailAndPassword(email, password1)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
+                            val intent = Intent(context, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            val user = auth.currentUser
+                        } else {
+                            Toast.makeText(context, "실패", Toast.LENGTH_LONG).show()
+                        }
+                    }
+            }
+        }
+
     }
 }

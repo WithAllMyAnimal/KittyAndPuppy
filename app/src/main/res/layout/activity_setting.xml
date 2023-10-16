@@ -145,7 +145,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/cafe24"
         android:text="로그아웃"
         android:textColor="@color/red"
@@ -153,43 +153,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_setting_passwordchange" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_setting_switchbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
         android:thumb="@drawable/switch_thumb_selector"
         android:track="@drawable/switch_track_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_darkmod"
         app:layout_constraintStart_toEndOf="@id/tv_setting_darkmod"
         app:layout_constraintTop_toTopOf="@id/tv_setting_darkmod" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_setting_switchbutton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:thumb="@drawable/switch_thumb_selector"
         android:track="@drawable/switch_track_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_englishmod"
         app:layout_constraintStart_toStartOf="@id/sw_setting_switchbutton"
         app:layout_constraintTop_toBottomOf="@id/sw_setting_switchbutton" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_setting_switchbutton3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="220dp"
         android:thumb="@drawable/switch_thumb_selector"
         android:track="@drawable/switch_track_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_like"
         app:layout_constraintStart_toEndOf="@+id/tv_setting_like"
         app:layout_constraintTop_toTopOf="@id/tv_setting_like" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sw_setting_switchbutton4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:thumb="@drawable/switch_thumb_selector"
         android:track="@drawable/switch_track_selector"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_comment"
         app:layout_constraintStart_toStartOf="@id/sw_setting_switchbutton3"
         app:layout_constraintTop_toBottomOf="@id/sw_setting_switchbutton3" />
 
