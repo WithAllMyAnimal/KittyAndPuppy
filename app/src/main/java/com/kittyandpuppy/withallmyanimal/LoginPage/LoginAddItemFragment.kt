@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.MainActivity
-import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
 
 class LoginAddItemFragment : DialogFragment() {
@@ -50,7 +47,7 @@ class LoginAddItemFragment : DialogFragment() {
         val deviceWidth = size.x
         val deviceHeight = size.y
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.8).toInt()
+        params?.height = (deviceHeight * 0.7).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
