@@ -48,6 +48,9 @@
             android:exported="false" />
         <activity
             android:name="com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.kittyandpuppy.withallmyanimal.SettingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
