@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     private val mypageFragment = MypageFragment()
     private val homeFragment = HomeFragment()
-    private val mypageOtherUsers = MypageOtherUsers()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

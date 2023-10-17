@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_mypage"
+        android:id="@+id/tv_mypage_users"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/toolbar_mypage" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/con_mypage"
+        android:id="@+id/con_mypage_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/toolbar_mypage">
@@ -38,25 +38,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/cafe24"
             android:text="2022.10.13"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/img_mypage_profile"
-            app:layout_constraintStart_toStartOf="@id/con_mypage"
-            app:layout_constraintTop_toTopOf="@id/con_mypage" />
+            app:layout_constraintBottom_toTopOf="@id/img_mypage_users_profile"
+            app:layout_constraintStart_toStartOf="@id/con_mypage_users"
+            app:layout_constraintTop_toTopOf="@id/con_mypage_users" />
 
         <ImageView
-            android:id="@+id/img_mypage_profile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/img_mypage_users_profile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/mypage_profile_shape"
             android:clipToOutline="true"
             android:src="@drawable/image_sample"
             app:layout_constraintEnd_toEndOf="@id/tv_mypage_birth"
-            app:layout_constraintStart_toStartOf="@id/tv_mypage_birth"
+            app:layout_constraintStart_toStartOf="@id/con_mypage_users"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_birth"
             />
 
@@ -65,12 +66,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/cafe24"
             android:text="닉네임"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
-            app:layout_constraintTop_toTopOf="@id/img_mypage_profile" />
+            app:layout_constraintStart_toEndOf="@id/img_mypage_users_profile"
+            app:layout_constraintTop_toTopOf="@id/img_mypage_users_profile" />
 
         <TextView
             android:id="@+id/tv_mypage_message"
@@ -82,7 +84,7 @@
             android:text="상태메세지"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
+            app:layout_constraintStart_toEndOf="@id/img_mypage_users_profile"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_nickname" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -93,7 +95,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/con_mypage">
+        app:layout_constraintTop_toBottomOf="@id/con_mypage_users">
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
