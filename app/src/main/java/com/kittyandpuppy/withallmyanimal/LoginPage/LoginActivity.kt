@@ -23,9 +23,9 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        binding.btnLogin.setOnClickListener {
-            val email = binding.etId.text.toString()
-            val password = binding.etPassword.text.toString()
+        binding.btnLoginLogin.setOnClickListener {
+            val email = binding.etLoginId.text.toString()
+            val password = binding.etLoginPassword.text.toString()
 
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
                 }
         }
-        binding.btnSignup.setOnClickListener {
+        binding.btnLoginSignup.setOnClickListener {
             val signupFragment = LoginAddItemFragment()
             signupFragment.show(supportFragmentManager, "signUpDialog")
         }
