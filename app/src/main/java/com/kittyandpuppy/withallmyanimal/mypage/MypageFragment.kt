@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,6 @@ class MypageFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var rvAdapter: MyPageRVAdapter
 
-    private lateinit var tabLayout : TabLayout
-    private var viewPagerAdapter: ViewPagerAdapter? = null
-    private val tabIconList = listOf(R.drawable.image_mypage_diary_button, R.drawable.pet_like)
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,53 +29,48 @@ class MypageFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//
-//        val viewPager = binding.vpMypageViewpager
-//        val tabLayout = binding.tlMypageTabLayout
-//        viewPager.adapter = ViewPagerAdapter(this)
+        Log.d("mypagefragment","here")
+        setUpRecyclerView()
 
-        viewPagerAdapter = ViewPagerAdapter(this)
+        val tabLayout = binding.tlMypageTabLayout
 
-        binding.vpMypageViewpager.adapter = viewPagerAdapter
-        tabLayout = binding.tlMypageTabLayout
-
-        TabLayoutMediator(tabLayout, binding.vpMypageViewpager) { tab, position ->
-            tab.setIcon(tabIconList[position])
-        }.attach()
-
-        binding.vpMypageViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when (position) {
-                    0 -> setUpRecyclerView()
-                    1 -> setUpRecyclerViewLikes()
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> binding.conMypageTag.visibility = View.VISIBLE
+                    1 -> binding.conMypageTag.visibility = View.GONE
+                    else -> {}
                 }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
     }
     private fun setUpRecyclerView() {
         rvAdapter = MyPageRVAdapter()
 
-        binding.recyclerviewMypageList.apply {
-            setHasFixedSize(true)
-            this.layoutManager = GridLayoutManager(requireContext(), 3)
-            adapter = rvAdapter
+        val layoutManager = GridLayoutManager(requireContext(), 3)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (rvAdapter.getItemViewType(position)) {
+                    MyPageRVAdapter.TYPE_LIKES -> 2
+                    MyPageRVAdapter.TYPE_MY_LIST -> 1
+                    else -> throw IllegalArgumentException("Invalid")
+                }
+            }
         }
-    }
-
-    private fun setUpRecyclerViewLikes() {
-        rvAdapter = MyPageRVAdapter()
 
         binding.recyclerviewMypageList.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext())
+            this.layoutManager = layoutManager
             adapter = rvAdapter
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewPagerAdapter = null
         _binding = null
     }
 }
