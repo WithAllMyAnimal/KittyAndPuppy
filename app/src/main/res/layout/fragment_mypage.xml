@@ -28,6 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/toolbar_mypage" />
 
     <ImageButton
+        android:id="@+id/btn_mypage_settings"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:background="@android:color/transparent"
@@ -45,27 +46,29 @@
             android:id="@+id/tv_mypage_birth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/cafe24"
             android:text="2022.10.13"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:layout_marginStart="20dp"
             app:layout_constraintBottom_toTopOf="@id/img_mypage_profile"
             app:layout_constraintStart_toStartOf="@id/con_mypage"
             app:layout_constraintTop_toTopOf="@id/con_mypage" />
 
         <ImageView
             android:id="@+id/img_mypage_profile"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:background="@drawable/mypage_profile_shape"
             android:clipToOutline="true"
             android:src="@drawable/image_sample"
             app:layout_constraintEnd_toEndOf="@id/tv_mypage_birth"
-            app:layout_constraintStart_toStartOf="@id/tv_mypage_birth"
-            app:layout_constraintTop_toBottomOf="@id/tv_mypage_birth" />
+            app:layout_constraintStart_toStartOf="@id/con_mypage"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_birth"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_mypage_change"
@@ -91,6 +94,7 @@
             android:text="닉네임"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
             app:layout_constraintTop_toTopOf="@id/img_mypage_profile" />
 
