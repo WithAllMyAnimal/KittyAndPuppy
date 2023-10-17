@@ -122,6 +122,7 @@
         app:layout_constraintTop_toBottomOf="@id/con_mypage">
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_mypage_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/con_mypage_tablayout"
@@ -145,6 +146,7 @@
         android:id="@+id/con_mypage_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
@@ -212,13 +214,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/con_mypage_tag"
-        android:layout_marginTop="20dp"
-        >
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_mypage_list"
             android:layout_width="match_parent"
@@ -230,9 +225,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="@id/con_mypage_list"
                 app:layout_constraintStart_toStartOf="@id/con_mypage_list"
                 app:layout_constraintTop_toTopOf="@id/con_mypage_list" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
