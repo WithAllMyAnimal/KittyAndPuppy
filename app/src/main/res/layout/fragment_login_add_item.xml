@@ -62,29 +62,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
+
     <EditText
         android:id="@+id/et_find_pw_id_hint"
         android:layout_width="240dp"
         android:layout_height="56dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/edit_text_sample"
-        android:hint="     이메일을 입력해주세요"
-        android:inputType="text"
-        android:textSize="11sp"
         android:fontFamily="@font/maple"
+        android:hint="이메일을 입력해주세요"
+        android:inputType="text"
+        android:padding="15dp"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_signup" />
-
 
     <Button
         android:id="@+id/btn_login_signup"
         style="?android:borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="89dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="148dp"
         android:fontFamily="@font/maple"
         android:text="이메일\n중복확인"
         android:textColor="@color/realblue"
@@ -115,7 +115,8 @@
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/edit_text_sample"
-        android:hint="     숫자,영문,대문자로만 작성해주세요"
+        android:padding="15dp"
+        android:hint="숫자,영문,대문자로만 작성해주세요"
         android:inputType="text"
         android:textSize="11sp"
         android:fontFamily="@font/maple"
@@ -146,7 +147,8 @@
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/edit_text_sample"
-        android:hint="     숫자,영문,대문자로만 작성해주세요"
+        android:padding="15dp"
+        android:hint="숫자,영문,대문자로만 작성해주세요"
         android:inputType="text"
         android:textSize="11sp"
         android:fontFamily="@font/maple"
@@ -176,7 +178,8 @@
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/edit_text_sample"
-        android:hint="     주인/집사의 생일은? ex) 10/12 (MM/DD)"
+        android:padding="15dp"
+        android:hint="주인/집사의 생일은? ex) 10/12 (MM/DD)"
         android:inputType="text"
         android:textSize="11sp"
         android:fontFamily="@font/maple"
@@ -186,7 +189,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_find_pw_pw_hint_check" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/save_dialog_btn"
+        android:id="@+id/btn_save_dialog"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"

@@ -1,9 +1,11 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,12 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
@@ -19,7 +27,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
 class LoginAddItemFragment : DialogFragment() {
 
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var mDbRef: DatabaseReference
     private var _binding: FragmentLoginAddItemBinding? = null
     private val binding get() = _binding!!
 
@@ -37,7 +45,7 @@ class LoginAddItemFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        //다이얼로그 size
+        // 다이얼로그 크기 조정
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
@@ -53,43 +61,33 @@ class LoginAddItemFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         auth = Firebase.auth
+        mDbRef = FirebaseDatabase.getInstance().reference
 
-        binding.saveDialogBtn.setOnClickListener {
-            var isGoToJoin = true
-
+        binding.btnLoginSignup.setOnClickListener {
             val email = binding.etFindPwIdHint.text.toString()
-            val password1 = binding.etFindPwPwHint.text.toString()
-            val password2 = binding.etFindPwPwHintCheck.text.toString()
-
-            if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
-                Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
-                isGoToJoin = false
-            }
-            if (password1 != password2) {
-                Toast.makeText(context, "비밀번호를 똑같이 입력해주세요.", Toast.LENGTH_SHORT).show()
-                isGoToJoin = false
-            }
-            if (password1.length < 6) {
-                Toast.makeText(context, "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
-                isGoToJoin = false
-            }
-
-            if (isGoToJoin) {
-                auth.createUserWithEmailAndPassword(email, password1)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
-                            val intent = Intent(context, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            val user = auth.currentUser
-                        } else {
-                            Toast.makeText(context, "실패", Toast.LENGTH_LONG).show()
-                        }
-                    }
+            if (email.isNotEmpty()) {
+                checkEmailDuplicate(email)
+            } else {
+                Toast.makeText(context, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    private fun checkEmailDuplicate(email: String) {
+        mDbRef.child("emails").orderByValue().equalTo(email)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        Toast.makeText(context, "중복된 이메일입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "이메일 중복 확인에 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 }
