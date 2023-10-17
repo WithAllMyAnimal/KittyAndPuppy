@@ -33,7 +33,7 @@ class HomeRVAdapter : ListAdapter<HomeModel, HomeRVAdapter.HomeItemViewHolder>(d
             }
 
             override fun areItemsTheSame(oldItem: HomeModel, newItem: HomeModel): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.uid == newItem.uid
             }
         }
     }

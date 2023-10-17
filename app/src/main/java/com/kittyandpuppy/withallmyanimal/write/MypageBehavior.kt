@@ -1,12 +1,12 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.write
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kittyandpuppy.withallmyanimal.R
 
-class MypagePet : AppCompatActivity() {
+class MypageBehavior : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mypage_pet)
+        setContentView(R.layout.activity_mypage_behavior)
     }
 }

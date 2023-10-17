@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.home
 
 data class HomeModel(
+    val uid : String? = "",
     val image : String? = "",
     val id : String? = "",
     val tag : String? = "",
