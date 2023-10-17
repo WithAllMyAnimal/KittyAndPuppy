@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
@@ -18,6 +19,10 @@ class MypageFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var rvAdapter: MyPageRVAdapter
 
+    private lateinit var tabLayout : TabLayout
+    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private val tabIconList = listOf(R.drawable.image_mypage_diary_button, R.drawable.pet_like)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,18 +32,21 @@ class MypageFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//
+//        val viewPager = binding.vpMypageViewpager
+//        val tabLayout = binding.tlMypageTabLayout
+//        viewPager.adapter = ViewPagerAdapter(this)
 
-        val viewPager = binding.vpMypageViewpager
-        val tabLayout = binding.tlMypageTabLayout
-        viewPager.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout, viewPager) {tab, position ->
-            when (position) {
-                0 -> tab.text = "일지 목록"
-                1 -> tab.text = "좋아요한 목록"
-            }
+        viewPagerAdapter = ViewPagerAdapter(this)
+
+        binding.vpMypageViewpager.adapter = viewPagerAdapter
+        tabLayout = binding.tlMypageTabLayout
+
+        TabLayoutMediator(tabLayout, binding.vpMypageViewpager) { tab, position ->
+            tab.setIcon(tabIconList[position])
         }.attach()
 
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.vpMypageViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
@@ -51,19 +59,9 @@ class MypageFragment : Fragment() {
     private fun setUpRecyclerView() {
         rvAdapter = MyPageRVAdapter()
 
-        val layoutManager = GridLayoutManager(requireContext(), 3)
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return when(rvAdapter.getItemViewType(position)) {
-                    MyPageRVAdapter.TYPE_MY_LIST -> 1
-                    else -> throw IllegalArgumentException("Invalid")
-                }
-            }
-        }
-
         binding.recyclerviewMypageList.apply {
             setHasFixedSize(true)
-            this.layoutManager = layoutManager
+            this.layoutManager = GridLayoutManager(requireContext(), 3)
             adapter = rvAdapter
         }
     }
@@ -76,5 +74,11 @@ class MypageFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = rvAdapter
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewPagerAdapter = null
+        _binding = null
     }
 }
