@@ -12,25 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/main_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:backgroundTint="@color/pink"
+        app:fabCradleMargin="10dp"
+        app:fabCradleRoundedCornerRadius="30dp"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bn_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="13dp"
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            app:menu="@menu/main_menu"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator"
+            />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <!--    아이콘 색 바꾸는 코드 -->
+    <!--    app:itemIconTint="#E1B771"-->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/main_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
         android:layout_marginBottom="50dp"
         android:src="@drawable/pet_like"
         app:backgroundTint="@color/blue"
-        app:fabSize="normal"
+        app:layout_anchor="@id/main_app_bar"
+        app:fabCustomSize="60dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bn_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/pink"
-        android:elevation="0dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/main_menu"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
