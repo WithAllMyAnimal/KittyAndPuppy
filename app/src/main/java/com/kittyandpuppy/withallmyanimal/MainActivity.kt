@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         fragmentManager = supportFragmentManager
         currentFragment = homeFragment
 
+        supportFragmentManager.beginTransaction().replace(R.id.main_framelayout, HomeFragment()).commit()
+
         binding.mainFab.setOnClickListener {
             switchFragment(mypageFragment)
         }
@@ -43,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        switchFragment(homeFragment)
     }
 
     private fun switchFragment(fragment: Fragment) {
