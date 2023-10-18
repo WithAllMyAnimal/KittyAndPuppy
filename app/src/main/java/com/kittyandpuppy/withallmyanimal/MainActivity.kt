@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     // BottomNavigation이 눌렸을 때 화면전환
     private fun setupBottomNavigation() {
         binding.bnMain.setOnItemSelectedListener { menuItem ->
-            Log.d("JINA", "setupBottomNavigation: ${menuItem.title}")
+//            Log.d("JINA", "setupBottomNavigation: ${menuItem.title}")
             when (menuItem.title) {
                 "홈" -> {
                     switchFragment(HomeFragment())
