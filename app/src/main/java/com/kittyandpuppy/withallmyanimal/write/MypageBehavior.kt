@@ -17,8 +17,10 @@ import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import coil.load
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -26,6 +28,7 @@ import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
@@ -36,36 +39,11 @@ class MypageBehavior : AppCompatActivity() {
             layoutInflater
         )
     }
+
     private val PICK_IMAGE_REQUEST = 0
     private val PERMISSION_REQUEST_CODE = 1
+
     private var isImageUpload = false
-    private var selectedImageUri: Uri? = null
-
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            binding.ivMypageBehaviorPictureLeft.setImageURI(uri)
-            selectedImageUri = uri
-            isImageUpload = true
-        }
-    }
-
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                getContent.launch("image/*")
-            } else {
-                AlertDialog.Builder(this)
-                    .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
-                    .setPositiveButton("설정으로 이동") { _, _ ->
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", this.packageName, null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                    .setNegativeButton("취소") { _, _ -> }
-                    .show()
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,83 +61,53 @@ class MypageBehavior : AppCompatActivity() {
 
             FBRef.boardRef
                 .child(key)
-                .setValue(Behavior(title, content, tag, review, uid, time))
+                .setValue(Behavior("Behavior", content, review, tag, time, title, uid))
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             if (isImageUpload) {
-                selectedImageUri?.let {
-                    imageUpload(it, key)
-                }
+                ImageUtils.imageUpload(this, binding.ivMypageBehaviorPictureLeft, key)
             }
             finish()
         }
         binding.ivMypageBehaviorPictureLeft.setOnClickListener {
-            openGallery()
+            isImageUpload = true
+            ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
         }
     }
-    private fun imageUpload(uri: Uri, key: String) {
-        val storage = Firebase.storage
-        val storageRef = storage.reference
-        val animalsRef = storageRef.child("images/$key.png")
-
-        val uploadTask = animalsRef.putFile(uri)
-        uploadTask.addOnFailureListener {
-            Toast.makeText(this, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener {
-            Toast.makeText(this, "이미지 업로드에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 부여된 경우 갤러리 열기
+                ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
+            } else {
+                AlertDialog.Builder(this)
+                    .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
+                    .setPositiveButton("설정으로 이동") { _, _ ->
+                        // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = Uri.fromParts("package", this.packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("취소") { _, _ -> }
+                    .show()
+            }
         }
     }
 
-    private fun openGallery() {
-        val permissionsToRequest = mutableListOf<String>()
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        when (PackageManager.PERMISSION_GRANTED) {
-            ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) -> {
-                getContent.launch("image/*")
-            }
-            else -> {
-                requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-        }
-
-        if (SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_IMAGES)
-        }
-
-        if (SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_MEDIA_VIDEO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_VIDEO)
-        }
-
-        if (SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.READ_MEDIA_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_AUDIO)
-        }
-
-        if (permissionsToRequest.isEmpty()) {
-            // 이미 권한이 허용된 경우 갤러리 열기
-            getContent.launch("image/*")
-        } else {
-            // 권한 요청
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toTypedArray(),
-                PERMISSION_REQUEST_CODE
-            )
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            binding.ivMypageBehaviorPictureLeft.setImageURI(data.data)
         }
     }
 }

@@ -26,7 +26,7 @@ class MypageDaily : AppCompatActivity() {
 
             FBRef.boardRef
                 .child(key)
-                .setValue(Daily(title, tag, content, uid, time))
+                .setValue(Daily("Daily", content, tag, time, title, uid))
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }

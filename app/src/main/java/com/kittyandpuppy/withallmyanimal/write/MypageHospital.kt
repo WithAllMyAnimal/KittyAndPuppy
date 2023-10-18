@@ -30,7 +30,7 @@ class MypageHospital : AppCompatActivity() {
 
             FBRef.boardRef
                 .child(key)
-                .setValue(Hospital(title, date, price, location, tag, content, uid, time))
+                .setValue(Hospital("Hospital", content, date, location, price, tag, time, title, uid))
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
         }
