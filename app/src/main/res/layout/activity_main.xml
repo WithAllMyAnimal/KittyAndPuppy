@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_framelayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,47 +8,47 @@
     android:background="@color/white"
     tools:context="com.kittyandpuppy.withallmyanimal.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/main_framelayout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/main_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:backgroundTint="@color/pink"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="10dp"
-        app:fabCradleVerticalOffset="10dp"
-        >
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bn_main"
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/main_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginEnd="13dp"
-            app:backgroundTint="@android:color/transparent"
-            app:elevation="0dp"
-            app:menu="@menu/main_menu"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator"
-            />
-    </com.google.android.material.bottomappbar.BottomAppBar>
+            app:backgroundTint="@color/pink"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabCradleVerticalOffset="10dp">
 
-    <!--    아이콘 색 바꾸는 코드 -->
-    <!--    app:itemIconTint="#E1B771"-->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bn_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="13dp"
+                app:backgroundTint="@android:color/transparent"
+                app:elevation="0dp"
+                app:menu="@menu/main_menu"/>
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/pet_like"
-        app:backgroundTint="@color/blue"
-        app:layout_anchor="@id/main_app_bar"
-        app:fabCustomSize="65dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
+        <!--    아이콘 색 바꾸는 코드 -->
+        <!--    app:itemIconTint="#E1B771"-->
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/pet_like"
+            app:backgroundTint="@color/blue"
+            app:borderWidth="0dp"
+            app:maxImageSize="40dp"
+            app:fabCustomSize="80dp"
+            app:layout_anchor="@id/main_app_bar"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
+
+        <include layout="@layout/fab_layout" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
