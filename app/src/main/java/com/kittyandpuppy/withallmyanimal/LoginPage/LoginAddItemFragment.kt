@@ -109,10 +109,10 @@ class LoginAddItemFragment : DialogFragment() {
                                     .addOnSuccessListener { Log.d(TAG, "비밀번호 힌트 저장!") }
                                     .addOnFailureListener { e -> Log.e(TAG, "비밀번호 힌트 저장 실패!", e) }
                             }
-                            val intent = Intent(context, MainActivity::class.java)
+                            val intent = Intent(context, LoginActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
+                            dismiss()
                         } else {
                             Toast.makeText(context, "실패", Toast.LENGTH_LONG).show()
                         }
