@@ -27,7 +27,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentLoginAddItemBinding
 class LoginAddItemFragment : DialogFragment() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var mDbRef: DatabaseReference
+
     private var _binding: FragmentLoginAddItemBinding? = null
     private val binding get() = _binding!!
 
@@ -45,7 +45,7 @@ class LoginAddItemFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        // 다이얼로그 크기 조정
+        //다이얼로그 size
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
@@ -61,33 +61,70 @@ class LoginAddItemFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth = Firebase.auth
-        mDbRef = FirebaseDatabase.getInstance().reference
 
-        binding.btnLoginSignup.setOnClickListener {
-            val email = binding.etFindPwIdHint.text.toString()
-            if (email.isNotEmpty()) {
-                checkEmailDuplicate(email)
-            } else {
-                Toast.makeText(context, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+        auth = Firebase.auth
+
+        binding.btnSaveDialog.setOnClickListener {
+            var isGoToJoin = true
+
+            val email = binding.etLoginAddItemIdHint.text.toString()
+            val password1 = binding.etLoginAddItemPwHint.text.toString()
+            val password2 = binding.etLoginAddItemPwHintCheck.text.toString()
+
+            if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
+                Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
+            }
+            if (password1 != password2) {
+                Toast.makeText(context, "비밀번호를 똑같이 입력해주세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
+            }
+            if (password1.length < 6) {
+                Toast.makeText(context, "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                isGoToJoin = false
+            }
+
+            if (isGoToJoin) {
+                auth.createUserWithEmailAndPassword(email, password1)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
+                            val intent = Intent(context, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            val user = auth.currentUser
+                        } else {
+                            Toast.makeText(context, "실패", Toast.LENGTH_LONG).show()
+                        }
+                    }
             }
         }
-    }
+        binding.btnLoginSignup.setOnClickListener {
+            val email = binding.etLoginAddItemIdHint.text.toString()
 
-    private fun checkEmailDuplicate(email: String) {
-        mDbRef.child("emails").orderByValue().equalTo(email)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        Toast.makeText(context, "중복된 이메일입니다.", Toast.LENGTH_SHORT).show()
+            if (email.isEmpty()) {
+                Toast.makeText(context, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val database = Firebase.database
+            val usersRef = database.getReference("users")
+            val emailRef = usersRef.orderByChild("email").equalTo(email)
+
+            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(context, "이미 사용 중인 이메일입니다", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(context, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "사용 가능한 이메일입니다", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(context, "이메일 중복 확인에 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, "Database Error: ${databaseError.toException()}")
+                    Toast.makeText(context, "데이터베이스 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
                 }
             })
+        }
+
     }
 }

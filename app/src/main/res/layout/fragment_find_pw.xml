@@ -17,13 +17,13 @@
         android:layout_height="38dp"
         android:layout_marginTop="44dp"
         android:src="@drawable/pet_like"
-        app:layout_constraintEnd_toStartOf="@+id/tv_find_pw_signup"
+        app:layout_constraintEnd_toStartOf="@+id/tv_login_add_item_signup"
         app:layout_constraintHorizontal_bias="0.76"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_find_pw_signup"
+        android:id="@+id/tv_login_add_item_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -44,7 +44,7 @@
         android:src="@drawable/pet_like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
-        app:layout_constraintStart_toEndOf="@+id/tv_find_pw_signup"
+        app:layout_constraintStart_toEndOf="@+id/tv_login_add_item_signup"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -59,12 +59,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_id_hint"
+        app:layout_constraintEnd_toStartOf="@+id/et_login_add_item_id_hint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
-        android:id="@+id/et_find_pw_id_hint"
+        android:id="@+id/et_login_add_item_id_hint"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="48dp"
@@ -76,10 +76,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_signup" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_signup" />
 
     <TextView
-        android:id="@+id/tv_find_pw_login_pw"
+        android:id="@+id/tv_login_add_item_login_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
@@ -88,12 +88,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
+        app:layout_constraintEnd_toStartOf="@+id/et_login_add_item_pw_hint"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_pw_question" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_pw_question" />
 
     <EditText
-        android:id="@+id/et_find_pw_pw_hint"
+        android:id="@+id/et_login_add_item_pw_hint"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -105,11 +105,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw_hint_question" />
+        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_pw_hint_question" />
 
 
     <TextView
-        android:id="@+id/tv_find_pw_pw_check"
+        android:id="@+id/tv_login_add_item_pw_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -118,12 +118,12 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint_check"
+        app:layout_constraintEnd_toStartOf="@+id/et_login_add_item_pw_hint_check"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_pw" />
 
     <EditText
-        android:id="@+id/et_find_pw_pw_hint_check"
+        android:id="@+id/et_login_add_item_pw_hint_check"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -135,10 +135,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_find_pw_pw_hint" />
+        app:layout_constraintTop_toBottomOf="@id/et_login_add_item_pw_hint" />
 
     <TextView
-        android:id="@+id/tv_find_pw_pw_question"
+        android:id="@+id/tv_login_add_item_pw_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
@@ -147,13 +147,13 @@
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
+        app:layout_constraintEnd_toStartOf="@+id/et_login_add_item_pw_hint"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_id" />
 
     <EditText
-        android:id="@+id/et_pw_hint_question"
+        android:id="@+id/et_login_add_item_pw_hint_question"
         android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_marginTop="32dp"
@@ -165,7 +165,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_id_hint" />
+        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_id_hint" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_find_pw_save_dialog"
@@ -179,7 +179,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_pw_hint_check" />
+        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_pw_hint_check" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
