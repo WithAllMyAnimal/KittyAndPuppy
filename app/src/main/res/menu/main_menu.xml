@@ -10,7 +10,8 @@
 
     <item
         android:id="@+id/menu_floating"
-        android:title="" />
+        android:title=""
+        />
 
     <item
         android:id="@+id/main_bn_you"
