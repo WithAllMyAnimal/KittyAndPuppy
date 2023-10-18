@@ -1,4 +1,4 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.write
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

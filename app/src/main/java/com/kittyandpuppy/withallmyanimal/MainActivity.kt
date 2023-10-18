@@ -6,25 +6,28 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMainBinding
-import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.home.HomeFragment
+import com.kittyandpuppy.withallmyanimal.mypage.MypageFragment
+import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val binding: ActivityMainBinding by lazy {ActivityMainBinding.inflate(layoutInflater)}
     private lateinit var currentFragment: Fragment
     private lateinit var fragmentManager: FragmentManager
 
     private val mypageFragment = MypageFragment()
     private val homeFragment = HomeFragment()
-    private val mypageOtherUsers = MypageOtherUsers()
+//    private val mypageOtherUsers = MypageOtherUsers()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         fragmentManager = supportFragmentManager
         currentFragment = homeFragment
+
+        supportFragmentManager.beginTransaction().replace(R.id.main_framelayout, HomeFragment()).commit()
 
         binding.mainFab.setOnClickListener {
             switchFragment(mypageFragment)
@@ -44,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        switchFragment(homeFragment)
     }
 
     private fun switchFragment(fragment: Fragment) {
