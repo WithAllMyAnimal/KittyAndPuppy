@@ -19,7 +19,8 @@
         android:layout_gravity="bottom"
         app:backgroundTint="@color/pink"
         app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="30dp"
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:fabCradleVerticalOffset="10dp"
         >
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -46,7 +47,7 @@
         android:src="@drawable/pet_like"
         app:backgroundTint="@color/blue"
         app:layout_anchor="@id/main_app_bar"
-        app:fabCustomSize="60dp"
+        app:fabCustomSize="65dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
