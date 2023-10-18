@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,12 +30,14 @@
 
     <ImageButton
         android:id="@+id/btn_mypage_settings"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:background="@android:color/transparent"
         android:src="@drawable/img_mypage_setting"
         app:layout_constraintEnd_toEndOf="@id/toolbar_mypage"
-        app:layout_constraintTop_toTopOf="@id/toolbar_mypage" />
+        app:layout_constraintTop_toTopOf="@id/toolbar_mypage"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage"
+        />
 
     <TextView
         android:id="@+id/tv_mypage_birth"

@@ -3,6 +3,7 @@ package com.kittyandpuppy.withallmyanimal
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -82,11 +83,15 @@ class MainActivity : AppCompatActivity() {
 
     // 아이템이 visible로 바뀔 수 있게 함(FAB 등장)
     private fun showFAB(fab: ExtendedFloatingActionButton) {
+        val showAnim = AnimationUtils.loadAnimation(this, R.anim.fab_anim)
+        fab.startAnimation(showAnim)
         fab.visibility = View.VISIBLE
     }
 
-    // 아이템이 invisible로 바뀔 수 있게 함(FAB 등장)
+    // 아이템이 invisible로 바뀔 수 있게 함(FAB 퇴장)
     private fun hideFAB(fab: ExtendedFloatingActionButton) {
+        val hideAnim = AnimationUtils.loadAnimation(this, R.anim.hide_fab_anim)
+        fab.startAnimation(hideAnim)
         fab.visibility = View.INVISIBLE
     }
 }
