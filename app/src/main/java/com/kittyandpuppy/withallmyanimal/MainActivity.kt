@@ -9,6 +9,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMainBinding
 import com.kittyandpuppy.withallmyanimal.home.HomeFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
+import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,7 +31,9 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.main_framelayout, HomeFragment()).commit()
 
         binding.mainFab.setOnClickListener {
-            switchFragment(mypageFragment)
+//            switchFragment(mypageFragment)
+            val intent = Intent(this, MypageBehavior::class.java)
+            startActivity(intent)
         }
 
         val navigation = binding.bnMain

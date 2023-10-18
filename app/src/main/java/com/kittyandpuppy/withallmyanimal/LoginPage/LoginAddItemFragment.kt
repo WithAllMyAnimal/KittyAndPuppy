@@ -92,4 +92,6 @@ class LoginAddItemFragment : DialogFragment() {
         }
 
     }
+
+
 }
