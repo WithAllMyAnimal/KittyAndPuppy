@@ -35,7 +35,7 @@ class MypageHospital : AppCompatActivity() {
             val title = binding.etvMypageHospitalTitle.text.toString()
             val date = binding.dpMypageHospital.toString()
             val price = binding.etvMypageHospitalExpense.text.toString()
-            val location = binding.etvMypageHospitalLocation.text.toString()
+            val location = binding.spMypageHospital.text.toString()
             val tag = binding.etvMypageHospitalTag.text.toString()
             val content = binding.etvMypageHospitalReview.text.toString()
             val uid = FBAuth.getUid()
