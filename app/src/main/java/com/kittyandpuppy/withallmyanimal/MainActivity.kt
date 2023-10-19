@@ -46,13 +46,12 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigation() {
 
         binding.bnMain.setOnItemSelectedListener { menuItem ->
-            Log.d("JINA", "setupBottomNavigation: ${menuItem.title}")
-            when (menuItem.title) {
-                "너" -> {
+            when (menuItem.itemId) {
+                R.id.main_bn_you -> {
                     switchFragment(HomeFragment())
                     true
                 }
-                "나" -> {
+                R.id.main_bn_home -> {
                     switchFragment(MypageFragment())
                     true
                 }

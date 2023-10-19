@@ -61,7 +61,7 @@
         app:srcCompat="@drawable/pet_like" />
 
     <TextView
-        android:id="@+id/tv_find_pw_login_id"
+        android:id="@+id/tv_login_add_item_login_id"
         android:layout_width="wrap_content"
         android:layout_height="17dp"
         android:layout_marginStart="36dp"
@@ -82,11 +82,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_id" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_id" />
 
 
     <TextView
-        android:id="@+id/tv_find_pw_login_pw"
+        android:id="@+id/tv_login_add_item_login_pw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -107,14 +107,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_pw" />
 
     <Button
         android:id="@+id/btn_login_signup"
         style="?android:borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/maple"
         android:text="회원가입"

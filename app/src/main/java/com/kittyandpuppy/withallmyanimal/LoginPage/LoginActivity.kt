@@ -8,7 +8,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.MainActivity
-import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -45,6 +44,11 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLoginSignup.setOnClickListener {
             val signupFragment = LoginAddItemFragment()
             signupFragment.show(supportFragmentManager, "signUpDialog")
+        }
+        binding.btnLoginResetPassword.setOnClickListener {
+            val findPasswordFragment = FindPwFragment()
+            findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
+
         }
     }
 }
