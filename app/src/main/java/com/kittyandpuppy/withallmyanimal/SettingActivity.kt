@@ -1,36 +1,31 @@
 package com.kittyandpuppy.withallmyanimal
 
+import SettingPasswordDialogFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
-import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.databinding.ActivitySettingBinding
+
 
 class SettingActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        val fragmentpassworddialog = SettingPassworddialogFragment()
-        val fragmentlogout= SettingLogoutFragment()
-
-        val button_passworddialog = findViewById<TextView>(R.id.tv_setting_passwordchange)
-        val button_logout = findViewById<TextView>(R.id.tv_setting_logout)
-
-        button_passworddialog.setOnClickListener{
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container_setting, fragmentpassworddialog).commit()
+        binding.tvSettingPasswordchange.setOnClickListener{
+            val dialogFragment = SettingPasswordDialogFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            dialogFragment.show(transaction, "SettingPasswordDialog")
         }
 
-        button_logout.setOnClickListener{
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container_setting,fragmentlogout).commit()
+        binding.tvSettingLogout.setOnClickListener {
+            val dialogFragment = SettingLogoutFragment()
+            val transaction = supportFragmentManager.beginTransaction()
+            dialogFragment.show(transaction,"LogoutDialog")
         }
     }
-}
-
-private fun FragmentTransaction.replace(
-    constraint: Int,
-    fragmentlogout: SettingLogoutFragment
-): FragmentTransaction {
-    TODO("Not yet implemented")
 }

@@ -60,6 +60,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.firebaseui:firebase-ui-storage:8.0.2")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // coil
     implementation("io.coil-kt:coil:2.4.0")

@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="380dp"
-    android:layout_height="600dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -11,23 +11,12 @@
     app:layout_constraintTop_toTopOf="parent">
 
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="45dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="44dp"
-        android:src="@drawable/pet_like"
-        app:layout_constraintEnd_toStartOf="@+id/tv_find_pw_signup"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
-        android:id="@+id/tv_find_pw_signup"
+        android:id="@+id/tv_login_add_item_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:fontFamily="@font/cafe24"
+        android:fontFamily="@font/maple"
         android:text="비밀번호 재설정"
         android:textColor="@color/black"
         android:textSize="28sp"
@@ -36,150 +25,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="45dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="44dp"
-        android:src="@drawable/pet_like"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.23"
-        app:layout_constraintStart_toEndOf="@+id/tv_find_pw_signup"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/tv_find_pw_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="67dp"
-        android:fontFamily="@font/maple"
-        android:text="이메일"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_id_hint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <EditText
-        android:id="@+id/et_find_pw_id_hint"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="48dp"
-        android:background="@drawable/edit_text_sample"
-        android:fontFamily="@font/maple"
-        android:hint="     이메일을 입력해주세요"
-        android:inputType="text"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.885"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_signup" />
-
-    <TextView
-        android:id="@+id/tv_find_pw_login_pw"
-        android:layout_width="wrap_content"
+        android:id="@+id/et_login_add_item_id_hint"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="51dp"
-        android:fontFamily="@font/maple"
-        android:text="  새로운\n비밀번호"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_pw_question" />
-
-    <EditText
-        android:id="@+id/et_find_pw_pw_hint"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/edit_text_sample"
         android:fontFamily="@font/maple"
-        android:hint="     숫자,영문,대문자로만 작성해주세요"
+        android:hint="이메일"
         android:inputType="text"
+        android:padding="15dp"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.885"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_pw_hint_question" />
-
-
-    <TextView
-        android:id="@+id/tv_find_pw_pw_check"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/maple"
-        android:text="      새로운\n비밀번호 확인"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint_check"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_login_pw" />
-
-    <EditText
-        android:id="@+id/et_find_pw_pw_hint_check"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/edit_text_sample"
-        android:hint="     숫자,영문,대문자로만 작성해주세요"
-        android:inputType="text"
-        android:textSize="11sp"
-        android:fontFamily="@font/maple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.885"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_find_pw_pw_hint" />
-
-    <TextView
-        android:id="@+id/tv_find_pw_pw_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
-        android:fontFamily="@font/maple"
-        android:text="비밀번호\n힌트질문"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_find_pw_pw_hint"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_find_pw_id" />
-
-    <EditText
-        android:id="@+id/et_pw_hint_question"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/edit_text_sample"
-        android:fontFamily="@font/maple"
-        android:hint="     주인/집사의 생일은? ex) 10/12 (MM/DD)"
-        android:inputType="text"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.885"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_id_hint" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_signup" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_find_pw_save_dialog"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/btn_login"
         android:fontFamily="@font/cafe24"
-        android:text="비밀번호 변경"
+        android:text="전송"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_find_pw_pw_hint_check" />
+        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_id_hint" />
+
+    <TextView
+        android:id="@+id/tv_find_pw_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/maple"
+        android:textColor="@color/black"
+        android:text="가입하신 이메일 주소를 입력하시면\n'비밀번호 재설정' 안내 메일이 전송됩니다."
+        app:layout_constraintBottom_toTopOf="@+id/et_login_add_item_id_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_signup" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
