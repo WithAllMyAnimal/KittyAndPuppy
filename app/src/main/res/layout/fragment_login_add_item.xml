@@ -157,42 +157,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_login_add_item_pw_hint" />
 
-    <TextView
-        android:id="@+id/tv_login_add_item_pw_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:fontFamily="@font/maple"
-        android:text="비밀번호\n힌트질문"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/et_login_add_item_pw_hint"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_pw_check" />
-
-    <EditText
-        android:id="@+id/et_login_add_item_pw_hint_question"
-        android:layout_width="240dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/edit_text_sample"
-        android:padding="15dp"
-        android:hint="주인/집사의 생일은? ex) 10/12 (MM/DD)"
-        android:inputType="text"
-        android:textSize="11sp"
-        android:fontFamily="@font/maple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.878"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_pw_hint_check" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save_dialog"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:background="@drawable/btn_login"
         android:fontFamily="@font/cafe24"
         android:text="가입하기"
@@ -200,7 +168,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_pw_hint_question" />
+        tools:layout_editor_absoluteY="498dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

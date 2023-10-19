@@ -97,7 +97,7 @@ class FindPwFragment : DialogFragment() {
         display.getSize(size)
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
 
-        params?.width = (size.x * 0.9).toInt()
+        params?.width = (size.x * 1.0).toInt()
         params?.height = (size.y * 0.7).toInt()
 
         dialog?.window?.attributes = params as WindowManager.LayoutParams

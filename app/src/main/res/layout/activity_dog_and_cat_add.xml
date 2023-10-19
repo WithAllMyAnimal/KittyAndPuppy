@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="260dp"
         android:fontFamily="@font/maple"
-        android:text="이메일\n중복확인"
+        android:text="아이디\n중복확인"
         android:textColor="@color/realblue"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/et_dog_and_cat_add_nick"
