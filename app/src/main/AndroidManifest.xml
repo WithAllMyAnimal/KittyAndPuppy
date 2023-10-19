@@ -56,6 +56,9 @@
             android:name="com.kittyandpuppy.withallmyanimal.SettingActivity"
             android:exported="false" />
         <activity
+            android:name="com.kittyandpuppy.withallmyanimal.notice.NoticeActivity"
+            android:exported="false" />
+        <activity
             android:name="com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity"
             android:exported="true">
             <intent-filter>
