@@ -50,7 +50,7 @@ class LoginAddItemFragment : DialogFragment() {
         val deviceWidth = size.x
         val deviceHeight = size.y
         params?.width = (deviceWidth * 1.0).toInt()
-        params?.height = (deviceHeight * 0.7).toInt()
+        params?.height = (deviceHeight * 0.65).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
