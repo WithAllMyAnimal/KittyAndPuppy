@@ -109,7 +109,6 @@
                 app:layout_constraintTop_toBottomOf="@id/etv_mypage_daily_title" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/iv_mypage_daily_picture_left"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="20dp"
@@ -120,6 +119,7 @@
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_top">
 
                 <ImageView
+                    android:id="@+id/iv_mypage_daily_picture_left"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"/>

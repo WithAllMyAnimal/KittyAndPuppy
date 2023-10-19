@@ -109,7 +109,6 @@
                     app:layout_constraintTop_toBottomOf="@id/etv_mypage_behavior_title" />
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/iv_mypage_behavior_picture_left"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_margin="20dp"
@@ -120,9 +119,10 @@
                     app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top">
 
                     <ImageView
+                        android:id="@+id/iv_mypage_behavior_picture_left"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitCenter"/>
+                        android:scaleType="fitCenter" />
                 </androidx.cardview.widget.CardView>
 
                 <View
