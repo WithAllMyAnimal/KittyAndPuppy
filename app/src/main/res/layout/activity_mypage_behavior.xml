@@ -108,16 +108,22 @@
                     app:layout_constraintStart_toStartOf="@id/con_mypage_behavior"
                     app:layout_constraintTop_toBottomOf="@id/etv_mypage_behavior_title" />
 
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/iv_mypage_behavior_picture_left"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_margin="20dp"
-                    android:background="@drawable/mypage_diary_picture_background"
+                    app:cardCornerRadius="10dp"
                     app:layout_constraintBottom_toTopOf="@id/view_mypage_behavior_line_bottom"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_behavior"
-                    app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top" />
+                    app:layout_constraintTop_toBottomOf="@id/view_mypage_behavior_line_top">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"/>
+                </androidx.cardview.widget.CardView>
 
                 <View
                     android:id="@+id/view_mypage_behavior_line_bottom"
