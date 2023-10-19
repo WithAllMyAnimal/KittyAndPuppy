@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dogandcat">
+        <item>전체</item>
         <item>강아지</item>
         <item>고양이</item>
     </string-array>
 
     <string-array name="dogbreed">
+        <item>전체</item>
         <item>몰티즈</item>
         <item>푸들</item>
         <item>포메라니안</item>
@@ -16,6 +18,7 @@
     </string-array>
 
     <string-array name="catbreed">
+        <item>전체</item>
         <item>코리안숏헤어</item>
         <item>페르시안</item>
         <item>러시안블루</item>
@@ -26,6 +29,7 @@
     </string-array>
 
     <string-array name="category">
+        <item>전체</item>
         <item>병원</item>
         <item>펫용품</item>
         <item>일상</item>
