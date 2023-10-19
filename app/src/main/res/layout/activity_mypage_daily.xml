@@ -49,6 +49,7 @@
         android:gravity="center"
         android:text="일상"
         android:textSize="14sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/toolbar_mypage_daily"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/toolbar_mypage_daily" />
@@ -57,35 +58,31 @@
     <!--    appbar 바로 밑부분 view들-->
 
     <ScrollView
+        android:id="@+id/mypage_daily_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_daily">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="20dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_mypage_daily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_daily">
-
-            <View
-                android:id="@+id/view_mypage_daily"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="30dp"
-                android:background="@drawable/mypage_diary_background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/mypage_diary_background">
 
             <EditText
                 android:id="@+id/etv_mypage_daily_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="20dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
@@ -93,21 +90,22 @@
                 android:hint="제목을 입력해주세요"
                 android:padding="20dp"
                 android:textSize="16sp"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@id/view_mypage_daily_line_top"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_top"
-                app:layout_constraintTop_toTopOf="@id/view_mypage_daily" />
+                app:layout_constraintTop_toTopOf="@id/con_mypage_daily" />
 
             <View
                 android:id="@+id/view_mypage_daily_line_top"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="20dp"
                 android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/etv_mypage_daily_title" />
 
             <ImageView
@@ -118,7 +116,7 @@
                 android:background="@drawable/mypage_diary_picture_background"
                 app:layout_constraintBottom_toTopOf="@id/view_mypage_daily_line_bottom"
                 app:layout_constraintEnd_toStartOf="@id/iv_mypage_daily_picture_right"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_top" />
 
             <ImageView
@@ -128,7 +126,7 @@
                 android:layout_margin="20dp"
                 android:background="@drawable/mypage_diary_picture_background"
                 app:layout_constraintBottom_toTopOf="@id/view_mypage_daily_line_bottom"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
                 app:layout_constraintStart_toEndOf="@id/iv_mypage_daily_picture_left"
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_top" />
 
@@ -136,10 +134,10 @@
                 android:id="@+id/view_mypage_daily_line_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="20dp"
                 android:background="@color/black"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_bottom"
                 />
 
@@ -154,23 +152,23 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/view_mypage_daily_line_bottom"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 />
 
             <EditText
                 android:id="@+id/etv_mypage_daily_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:hint="태그를 작성해주세요"
                 android:padding="20dp"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/tv_mypage_daily_tag" />
 
             <TextView
@@ -183,23 +181,23 @@
                 android:text="오늘은 어떤 일상이었는지 기록해주세요"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/etv_mypage_daily_tag" />
 
             <EditText
                 android:id="@+id/etv_mypage_daily"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:hint="일지를 작성해주세요"
                 android:padding="20dp"
-                android:textColor="@color/grey"
+                android:textColor="@color/black"
                 android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/tv_mypage_daily_title" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -212,11 +210,12 @@
                 android:text="저장"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/view_mypage_daily"
-                app:layout_constraintEnd_toEndOf="@id/view_mypage_daily"
-                app:layout_constraintStart_toStartOf="@id/view_mypage_daily"
+                app:layout_constraintBottom_toBottomOf="@id/con_mypage_daily"
+                app:layout_constraintEnd_toEndOf="@id/con_mypage_daily"
+                app:layout_constraintStart_toStartOf="@id/con_mypage_daily"
                 app:layout_constraintTop_toBottomOf="@id/etv_mypage_daily" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
