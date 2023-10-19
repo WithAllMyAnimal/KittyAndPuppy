@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,10 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMainBinding
 import com.kittyandpuppy.withallmyanimal.databinding.FabLayoutBinding
 import com.kittyandpuppy.withallmyanimal.home.HomeFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageFragment
+import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
+import com.kittyandpuppy.withallmyanimal.write.MypageDaily
+import com.kittyandpuppy.withallmyanimal.write.MypageHospital
+import com.kittyandpuppy.withallmyanimal.write.MypagePet
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNavigation()
         setupFloatingActionButton()
+        setupFABclick()
     }
 
     // BottomNavigation이 눌렸을 때 화면전환
@@ -70,6 +76,29 @@ class MainActivity : AppCompatActivity() {
                 hideFAB(fabBinding.fabBehavior)
                 hideFAB(fabBinding.fabDaily)
             }
+        }
+    }
+
+    private fun setupFABclick() {
+        fabBinding.fabHospital.setOnClickListener{
+            val intent = Intent(this,MypageHospital::class.java)
+            startActivity(intent)
+        }
+
+        fabBinding.fabPet.setOnClickListener {
+            val intent = Intent(this,MypagePet::class.java)
+            startActivity(intent)
+        }
+
+        // 에러남!!!!
+        fabBinding.fabBehavior.setOnClickListener {
+            val intent = Intent(this,MypageBehavior::class.java)
+            startActivity(intent)
+        }
+
+        fabBinding.fabDaily.setOnClickListener {
+            val intent = Intent(this,MypageDaily::class.java)
+            startActivity(intent)
         }
     }
 
