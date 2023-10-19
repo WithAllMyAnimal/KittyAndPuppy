@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -120,6 +119,7 @@
             android:id="@+id/tl_mypage_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:tabRippleColor="@color/pink"
             app:layout_constraintBottom_toBottomOf="@id/con_mypage_tablayout"
             app:layout_constraintEnd_toEndOf="@id/con_mypage_tablayout"
             app:layout_constraintStart_toStartOf="@id/con_mypage_tablayout"

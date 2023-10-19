@@ -11,7 +11,11 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 
 class MypageBehavior : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMypageBehaviorBinding
+    private val binding: ActivityMypageBehaviorBinding by lazy {
+        ActivityMypageBehaviorBinding.inflate(
+            layoutInflater
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

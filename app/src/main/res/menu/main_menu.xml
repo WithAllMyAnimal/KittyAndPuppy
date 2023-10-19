@@ -5,7 +5,7 @@
     <item
         android:id="@+id/main_bn_home"
         android:icon="@drawable/bn_home"
-        android:title="홈"
+        android:title="너"
         />
 
     <item
@@ -16,7 +16,7 @@
     <item
         android:id="@+id/main_bn_you"
         android:icon="@drawable/pet_like"
-        android:title="마이페이지"
+        android:title="나"
         />
 
 </menu>
