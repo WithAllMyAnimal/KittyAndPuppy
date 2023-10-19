@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 
 class MypageFragment : Fragment() {
@@ -47,6 +49,10 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        binding.btnMypageSettings.setOnClickListener {
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
+        }
     }
     private fun setUpRecyclerView() {
         rvAdapter = MyPageRVAdapter()

@@ -15,6 +15,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingClass,MissingConstraints" />
 
+    <ImageButton
+        android:id="@+id/btn_notice_pet_back"
+        android:layout_width="70dp"
+        android:layout_height="65dp"
+        android:background="@android:color/transparent"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/ab_appbar_notice"
+        app:layout_constraintStart_toStartOf="@id/ab_appbar_notice"
+        app:layout_constraintTop_toTopOf="@id/ab_appbar_notice" />
+
     <TextView
         android:id="@+id/tv_appbar_notice"
         android:layout_width="wrap_content"
