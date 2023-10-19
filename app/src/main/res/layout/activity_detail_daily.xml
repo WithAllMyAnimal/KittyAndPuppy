@@ -37,6 +37,7 @@
         android:gravity="center"
         android:text="일상"
         android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@id/tb_detail_daily"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tb_detail_daily" />
@@ -63,6 +64,7 @@
         android:text="설기"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/iv_detail_daily_profile"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_daily_profile"
         app:layout_constraintTop_toTopOf="@+id/iv_detail_daily_profile" />
@@ -95,6 +97,7 @@
                 android:gravity="center"
                 android:text="바다가 신기한 설기"
                 android:textSize="20sp"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/view_detail_daily"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_daily"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_daily"
@@ -110,6 +113,7 @@
                 android:gravity="right"
                 android:text="2023.10.11"
                 android:textSize="15sp"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/view_detail_daily"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_daily"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_daily_title" />
@@ -138,27 +142,14 @@
 
             <ImageView
                 android:id="@+id/iv_detail_daily_picture_left"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="20dp"
-                android:src="@drawable/image_sample2"
-                android:background="@drawable/mypage_diary_picture_background"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/add_image"
                 app:layout_constraintBottom_toTopOf="@id/view_detail_daily_line_bottom"
-                app:layout_constraintEnd_toStartOf="@id/iv_detail_daily_picture_right"
                 app:layout_constraintStart_toStartOf="@id/view_detail_daily"
-                app:layout_constraintTop_toBottomOf="@id/view_detail_daily_line_top" />
-
-            <ImageView
-                android:id="@+id/iv_detail_daily_picture_right"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="20dp"
-                android:src="@drawable/image_sample3"
-                android:background="@drawable/mypage_diary_picture_background"
-                app:layout_constraintBottom_toTopOf="@id/view_detail_daily_line_bottom"
-                app:layout_constraintEnd_toEndOf="@id/view_detail_daily"
-                app:layout_constraintStart_toEndOf="@id/iv_detail_daily_picture_left"
-                app:layout_constraintTop_toBottomOf="@id/view_detail_daily_line_top" />
+                app:layout_constraintTop_toBottomOf="@id/view_detail_daily_line_top"/>
 
             <View
                 android:id="@+id/view_detail_daily_line_bottom"
@@ -197,6 +188,7 @@
                 android:gravity="center"
                 android:text="오늘 설기에게 바다 사진을 보여주었다. 많이 신기했는지 눈이 반짝거렸다. 사진으로만 보던 세상을 같이 나가서 보고 싶지만 냥이는 밖에 나가면 스트레스 받아하기에 아쉽지만 사진이라도 많이 보여줘야겠다!"
                 android:textSize="15sp"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_daily"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_daily"
