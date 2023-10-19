@@ -36,7 +36,8 @@
             app:backgroundTint="@color/pink"
             app:fabCradleMargin="10dp"
             app:fabCradleRoundedCornerRadius="10dp"
-            app:fabCradleVerticalOffset="10dp">
+            app:fabCradleVerticalOffset="10dp"
+            >
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bn_main"
@@ -46,11 +47,14 @@
                 android:layout_marginEnd="13dp"
                 app:backgroundTint="@android:color/transparent"
                 app:elevation="0dp"
-                app:menu="@menu/main_menu"/>
+                app:menu="@menu/main_menu"
+                app:itemRippleColor="#FDB6BB"
+                app:itemTextAppearanceActive="@style/BottomNavigationViewTextAppearance"
+                app:itemTextAppearanceInactive="@style/BottomNavigationViewTextAppearance"
+                app:itemTextColor="@color/bottom_nv_selector_text"
+                app:itemIconTint="@color/bottom_nv_selector_icon"
+                />
         </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <!--    아이콘 색 바꾸는 코드 -->
-        <!--    app:itemIconTint="#E1B771"-->
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/main_fab"
