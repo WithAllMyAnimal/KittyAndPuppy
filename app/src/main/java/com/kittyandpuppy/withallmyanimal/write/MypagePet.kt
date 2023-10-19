@@ -54,7 +54,9 @@ class MypagePet : AppCompatActivity() {
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
             ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
-
+        }
+        binding.btnMypagePetBack.setOnClickListener {
+            finish()
         }
     }
     @Deprecated("Deprecated in Java")

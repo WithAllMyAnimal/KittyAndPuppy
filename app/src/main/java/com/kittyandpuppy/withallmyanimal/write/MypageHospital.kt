@@ -70,6 +70,9 @@ class MypageHospital : AppCompatActivity() {
             isImageUpload = true
             ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
         }
+        binding.btnMypageHospitalBack.setOnClickListener {
+            finish()
+        }
     }
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(

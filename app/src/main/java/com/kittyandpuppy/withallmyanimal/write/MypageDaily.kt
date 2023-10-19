@@ -56,6 +56,9 @@ class MypageDaily : AppCompatActivity() {
             isImageUpload = true
             ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
         }
+        binding.btnMypageDailyBack.setOnClickListener {
+            finish()
+        }
     }
 
     @Deprecated("Deprecated in Java")

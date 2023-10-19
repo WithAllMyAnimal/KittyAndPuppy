@@ -74,6 +74,9 @@ class MypageBehavior : AppCompatActivity() {
             isImageUpload = true
             ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
         }
+        binding.btnMypageBehaviorBack.setOnClickListener {
+            finish()
+        }
     }
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
