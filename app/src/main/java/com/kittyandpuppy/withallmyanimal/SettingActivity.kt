@@ -12,7 +12,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        val fragmentpassworddialog = SettingPasswordFragment()
+        val fragmentpassworddialog = SettingPassworddialogFragment()
         val fragmentlogout= SettingLogoutFragment()
 
         val button_passworddialog = findViewById<TextView>(R.id.tv_setting_passwordchange)
