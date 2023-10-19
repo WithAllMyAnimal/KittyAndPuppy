@@ -65,7 +65,6 @@ class LoginAddItemFragment : DialogFragment() {
             val email = binding.etLoginAddItemIdHint.text.toString()
             val password1 = binding.etLoginAddItemPwHint.text.toString()
             val password2 = binding.etLoginAddItemPwHintCheck.text.toString()
-            val passwordHint = binding.etLoginAddItemPwHintQuestion.text.toString()
 
             if (email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
                 Toast.makeText(context, "이메일 또는 비밀번호를 확인하세요.", Toast.LENGTH_SHORT).show()
@@ -79,11 +78,6 @@ class LoginAddItemFragment : DialogFragment() {
 
             if (password1.length < 6) {
                 Toast.makeText(context, "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
-                isGoToJoin = false
-            }
-
-            if (passwordHint.length != 4) {
-                Toast.makeText(context, "비밀번호 힌트질문은 월/일4자리로 입력해주세요.", Toast.LENGTH_SHORT).show()
                 isGoToJoin = false
             }
 
@@ -104,17 +98,11 @@ class LoginAddItemFragment : DialogFragment() {
                                     .addOnFailureListener { e -> Log.e(TAG, "이메일 저장 실패!", e) }
 
 
-                                database.getReference("users").child(it).child("password_hint")
-                                    .setValue(passwordHint)
-                                    .addOnSuccessListener { Log.d(TAG, "비밀번호 힌트 저장!") }
-                                    .addOnFailureListener { e -> Log.e(TAG, "비밀번호 힌트 저장 실패!", e) }
-                            }
                             val intent = Intent(context, LoginActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             dismiss()
-                        } else {
-                            Toast.makeText(context, "실패", Toast.LENGTH_LONG).show()
+                        }
                         }
                     }
             }

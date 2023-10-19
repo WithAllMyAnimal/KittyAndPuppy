@@ -58,8 +58,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_hospital">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage_hospital"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_mypage_hospital"
@@ -251,15 +252,14 @@
                 android:id="@+id/tv_mypage_hospital_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="태그(최대 3줄)"
-                android:fontFamily="@font/cafe24"
-                android:textColor="@color/black"
-                android:textSize="14sp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_checkup"
+                android:fontFamily="@font/cafe24"
+                android:text="태그(최대 3줄)"
+                android:textColor="@color/black"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/view_mypage_hospital"
-                />
+                app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_checkup" />
 
             <EditText
                 android:id="@+id/etv_mypage_hospital_tag"
