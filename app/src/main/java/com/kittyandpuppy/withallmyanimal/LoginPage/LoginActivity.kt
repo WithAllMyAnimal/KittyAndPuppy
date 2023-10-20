@@ -68,5 +68,13 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
+        binding.btnLoginSignup.setOnClickListener {
+            val signupFragment = LoginAddItemFragment()
+            signupFragment.show(supportFragmentManager, "signUpDialog")
+        }
+        binding.btnLoginResetPassword.setOnClickListener {
+            val findPasswordFragment = FindPwFragment()
+            findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
+        }
     }
 }
