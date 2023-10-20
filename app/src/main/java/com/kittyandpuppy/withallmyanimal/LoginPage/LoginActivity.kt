@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, DogAndCatAddActivity::class.java)
                         intent.flags =
                             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLoginResetPassword.setOnClickListener {
             val findPasswordFragment = FindPwFragment()
             findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
-
         }
     }
 }
