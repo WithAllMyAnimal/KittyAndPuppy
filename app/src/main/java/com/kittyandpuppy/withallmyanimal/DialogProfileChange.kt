@@ -16,7 +16,7 @@ class DialogProfileChange : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_setting_logout, container, false)
+        val view = inflater.inflate(R.layout.fragment_dialog_profilechange, container, false)
         return view
     }
 
@@ -32,7 +32,7 @@ class DialogProfileChange : DialogFragment() {
         val deviceWidth = size.x
         val deviceHeight = size.y
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.7).toInt()
+        params?.height = (deviceHeight * 0.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 }
