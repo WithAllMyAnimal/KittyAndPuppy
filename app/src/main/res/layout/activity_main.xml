@@ -59,15 +59,15 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/main_fab"
-            android:layout_width="match_parent"
+            android:layout_width="99dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/pet_like"
+            android:src="@drawable/take_memory"
             app:backgroundTint="@color/blue"
             app:borderWidth="0dp"
-            app:maxImageSize="40dp"
             app:fabCustomSize="80dp"
             app:layout_anchor="@id/main_app_bar"
+            app:maxImageSize="65dp"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" />
 
         <include layout="@layout/fab_layout"/>
