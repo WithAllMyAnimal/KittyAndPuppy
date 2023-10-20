@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/image_sample" />
+                    app:srcCompat="@drawable/image_no_images_found" />
 
             </androidx.cardview.widget.CardView>
 
