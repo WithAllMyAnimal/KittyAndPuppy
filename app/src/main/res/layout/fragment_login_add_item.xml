@@ -143,6 +143,7 @@
         android:background="@drawable/btn_login"
         android:fontFamily="@font/cafe24"
         android:text="가입하기"
+        android:textSize="18sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
