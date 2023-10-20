@@ -3,7 +3,7 @@ package com.kittyandpuppy.withallmyanimal.LoginPage
 data class UserInfoModel(
     val email : String? = "",
     val profileImageUrl : String? = "",
-    val nickName : String? = "",
+    val userIdname : String? = "",
     val petName : String? = "",
     val birth : String? = "",
     val dogcat : String? = "",

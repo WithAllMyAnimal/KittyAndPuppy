@@ -92,8 +92,8 @@ class LoginAddItemFragment : DialogFragment() {
                             val database = FirebaseDatabase.getInstance()
 
                             userId?.let {
-                                database.getReference("users").child(it).child("email")
-                                    .setValue(email)
+                                database.getReference("users").child(it).child("info")
+                                    .setValue(mapOf("email" to email))
                                     .addOnSuccessListener { Log.d(TAG, "이메일 저장!") }
                                     .addOnFailureListener { e -> Log.e(TAG, "이메일 저장 실패!", e) }
 

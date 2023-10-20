@@ -115,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/maple"
-        android:text="한 줄 느낌"
+        android:text="상태메시지"
         app:layout_constraintBottom_toTopOf="@+id/et_profilechange_onelinefeeling"
         app:layout_constraintStart_toStartOf="@+id/et_profilechange_onelinefeeling" />
 
@@ -127,7 +127,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/background_roundcorner"
         android:fontFamily="@font/maple"
-        android:hint="한 줄 느낌을 작성해주세요"
+        android:hint="상태메시지를 작성해주세요"
         android:inputType="text"
         android:paddingLeft="20dp"
         android:textSize="11sp"
