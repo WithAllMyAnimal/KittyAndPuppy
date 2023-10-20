@@ -10,7 +10,6 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-
     <TextView
         android:id="@+id/tv_login_add_item_signup"
         android:layout_width="wrap_content"
@@ -37,7 +36,8 @@
         android:inputType="text"
         android:maxLines="1"
         android:padding="15dp"
-        android:textSize="11sp"
+        android:textSize="13sp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_signup" />
@@ -63,6 +63,7 @@
         android:gravity="center"
         android:fontFamily="@font/maple"
         android:textColor="@color/black"
+        android:textSize="15sp"
         android:text="가입하신 이메일 주소를 입력하시면\n'비밀번호 재설정' 안내 메일이 전송됩니다."
         app:layout_constraintBottom_toTopOf="@+id/et_login_add_item_id_hint"
         app:layout_constraintEnd_toEndOf="parent"
