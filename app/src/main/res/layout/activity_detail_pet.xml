@@ -170,9 +170,10 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/cafe24"
-                android:text="펫 용품명"
+                android:text=" 펫 용품명 "
                 android:textColor="@color/black"
                 android:textSize="14sp"
+                android:background="@color/pink"
                 app:layout_constraintStart_toStartOf="@id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@id/view_detail_pet_line_bottom" />
 
@@ -196,7 +197,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/cafe24"
-                android:text="용품 가격"
+                android:text=" 용품 가격 "
+                android:background="@color/pink"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
