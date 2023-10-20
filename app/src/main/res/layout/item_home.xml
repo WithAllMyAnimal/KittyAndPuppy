@@ -20,6 +20,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        android:layout_marginTop="10dp"
         android:layout_width="200dp"
         android:layout_height="300dp"
         android:backgroundTint="#FFFCEC"
@@ -52,7 +53,7 @@
                     android:id="@+id/iv_rv_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/image_sample" />
 
             </androidx.cardview.widget.CardView>
