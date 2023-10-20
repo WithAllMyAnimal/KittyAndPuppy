@@ -209,7 +209,7 @@
                     android:isIndicator="false"
                     android:numStars="5"
                     android:rating="0"
-                    android:stepSize="2"
+                    android:stepSize="0.5"
                     app:layout_constraintEnd_toEndOf="@id/con_mypage_pet"
                     app:layout_constraintTop_toBottomOf="@id/etv_mypage_pet_price" />
 

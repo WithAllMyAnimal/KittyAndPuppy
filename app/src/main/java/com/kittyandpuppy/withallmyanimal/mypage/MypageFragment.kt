@@ -51,6 +51,11 @@ class MypageFragment : Fragment() {
             }
         })
 
+        binding.btnMypageChange.setOnClickListener{
+            val dialogFragment = DialogProfileChange()
+            val transaction = parentFragmentManager.beginTransaction()
+            dialogFragment.show(transaction, "ProfileChangeDialog")
+        }
         // 태그 버튼 클릭 시 버튼 색 변경 & 다른 태그 눌릴 시 기존에 선택된 태그 해제
         binding.btnMypageSettings.setOnClickListener {
             val intent = Intent(requireContext(), SettingActivity::class.java)
