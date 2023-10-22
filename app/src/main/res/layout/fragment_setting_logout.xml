@@ -46,40 +46,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_setting_logout_real"
+        android:id="@+id/tv_setting_logouttextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/cafe24"
-        android:text=" 정말 "
+        android:text="정말 로그아웃 하시겠습니까?"
         android:textSize="25dp"
-        android:layout_marginStart="50dp"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/tv_passworddialog_passwordchange"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_setting_logout_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/cafe24"
-        android:text="로그아웃"
-        android:textSize="25dp"
-        android:textColor="#FF0000"
-        app:layout_constraintStart_toEndOf="@id/tv_setting_logout_real"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_setting_logout_real" />
-
-    <TextView
-        android:id="@+id/tv_setting_logout_q"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/cafe24"
-        android:text="하시겠습니까?"
-        android:textSize="25dp"
-        android:textColor="@color/black"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@id/tv_setting_logout_logout"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_setting_logout_real" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_passworddialog_passwordchange" />
 
 
     <androidx.appcompat.widget.AppCompatButton
@@ -95,7 +71,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_setting_logout_logout" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_setting_logouttextview" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_settinglogout_cancelbutton"
