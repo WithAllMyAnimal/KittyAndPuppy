@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.content.Intent
+import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,15 +11,27 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
+import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
+import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.home.HomeModel
 
 class MypageFragment : Fragment() {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
     private lateinit var rvAdapter: MyPageRVAdapter
+
+    private val myList = mutableListOf<HomeModel>()
+
+    private val TAG = MypageFragment::class.java.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +43,7 @@ class MypageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("mypagefragment", "here")
+        Log.d(TAG, "here")
         setUpRecyclerView()
 
         val tabLayout = binding.tlMypageTabLayout
@@ -43,12 +56,8 @@ class MypageFragment : Fragment() {
                     else -> {}
                 }
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
         binding.btnMypageChange.setOnClickListener{
@@ -77,6 +86,8 @@ class MypageFragment : Fragment() {
             resetButtonSelections()
             it.isSelected = true
         }
+
+        getMyData()
     }
 
     private fun resetButtonSelections() {
@@ -96,15 +107,43 @@ class MypageFragment : Fragment() {
                     MyPageRVAdapter.TYPE_LIKES -> 2
                     MyPageRVAdapter.TYPE_MY_LIST -> 1
                     else -> throw IllegalArgumentException("Invalid")
+
                 }
             }
         }
+        Log.d(TAG, "RV SET UP")
 
         binding.recyclerviewMypageList.apply {
             setHasFixedSize(true)
             this.layoutManager = layoutManager
             adapter = rvAdapter
         }
+    }
+
+    private fun getMyData() {
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                myList.clear()
+                for (dataModel in snapshot.children) {
+                    val key = dataModel.key ?: ""
+                    val itemList = dataModel.getValue(HomeModel::class.java)?.copy(key = key)
+                    val myUid = FBAuth.getUid()
+                    val writerUid = itemList?.uid
+
+                    if (myUid == writerUid) {
+                        myList.add(itemList)
+                    }
+                }
+                myList.reverse()
+                rvAdapter.submitList(myList as List<Any>?)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Upload Failed", error.toException())
+            }
+        }
+        FBRef.myDiary.addValueEventListener(postListener)
     }
 
     override fun onDestroyView() {

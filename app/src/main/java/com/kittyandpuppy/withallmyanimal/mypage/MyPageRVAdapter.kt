@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageLikeListBinding
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageListBinding
+import com.kittyandpuppy.withallmyanimal.home.HomeModel
 
 class MyPageRVAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBACK){
 
@@ -21,8 +24,13 @@ class MyPageRVAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBACK)
         }
     }
     inner class MyListViewHolder(private val binding: ItemMypageListBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(model : ListModel) {
-            binding.ivMypageRvImage.load(model.image)
+        fun bind(model : HomeModel) {
+            val storageRef = Firebase.storage.reference.child("${model.key}.png")
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                binding.ivMypageRvImage.load(uri.toString()) {
+                    crossfade(true)
+                }
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -43,7 +51,7 @@ class MyPageRVAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBACK)
         val item = getItem(position)
         when (holder) {
             is LikesViewHolder -> holder.bind(item as LikesListModel)
-            is MyListViewHolder -> holder.bind(item as ListModel)
+            is MyListViewHolder -> holder.bind(item as HomeModel)
         }
     }
     override fun getItemViewType(position: Int): Int {

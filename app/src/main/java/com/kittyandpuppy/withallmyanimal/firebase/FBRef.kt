@@ -8,6 +8,7 @@ class FBRef {
         private val database = Firebase.database
 
         val users = database.getReference("users")
+        val myDiary = database.getReference("my_diary")
         val likesRef = database.getReference("likesList")
         val boardRef = database.getReference("board")
         val commentRef = database.getReference("comment")

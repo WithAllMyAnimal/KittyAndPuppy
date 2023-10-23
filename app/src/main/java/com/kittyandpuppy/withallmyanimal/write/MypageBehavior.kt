@@ -29,6 +29,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageBehaviorBindi
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import com.kittyandpuppy.withallmyanimal.mypage.ListModel
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 
