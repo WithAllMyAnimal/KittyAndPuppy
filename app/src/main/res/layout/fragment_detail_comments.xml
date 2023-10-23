@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_height="match_parent"
     android:background="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-
     <ImageView
         android:id="@+id/iv_user_likes"
         android:layout_width="47dp"
         android:layout_height="40dp"
+        android:layout_marginVertical="10dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
         android:src="@drawable/pet_like"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="410dp"
-        android:layout_height="475dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:paddingHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_like_list" />
 
@@ -39,48 +39,63 @@
         android:fontFamily="@font/cafe24"
         android:text="무심맘님 외 20명이 공감합니다"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.17"
         app:layout_constraintStart_toEndOf="@+id/iv_user_likes"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/view_detail_pink"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:background="@color/pink"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@id/recyclerView">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_circle_my"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="13dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/image_maincharacter"
-        app:civ_border_color="@color/black"
-        app:civ_border_overlay="true"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.043"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view_detail_pink" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_circle_my"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/image_maincharacter"
+            app:civ_border_color="@color/black"
+            app:civ_border_overlay="true"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+            app:layout_constraintStart_toStartOf="@id/view_detail_pink"
+            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="댓글달기..."
-        android:textSize="15dp"
-        android:fontFamily="@font/maple"
-        app:layout_constraintStart_toEndOf="@+id/iv_circle_my"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        <EditText
+            android:id="@+id/et_review"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/maple"
+            android:layout_marginStart="20dp"
+            android:text="댓글달기..."
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+            app:layout_constraintStart_toEndOf="@id/iv_circle_my"
+            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:fontFamily="@font/maple"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toEndOf="@id/et_review"
+            app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
+            app:layout_constraintTop_toTopOf="@id/view_detail_pink"
+            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

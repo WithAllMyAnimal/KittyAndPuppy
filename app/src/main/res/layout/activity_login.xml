@@ -17,10 +17,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="89dp"
-        android:layout_height="65dp"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
         android:padding="10dp"
         app:srcCompat="@drawable/image_maincharacter"
+        app:layout_constraintBottom_toBottomOf="@id/appbar_mywrite"
         app:layout_constraintEnd_toEndOf="@+id/appbar_mywrite"
         app:layout_constraintStart_toStartOf="@+id/appbar_mywrite"
         app:layout_constraintTop_toTopOf="@+id/appbar_mywrite"/>
@@ -63,11 +64,12 @@
     <TextView
         android:id="@+id/tv_login_add_item_login_id"
         android:layout_width="wrap_content"
-        android:layout_height="17dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="80dp"
         android:fontFamily="@font/maple"
         android:text="이메일"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -75,13 +77,16 @@
     <EditText
         android:id="@+id/et_login_id"
         android:layout_width="350dp"
-        android:layout_height="56dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingHorizontal="20dp"
         android:maxLines="1"
+        android:hint="이메일을 입력해주세요"
         android:background="@drawable/edit_text_sample"
+        android:textColor="@color/black"
+        android:fontFamily="@font/cafe24"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_id" />
 
@@ -94,6 +99,7 @@
         android:layout_marginTop="44dp"
         android:fontFamily="@font/maple"
         android:text="비밀번호"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_login_id" />
@@ -101,13 +107,17 @@
     <EditText
         android:id="@+id/et_login_password"
         android:layout_width="350dp"
-        android:layout_height="56dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingHorizontal="20dp"
         android:maxLines="1"
         android:background="@drawable/edit_text_sample"
+        android:textColor="@color/black"
+        android:hint="비밀번호를 입력해주세요"
+        android:fontFamily="@font/cafe24"
+        android:textSize="15sp"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_pw" />
 
@@ -116,10 +126,11 @@
         style="?android:borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/maple"
         android:text="회원가입"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/btn_login_reset_password"
         app:layout_constraintTop_toBottomOf="@+id/et_login_password" />
@@ -129,11 +140,12 @@
         style="?android:borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/maple"
         android:text="비밀번호 재설정"
         android:textColor="@color/black"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_login_password" />
 
