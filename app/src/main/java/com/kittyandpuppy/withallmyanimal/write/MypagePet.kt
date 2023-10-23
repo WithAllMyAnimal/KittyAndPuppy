@@ -41,8 +41,9 @@ class MypagePet : AppCompatActivity() {
             val key = FBRef.boardRef.push().key.toString()
 
             FBRef.boardRef
+                .child(uid)
                 .child(key)
-                .setValue(Pet("Pet", caution, content, name, price, satisfaction, tag, time, title, uid))
+                .setValue(Pet("Pet", caution, content, name, price, satisfaction, tag, time, title))
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 

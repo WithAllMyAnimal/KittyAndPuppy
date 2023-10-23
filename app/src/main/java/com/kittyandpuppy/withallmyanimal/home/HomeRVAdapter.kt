@@ -30,7 +30,7 @@ class HomeRVAdapter(val boardList: MutableList<HomeModel>) :
                     crossfade(true)
                 }
             }
-            FBRef.users.child(homeModel.id!!).addListenerForSingleValueEvent(object : ValueEventListener {
+            FBRef.users.child(homeModel.uid!!).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvRvId.text = userId
