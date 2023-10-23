@@ -85,7 +85,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
     private fun checkDuplicateId() {
         val userIdname = binding.etDogAndCatAddNick.text.toString()
 
-        // 중복 체크를 위해 파이어베이스에서 해당 아이디가 이미 존재하는지 확인합니다.
         userRef.orderByChild("profile/userIdname").equalTo(userIdname).addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

@@ -7,8 +7,8 @@
     tools:context="com.kittyandpuppy.withallmyanimal.LoginPage.DogAndCatAddActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="411dp"
+        android:layout_height="912dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="52dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/image_sample"
+            android:src="@drawable/image_no_images_found"
             app:civ_border_color="@color/black"
             app:civ_border_overlay="true"
             app:civ_border_width="2dp"
@@ -82,8 +82,8 @@
             android:hint="아이디를 입력해주세요"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
@@ -127,8 +127,8 @@
             android:hint="반려견/반려묘 이름을 적어주세요"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
@@ -157,8 +157,8 @@
             android:hint="생일을 작성해주세요 ex) 1월 1일"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
@@ -241,8 +241,8 @@
             android:hint="간단하게 상태메시지를 남겨보세요!"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
-            android:textSize="13sp"
             android:textColor="@color/black"
+            android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.475"
             app:layout_constraintStart_toStartOf="parent"
@@ -262,6 +262,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_feel" />
+            app:layout_constraintTop_toBottomOf="@+id/et_feel"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
