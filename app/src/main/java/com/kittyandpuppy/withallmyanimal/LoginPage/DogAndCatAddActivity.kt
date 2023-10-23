@@ -8,8 +8,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
@@ -69,10 +72,32 @@ class DogAndCatAddActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
-
+        //아이디 중복 확인 버튼
+        binding.btnLoginSignup.setOnClickListener {
+            checkDuplicateId()
+        }
+        //저장하기 버튼
         binding.btnDogAndCatAddSave.setOnClickListener {
             saveUserInfoToDatabase()
         }
+    }
+
+    private fun checkDuplicateId() {
+        val userIdname = binding.etDogAndCatAddNick.text.toString()
+
+        userRef.orderByChild("profile/userIdname").equalTo(userIdname).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(this@DogAndCatAddActivity, "중복된 아이디입니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@DogAndCatAddActivity, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
     }
 
     private fun saveUserInfoToDatabase() {
@@ -91,7 +116,8 @@ class DogAndCatAddActivity : AppCompatActivity() {
             ).child("profile").setValue(
                 mapOf(
                     "userIdname" to userIdname,
-                    "petName" to petName, "birth" to birth,
+                    "petName" to petName,
+                    "birth" to birth,
                     "dogcat" to dogCat,
                     "breed" to breed,
                     "statusMessage" to statusMessage
