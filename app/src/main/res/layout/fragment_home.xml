@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="검색어를 입력하세요."
-        android:padding="4dp"
+        android:paddingHorizontal="4dp"
         app:endIconMode="clear_text"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,9 @@
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textAutoComplete" />
+            android:inputType="textAutoComplete"
+            android:fontFamily="@font/cafe24"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
