@@ -70,6 +70,7 @@ class MypageFragment : Fragment() {
 
     }
 
+    // 버튼 2번 클릭 시 원래대로 돌아가기
     private fun resetButtonSelectionsExcept(currentButton: View) {
         if (binding.btnMypageTagHospital != currentButton) binding.btnMypageTagHospital.isSelected = false
         if (binding.btnMypageTagPet != currentButton) binding.btnMypageTagPet.isSelected = false
