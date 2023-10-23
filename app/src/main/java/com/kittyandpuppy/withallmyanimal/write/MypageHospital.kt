@@ -52,6 +52,7 @@ class MypageHospital : AppCompatActivity() {
             val key = FBRef.boardRef.push().key.toString()
 
             FBRef.boardRef
+                .child(uid)
                 .child(key)
                 .setValue(
                     Hospital(
@@ -63,7 +64,6 @@ class MypageHospital : AppCompatActivity() {
                         tags,
                         time,
                         title,
-                        uid
                     )
                 )
 

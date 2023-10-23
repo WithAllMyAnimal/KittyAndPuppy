@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 data class LikesListModel(
+    val key : String? = "",
     val uid : String? = "",
     val image : String? = "",
     val id : String? = "",
@@ -9,6 +10,7 @@ data class LikesListModel(
 )
 
 data class ListModel (
+    val key : String? = "",
     val uid : String? = "",
     val image : String? = ""
 )

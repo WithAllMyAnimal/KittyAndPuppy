@@ -63,11 +63,15 @@ class HomeFragment : Fragment() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 boardList.clear()
-                for (dataModel in snapshot.children) {
-                    val key = dataModel.key ?: ""
-                    val itemList = dataModel.getValue(HomeModel::class.java)?.copy(key = key)
-                    if (itemList != null) {
-                        boardList.add(itemList)
+                for (userSnapshot in snapshot.children) {
+                    val uid = userSnapshot.key ?: continue
+                    for (postSnapshot in userSnapshot.children) {
+                        val postKey = postSnapshot.key ?: continue
+                        val post =  postSnapshot.getValue(HomeModel::class.java)?.copy(uid = uid, key = postKey)
+
+                        if (post != null) {
+                            boardList.add(post)
+                        }
                     }
                 }
                 boardList.reverse()
