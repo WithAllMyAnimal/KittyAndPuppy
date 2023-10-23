@@ -59,11 +59,11 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/main_fab"
-            android:layout_width="99dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:src="@drawable/pencil_icon"
-            app:backgroundTint="@color/blue"
+            app:backgroundTint="@color/grey"
             app:borderWidth="0dp"
             app:fabCustomSize="80dp"
             app:layout_anchor="@id/main_app_bar"
