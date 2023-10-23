@@ -4,11 +4,17 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.chip.Chip
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageHospitalBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -27,6 +33,8 @@ class MypageHospital : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 1
 
     private var isImageUpload = false
+    private var tagListHospital = mutableListOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -36,7 +44,7 @@ class MypageHospital : AppCompatActivity() {
             val date = binding.dpMypageHospital.toString()
             val price = binding.etvMypageHospitalExpense.text.toString()
             val location = binding.spMypageHospital.text.toString()
-            val tag = binding.etvMypageHospitalTag.text.toString()
+            val tags = tagListHospital.toList()
             val content = binding.etvMypageHospitalReview.text.toString()
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
@@ -52,7 +60,7 @@ class MypageHospital : AppCompatActivity() {
                         date,
                         location,
                         price,
-                        tag,
+                        tags,
                         time,
                         title,
                         uid
@@ -72,6 +80,54 @@ class MypageHospital : AppCompatActivity() {
         }
         binding.btnMypageHospitalBack.setOnClickListener {
             finish()
+        }
+
+        binding.ivMypageHospitalPictureLeft.setOnClickListener {
+            isImageUpload = true
+            ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
+        }
+        binding.btnMypageHospitalBack.setOnClickListener {
+            finish()
+        }
+
+        binding.btnDailyAdd.setOnClickListener {
+            val chipName = binding.etvMypageHospitalTag.text.toString()
+            if (chipName.isNotBlank()) {
+                // 태그 제한 개수 설정
+                val maxChips = 3
+                if (binding.chipGroup.childCount >= maxChips) {
+                    Toast.makeText(this, "최대 $maxChips 개의 태그만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                var isDuplicate = false
+                for (i in 0 until binding.chipGroup.childCount) {
+                    val chip = binding.chipGroup.getChildAt(i) as Chip
+                    if (chip.text.toString() == chipName) {
+                        isDuplicate = true
+                        break
+                    }
+                }
+
+                if (isDuplicate) {
+                    Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.chipGroup.addView(Chip(this).apply {
+                        text = chipName
+                        isCloseIconVisible = true
+                        setOnCloseIconClickListener { binding.chipGroup.removeView(this) }
+                        chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                        val typeface: Typeface? = ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
+                        this.typeface = typeface
+                        tagListHospital.add(chipName)
+                    })
+                    Toast.makeText(this, "태그가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    // chip이 추가되면 입력창 초기화시키는 부분
+                    binding.etvMypageHospitalTag.setText("")
+                }
+            } else {
+                Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     @Deprecated("Deprecated in Java")
