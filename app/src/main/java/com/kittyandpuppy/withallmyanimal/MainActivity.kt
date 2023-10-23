@@ -89,7 +89,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 에러남!!!!
         fabBinding.fabBehavior.setOnClickListener {
             val intent = Intent(this,MypageBehavior::class.java)
             startActivity(intent)

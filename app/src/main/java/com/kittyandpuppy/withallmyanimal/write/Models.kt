@@ -1,19 +1,21 @@
 package com.kittyandpuppy.withallmyanimal.write
 
-data class Behavior (
-    val category : String = "Behavior",
-    val content : String? = "",
-    val review : String? = "",
-    val tag : String? = "",
-    val time : String? = "",
-    val title : String? = "",
+data class Behavior(
+    val category: String = "Behavior",
+    val content: String? = "",
+    val review: String? = "",
+    val tags : List<String>?,
+    val time: String? = "",
+    val title: String? = "",
+    val uid: String? = "",
 )
 data class Daily (
     val category : String = "Daily",
     val content : String? = "",
-    val tag : String? = "",
+    val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
+    val uid : String? = "",
 )
 data class Hospital (
     val category : String = "Hospital",
@@ -21,9 +23,10 @@ data class Hospital (
     val date : String? = "",
     val location : String? = "",
     val price : String? = "",
-    val tag : String? = "",
+    val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
+    val uid : String? = "",
 )
 data class Pet (
     val category : String = "Pet",
@@ -32,7 +35,8 @@ data class Pet (
     val name : String? = "",
     val price : String? = "",
     val satisfaction : String? = "",
-    val tag : String? = "",
+    val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
+    val uid : String? = "",
 )

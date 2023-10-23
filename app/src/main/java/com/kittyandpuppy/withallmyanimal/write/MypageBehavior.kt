@@ -4,34 +4,21 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
-import android.os.Build.VERSION.SDK_INT
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.provider.Settings
-import android.util.Log
-import android.view.ViewTreeObserver
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import coil.load
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.chip.Chip
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
-import com.kittyandpuppy.withallmyanimal.mypage.ListModel
-import java.io.ByteArrayOutputStream
-import java.util.UUID
 
 class MypageBehavior : AppCompatActivity() {
 
@@ -45,6 +32,7 @@ class MypageBehavior : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 1
 
     private var isImageUpload = false
+    private var tagListBehavior = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +41,7 @@ class MypageBehavior : AppCompatActivity() {
         binding.btnMypageBehaviorSave.setOnClickListener {
             val title = binding.etvMypageBehaviorTitle.text.toString()
             val content = binding.etvMypageBehavior.text.toString()
-            val tag = binding.etvMypageBehaviorTag.text.toString()
+            val tags = tagListBehavior.toList()
             val review = binding.etvMypageBehaviorReview.text.toString()
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
@@ -61,9 +49,8 @@ class MypageBehavior : AppCompatActivity() {
             val key = FBRef.boardRef.push().key.toString()
 
             FBRef.boardRef
-                .child(uid)
                 .child(key)
-                .setValue(Behavior("Behavior", content, review, tag, time, title))
+                .setValue(Behavior("Behavior", content, review, tags, time, title, uid))
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
@@ -72,6 +59,7 @@ class MypageBehavior : AppCompatActivity() {
             }
             finish()
         }
+
         binding.ivMypageBehaviorPictureLeft.setOnClickListener {
             isImageUpload = true
             ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
@@ -79,7 +67,48 @@ class MypageBehavior : AppCompatActivity() {
         binding.btnMypageBehaviorBack.setOnClickListener {
             finish()
         }
+
+        binding.btnBehaviorAdd.setOnClickListener {
+            val chipName = binding.etvMypageBehaviorTag.text.toString()
+            if (chipName.isNotBlank()) {
+                // 태그 제한 개수 설정
+                val maxChips = 3
+                if (binding.chipGroup.childCount >= maxChips) {
+                    Toast.makeText(this, "최대 $maxChips 개의 태그만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                var isDuplicate = false
+                for (i in 0 until binding.chipGroup.childCount) {
+                    val chip = binding.chipGroup.getChildAt(i) as Chip
+                    if (chip.text.toString() == chipName) {
+                        isDuplicate = true
+                        break
+                    }
+                }
+
+                if (isDuplicate) {
+                    Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    binding.chipGroup.addView(Chip(this).apply {
+                        text = chipName
+                        isCloseIconVisible = true
+                        setOnCloseIconClickListener { binding.chipGroup.removeView(this) }
+                        chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                        val typeface: Typeface? = ResourcesCompat.getFont(this@MypageBehavior, R.font.cafe24)
+                        this.typeface = typeface
+                        tagListBehavior.add(chipName)
+                    })
+                    Toast.makeText(this, "태그가 추가되었습니다.", Toast.LENGTH_SHORT).show()
+                    // chip이 추가되면 입력창 초기화시키는 부분
+                    binding.etvMypageBehaviorTag.setText("")
+                }
+            } else {
+                Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
