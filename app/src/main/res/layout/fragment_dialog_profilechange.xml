@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/maple"
-        android:text="이메일"
+        android:text="아이디"
         app:layout_constraintBottom_toTopOf="@+id/et_profilechange_nicknametext"
         app:layout_constraintStart_toStartOf="@+id/et_profilechange_nicknametext" />
 
@@ -51,7 +51,7 @@
         android:layout_marginStart="220dp"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/maple"
-        android:text="이메일\n중복확인"
+        android:text="아이디\n중복확인"
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/et_profilechange_nicknametext"
