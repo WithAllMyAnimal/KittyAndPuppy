@@ -23,7 +23,6 @@ class HomeRVAdapter(val boardList: MutableList<HomeModel>) :
     inner class HomeItemViewHolder(private val binding: ItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(homeModel: HomeModel) {
-
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivRvImage.load(uri.toString()) {

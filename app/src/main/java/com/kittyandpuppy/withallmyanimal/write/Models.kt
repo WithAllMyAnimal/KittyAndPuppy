@@ -7,7 +7,6 @@ data class Behavior(
     val tags : List<String>?,
     val time: String? = "",
     val title: String? = "",
-    val uid: String? = "",
 )
 data class Daily (
     val category : String = "Daily",
@@ -15,7 +14,6 @@ data class Daily (
     val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
-    val uid : String? = "",
 )
 data class Hospital (
     val category : String = "Hospital",
@@ -26,7 +24,6 @@ data class Hospital (
     val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
-    val uid : String? = "",
 )
 data class Pet (
     val category : String = "Pet",
@@ -38,5 +35,4 @@ data class Pet (
     val tags : List<String>?,
     val time : String? = "",
     val title : String? = "",
-    val uid : String? = "",
 )
