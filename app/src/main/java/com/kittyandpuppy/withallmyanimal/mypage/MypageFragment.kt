@@ -51,40 +51,32 @@ class MypageFragment : Fragment() {
             }
         })
 
-        binding.btnMypageChange.setOnClickListener{
-            val dialogFragment = DialogProfileChange()
-            val transaction = parentFragmentManager.beginTransaction()
-            dialogFragment.show(transaction, "ProfileChangeDialog")
-        }
-        // 태그 버튼 클릭 시 버튼 색 변경 & 다른 태그 눌릴 시 기존에 선택된 태그 해제
-        binding.btnMypageSettings.setOnClickListener {
-            val intent = Intent(requireContext(), SettingActivity::class.java)
-            startActivity(intent)
-        }
         binding.btnMypageTagHospital.setOnClickListener {
-            resetButtonSelections()
-            it.isSelected = true
+            resetButtonSelectionsExcept(it)
+            it.isSelected = !it.isSelected
         }
         binding.btnMypageTagPet.setOnClickListener {
-            resetButtonSelections()
-            it.isSelected = true
+            resetButtonSelectionsExcept(it)
+            it.isSelected = !it.isSelected
         }
         binding.btnMypageTagBehavior.setOnClickListener {
-            resetButtonSelections()
-            it.isSelected = true
+            resetButtonSelectionsExcept(it)
+            it.isSelected = !it.isSelected
         }
         binding.btnMypageTagDaily.setOnClickListener {
-            resetButtonSelections()
-            it.isSelected = true
+            resetButtonSelectionsExcept(it)
+            it.isSelected = !it.isSelected
         }
+
     }
 
-    private fun resetButtonSelections() {
-        binding.btnMypageTagHospital.isSelected = false
-        binding.btnMypageTagPet.isSelected = false
-        binding.btnMypageTagBehavior.isSelected = false
-        binding.btnMypageTagDaily.isSelected = false
+    private fun resetButtonSelectionsExcept(currentButton: View) {
+        if (binding.btnMypageTagHospital != currentButton) binding.btnMypageTagHospital.isSelected = false
+        if (binding.btnMypageTagPet != currentButton) binding.btnMypageTagPet.isSelected = false
+        if (binding.btnMypageTagBehavior != currentButton) binding.btnMypageTagBehavior.isSelected = false
+        if (binding.btnMypageTagDaily != currentButton) binding.btnMypageTagDaily.isSelected = false
     }
+
 
     private fun setUpRecyclerView() {
         rvAdapter = MyPageRVAdapter()
