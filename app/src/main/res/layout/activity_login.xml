@@ -69,7 +69,7 @@
         android:layout_marginTop="80dp"
         android:fontFamily="@font/maple"
         android:text="이메일"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -77,13 +77,16 @@
     <EditText
         android:id="@+id/et_login_id"
         android:layout_width="350dp"
-        android:layout_height="56dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingHorizontal="20dp"
         android:maxLines="1"
+        android:hint="이메일을 입력해주세요"
         android:background="@drawable/edit_text_sample"
+        android:textColor="@color/black"
+        android:fontFamily="@font/cafe24"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_id" />
 
@@ -96,7 +99,7 @@
         android:layout_marginTop="44dp"
         android:fontFamily="@font/maple"
         android:text="비밀번호"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_login_id" />
@@ -104,13 +107,17 @@
     <EditText
         android:id="@+id/et_login_password"
         android:layout_width="350dp"
-        android:layout_height="56dp"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingHorizontal="20dp"
         android:maxLines="1"
         android:background="@drawable/edit_text_sample"
+        android:textColor="@color/black"
+        android:hint="비밀번호를 입력해주세요"
+        android:fontFamily="@font/cafe24"
+        android:textSize="15sp"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_pw" />
 

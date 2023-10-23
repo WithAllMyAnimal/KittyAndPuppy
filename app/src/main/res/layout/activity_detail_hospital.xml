@@ -135,7 +135,7 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
-                android:background="@color/black"
+                android:background="@color/lightblack"
                 app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
                 app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
                 app:layout_constraintTop_toTopOf="@+id/view_detail_hospital" />
@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="20dp"
-                android:background="@color/black"
+                android:background="@color/lightblack"
                 app:layout_constraintBottom_toTopOf="@id/tv_detail_hospital_date"
                 app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
                 app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
@@ -179,7 +179,7 @@
             <TextView
                 android:id="@+id/tv_detail_hospital_date_contents"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
@@ -207,7 +207,7 @@
             <TextView
                 android:id="@+id/tv_detail_hospital_disease_contents"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="10dp"
                 android:text="배탈"
@@ -237,7 +237,7 @@
             <TextView
                 android:id="@+id/tv_detail_hospital_location_contents"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:text="서울 송파구"
@@ -265,7 +265,7 @@
             <TextView
                 android:id="@+id/tv_detail_hospital_price_contents"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
                 android:text="55,000원"
