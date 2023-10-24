@@ -51,21 +51,19 @@ class MypageHospital : AppCompatActivity() {
 
             val key = FBRef.boardRef.push().key.toString()
 
+            val hospitalData = Hospital(
+                date = date,
+                location = location,
+                price = price,
+                content = content,
+                tags = tags,
+                time = time,
+                title = title
+            )
             FBRef.boardRef
                 .child(uid)
                 .child(key)
-                .setValue(
-                    Hospital(
-                        "Hospital",
-                        content,
-                        date,
-                        location,
-                        price,
-                        tags,
-                        time,
-                        title,
-                    )
-                )
+                .setValue(hospitalData)
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 

@@ -19,15 +19,20 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.notice.NoticeActivity
+import com.kittyandpuppy.withallmyanimal.write.BaseModel
+import com.kittyandpuppy.withallmyanimal.write.Behavior
+import com.kittyandpuppy.withallmyanimal.write.Daily
+import com.kittyandpuppy.withallmyanimal.write.Hospital
+import com.kittyandpuppy.withallmyanimal.write.Pet
 import java.lang.System.load
 
 class HomeFragment : Fragment() {
 
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var rvAdapter: HomeRVAdapter
 
-    private val boardList = mutableListOf<HomeModel>()
+    private val boardList = mutableListOf<BaseModel>()
 
     private val TAG = HomeFragment::class.java.simpleName
 
@@ -38,6 +43,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
@@ -47,6 +53,7 @@ class HomeFragment : Fragment() {
         }
         getBoardData()
     }
+
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
         binding.rvHome.apply {
@@ -55,10 +62,12 @@ class HomeFragment : Fragment() {
             adapter = rvAdapter
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun getBoardData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -67,7 +76,19 @@ class HomeFragment : Fragment() {
                     val uid = userSnapshot.key ?: continue
                     for (postSnapshot in userSnapshot.children) {
                         val postKey = postSnapshot.key ?: continue
-                        val post =  postSnapshot.getValue(HomeModel::class.java)?.copy(uid = uid, key = postKey)
+
+                        val category =
+                            postSnapshot.child("category").getValue(String::class.java) ?: ""
+                        val post: BaseModel? = when (category) {
+                            "Behavior" -> postSnapshot.getValue(Behavior::class.java)
+                            "Daily" -> postSnapshot.getValue(Daily::class.java)
+                            "Hospital" -> postSnapshot.getValue(Hospital::class.java)
+                            "Pet" -> postSnapshot.getValue(Pet::class.java)
+                            else -> null
+                        }?.apply {
+                            this.uid = uid
+                            this.key = postKey
+                        }
 
                         if (post != null) {
                             boardList.add(post)
@@ -82,6 +103,6 @@ class HomeFragment : Fragment() {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         }
-        FBRef.boardRef.addValueEventListener(postListener)
+        FBRef.boardRef.addListenerForSingleValueEvent(postListener)
     }
 }

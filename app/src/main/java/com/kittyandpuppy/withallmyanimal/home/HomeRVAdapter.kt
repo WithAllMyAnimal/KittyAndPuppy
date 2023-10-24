@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,12 +18,13 @@ import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class HomeRVAdapter(val boardList: MutableList<HomeModel>) :
-    ListAdapter<HomeModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
+class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
+    ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
     inner class HomeItemViewHolder(private val binding: ItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(homeModel: HomeModel) {
+        fun bind(homeModel: BaseModel) {
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivRvImage.load(uri.toString()) {
@@ -38,9 +40,7 @@ class HomeRVAdapter(val boardList: MutableList<HomeModel>) :
                     Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
                 }
             })
-            binding.tvRvTag.text = boardList[adapterPosition].tag
-            binding.tvRvLikes.text = boardList[adapterPosition].likes.toString()
-            binding.tvRvChat.text = boardList[adapterPosition].comments.toString()
+            binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
 
         }
     }
@@ -57,11 +57,12 @@ class HomeRVAdapter(val boardList: MutableList<HomeModel>) :
         holder.bind(currentList[position])
     }
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<HomeModel>() {
-            override fun areContentsTheSame(oldItem: HomeModel, newItem: HomeModel): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<BaseModel>() {
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
                 return oldItem == newItem
             }
-            override fun areItemsTheSame(oldItem: HomeModel, newItem: HomeModel): Boolean {
+            override fun areItemsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
                 return oldItem.uid == newItem.uid
             }
         }

@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,71 +12,92 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageLikeListBinding
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageListBinding
-import com.kittyandpuppy.withallmyanimal.home.HomeModel
+import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter : ListAdapter<Any, RecyclerView.ViewHolder>(DIFF_CALLBACK){
+class MyPageRVAdapter(val list: MutableList<BaseModel>) :
+    ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
-    inner class LikesViewHolder(private val binding : ItemMypageLikeListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(model : LikesListModel) {
-            binding.ivMypageListProfile.load(model.image)
-            binding.tvMypageListNickname.text = model.id
+    val TAG = MyPageRVAdapter::class.java.simpleName
+
+    inner class LikesViewHolder(private val binding: ItemMypageLikeListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: BaseModel) {
             binding.tvMypageListTitle.text = model.title
-            binding.tvMypageListDate.text = model.date
+            binding.tvMypageListDate.text = model.time
         }
     }
-    inner class MyListViewHolder(private val binding: ItemMypageListBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(model : HomeModel) {
+
+    inner class MyListViewHolder(private val binding: ItemMypageListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: BaseModel) {
+            Log.d("rv adapter", "bind request")
             val storageRef = Firebase.storage.reference.child("${model.key}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivMypageRvImage.load(uri.toString()) {
                     crossfade(true)
+
+                    Log.d("rv adapter", "success")
                 }
             }
+            Log.d(TAG, "binded")
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
+        Log.d(TAG, "ON CREATE")
         return when (viewType) {
             TYPE_LIKES -> {
                 val binding = ItemMypageLikeListBinding.inflate(layoutInflater, parent, false)
                 LikesViewHolder(binding)
             }
+
             TYPE_MY_LIST -> {
                 val binding = ItemMypageListBinding.inflate(layoutInflater, parent, false)
                 MyListViewHolder(binding)
             }
+
             else -> throw IllegalArgumentException("Invalid")
         }
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = list[position]
         when (holder) {
-            is LikesViewHolder -> holder.bind(item as LikesListModel)
-            is MyListViewHolder -> holder.bind(item as HomeModel)
+            is LikesViewHolder -> holder.bind(item)
+            is MyListViewHolder -> holder.bind(item)
         }
+        Log.d(TAG, "ON BINDVIEWHOLDER")
     }
+
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is LikesListModel -> TYPE_LIKES
-            is ListModel -> TYPE_MY_LIST
-            else -> throw IllegalArgumentException("Undefined")
-        }
+        return selectedTab
+    }
+
+    private var selectedTab = TYPE_MY_LIST
+
+    fun selectedTab(tab : Int) {
+        selectedTab = tab
+        notifyDataSetChanged()
     }
     companion object {
 
         const val TYPE_LIKES = 0
         const val TYPE_MY_LIST = 1
 
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Any>() {
-            override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-                return when {
-                    oldItem is LikesListModel && newItem is LikesListModel -> oldItem.uid == newItem.uid
-                    oldItem is ListModel && newItem is ListModel -> oldItem.uid == newItem.uid
-                    else -> false
-                }
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<BaseModel>() {
+            override fun areItemsTheSame(
+                oldItem: BaseModel,
+                newItem: BaseModel
+            ): Boolean {
+                return oldItem.uid == newItem.uid
             }
+
             @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
+            override fun areContentsTheSame(
+                oldItem: BaseModel,
+                newItem: BaseModel
+            ): Boolean {
                 return oldItem == newItem
             }
         }
