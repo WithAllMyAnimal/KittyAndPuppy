@@ -7,5 +7,7 @@ data class HomeModel(
     val id : String? = "",
     val tag : String? = "",
     val likes : Int? = 0,
-    val comments : Int? = 0
+    val comments : Int? = 0,
+    val title: String? = "",
+    val date: String? = "",
 )

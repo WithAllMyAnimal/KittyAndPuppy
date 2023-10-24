@@ -48,10 +48,18 @@ class MypageBehavior : AppCompatActivity() {
 
             val key = FBRef.boardRef.push().key.toString()
 
+            val behaviorData = Behavior(
+                review = review,
+                content = content,
+                tags = tags,
+                time = time,
+                title = title
+            )
+
             FBRef.boardRef
                 .child(uid)
                 .child(key)
-                .setValue(Behavior("Behavior", content, review, tags, time, title))
+                .setValue(behaviorData)
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
