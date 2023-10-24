@@ -71,6 +71,17 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+        binding.btnMypageChange.setOnClickListener{
+            val dialogFragment = DialogProfileChange()
+            val transaction = parentFragmentManager.beginTransaction()
+            dialogFragment.show(transaction, "ProfileChangeDialog")
+        }
+
+        binding.btnMypageSettings.setOnClickListener {
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.btnMypageTagHospital.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
