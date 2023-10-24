@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kittyandpuppy.withallmyanimal">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -20,47 +21,51 @@
         android:theme="@style/Theme.WithAllMyAnimal"
         tools:targetApi="31">
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers"
+            android:name=".mypage.MypageOtherUsers"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity"
+            android:name=".detail.DetailDailyActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity"
+            android:name=".detail.DetailBehaviorActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity"
+            android:name=".detail.DetailPetActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.write.MypageDaily"
+            android:name=".write.MypageDaily"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.LoginPage.DogAndCatAddActivity"
+            android:name=".LoginPage.DogAndCatAddActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity"
+            android:name=".detail.DetailHospitalActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.write.MypageBehavior"
+            android:name=".write.MypageBehavior"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.write.MypageHospital"
+            android:name=".write.MypageHospital"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.write.MypagePet"
+            android:name=".write.MypagePet"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.SettingActivity"
+            android:name=".SettingActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.notice.NoticeActivity"
+            android:name=".notice.NoticeActivity"
             android:exported="false" />
         <activity
-            android:name="com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity"
+            android:name=".LoginPage.LoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
