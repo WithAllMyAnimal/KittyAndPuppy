@@ -134,6 +134,7 @@
             app:tabRippleColor="@color/pink"
             app:tabIndicatorColor="@color/blue"
             app:tabIndicatorHeight="3dp"
+            app:tabIconTint="#7189BF"
             app:layout_constraintBottom_toBottomOf="@id/con_mypage_tablayout"
             app:layout_constraintEnd_toEndOf="@id/con_mypage_tablayout"
             app:layout_constraintStart_toStartOf="@id/con_mypage_tablayout"
