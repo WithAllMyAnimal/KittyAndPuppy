@@ -28,7 +28,59 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
     ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
     inner class HomeItemViewHolder(private val binding: ItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val clickedItem = boardList[adapterPosition]
+                val key = clickedItem.key
+                val category = clickedItem.category
+
+                Log.d("Key값", "key: $key")
+                Log.d("category값", "category:$category")
+
+
+                val database = FirebaseDatabase.getInstance()
+                val reference = database.getReference("board")
+
+                reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(datasnapshot: DataSnapshot) {
+                        if (datasnapshot.exists()) {
+
+                            val intent: Intent
+                            when (category) {
+                                "Behavior" -> intent =
+                                    Intent(binding.root.context, DetailBehaviorActivity::class.java)
+
+                                "Daily" -> intent = Intent(
+                                    binding.root.context,
+                                    DetailDailyActivity::class.java
+                                )
+
+                                "Hospital" -> intent = Intent(
+                                    binding.root.context,
+                                    DetailHospitalActivity::class.java
+                                )
+
+                                "pet" -> intent =
+                                    Intent(binding.root.context, DetailPetActivity::class.java)
+
+                                else -> intent =
+                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                            }
+                            intent.putExtra("key", key)
+                            intent.putExtra("category", category)
+                            binding.root.context.startActivity(intent)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
+                    }
+                })
+            }
+        }
         fun bind(homeModel: BaseModel) {
+
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivRvImage.load(uri.toString()) {
