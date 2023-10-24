@@ -33,6 +33,7 @@ class MypageFragment : Fragment() {
     private lateinit var rvAdapter: MyPageRVAdapter
 
     private val list = mutableListOf<BaseModel>()
+    private lateinit var gridLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,19 +47,25 @@ class MypageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerView()
-        Log.d("mypagefragment", "here")
-        getMyData()
+        loadDefaultTabData()
 
         val tabLayout = binding.tlMypageTabLayout
+        val defaultTab = tabLayout.getTabAt(0)
+        defaultTab?.select()
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
+                        gridLayoutManager.spanCount = 3
+//                        binding.recyclerviewMypageList.layoutManager = GridLayoutManager(requireContext(), 3)
                         binding.conMypageTag.visibility = View.VISIBLE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
+
                     }
 
                     1 -> {
+                        gridLayoutManager.spanCount = 1
+//                        binding.recyclerviewMypageList.layoutManager = GridLayoutManager(requireContext(), 1)
                         binding.conMypageTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
                     }
@@ -115,21 +122,19 @@ class MypageFragment : Fragment() {
         Log.d("mypagefragment", "set up rv")
         rvAdapter = MyPageRVAdapter(list)
 
-//        val layoutManager = GridLayoutManager(requireContext(), 3)
-//        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//            override fun getSpanSize(position: Int): Int {
-//                return when (rvAdapter.getItemViewType(position)) {
-//                    0 -> 3
-//                    1 -> 1
-//                    else -> throw IllegalArgumentException("Invalid")
-//                }
-//            }
-//        }
+        gridLayoutManager = GridLayoutManager(requireContext(), 3)
+
         binding.recyclerviewMypageList.apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(requireContext(), 3)
+            layoutManager = gridLayoutManager
             adapter = rvAdapter
         }
+    }
+
+    private fun loadDefaultTabData() {
+        binding.conMypageTag.visibility = View.VISIBLE
+        rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
+        getMyData()
     }
 
     private fun getMyData() {
