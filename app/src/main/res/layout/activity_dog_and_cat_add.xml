@@ -156,7 +156,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_sample"
             android:fontFamily="@font/cafe24"
-            android:hint="생일을 작성해주세요 ex) 1월 1일"
+            android:hint="생일을 작성해주세요 ex) 2022.02.02"
             android:maxLines="1"
             android:paddingHorizontal="15dp"
             android:textColor="@color/black"
