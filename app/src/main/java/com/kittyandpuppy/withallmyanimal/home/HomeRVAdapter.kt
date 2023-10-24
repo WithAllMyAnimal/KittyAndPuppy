@@ -5,7 +5,6 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -59,7 +58,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                 "Hospital" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
-
                                 )
 
                                 "pet" -> intent =
@@ -71,7 +69,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
                             binding.root.context.startActivity(intent)
-                            Log.d("hospital", "intent 넘어감")
                         }
                     }
 
@@ -81,6 +78,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
+
         fun bind(homeModel: BaseModel) {
 
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
@@ -101,61 +99,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     }
                 })
             binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
-
-            binding.root.setOnClickListener {
-                val clickedItem = boardList[adapterPosition]
-
-                val key = clickedItem.key
-
-                Log.d("Key값", "key: $key")
-
-                val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-                val reference = database.getReference("board")
-
-                Log.d("reference값", "board: $reference")
-
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
-                        for (postSnapshot in datasnapshot.children) {
-                            val category =
-                                postSnapshot.child("category").getValue(String::class.java) ?: ""
-
-                            Log.d("category값", "category:$category")
-
-                            val intent: Intent
-                            when (category) {
-                                "Behavior" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailBehaviorActivity::class.java
-                                )
-
-                                "Daily" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailDailyActivity::class.java
-                                )
-
-                                "Hospital" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailHospitalActivity::class.java
-                                )
-
-                                "pet" -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-
-                                else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-                            }
-                            intent.putExtra("key", key)
-                            intent.putExtra("category", category)
-                            binding.root.context.startActivity(intent)
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
-                    }
-                })
-            }
         }
     }
 
