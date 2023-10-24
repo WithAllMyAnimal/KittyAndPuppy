@@ -24,57 +24,79 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
 
-        setContentView(binding.root)
+        val currentUser = auth.currentUser
 
-        binding.btnLoginLogin.setOnClickListener {
-            val email = binding.etLoginId.text.toString()
-            val password = binding.etLoginPassword.text.toString()
+        if (currentUser != null) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
-                        val database = FirebaseDatabase.getInstance()
+        } else {
 
-                        database.getReference("users").child(userId).child("profile")
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val petName =
-                                        dataSnapshot.child("userIdname").getValue(String::class.java)
+            setContentView(binding.root)
 
-                                    if (petName != null) {
-                                        startActivity(
-                                            Intent(this@LoginActivity, MainActivity::class.java).apply {
-                                                flags =
-                                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            }
-                                        )
-                                    } else {
-                                        startActivity(
-                                            Intent(this@LoginActivity, DogAndCatAddActivity::class.java).apply {
-                                                flags =
-                                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            }
-                                        )
+            binding.btnLoginLogin.setOnClickListener {
+                val email = binding.etLoginId.text.toString()
+                val password = binding.etLoginPassword.text.toString()
+
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
+                            val database = FirebaseDatabase.getInstance()
+
+                            database.getReference("users").child(userId).child("profile")
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        val petName =
+                                            dataSnapshot.child("userIdname")
+                                                .getValue(String::class.java)
+
+                                        if (petName != null) {
+                                            startActivity(
+                                                Intent(
+                                                    this@LoginActivity,
+                                                    MainActivity::class.java
+                                                ).apply {
+                                                    flags =
+                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                }
+                                            )
+                                        } else {
+                                            startActivity(
+                                                Intent(
+                                                    this@LoginActivity,
+                                                    DogAndCatAddActivity::class.java
+                                                ).apply {
+                                                    flags =
+                                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                }
+                                            )
+                                        }
+
+                                        Toast.makeText(
+                                            this@LoginActivity,
+                                            "로그인 성공",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
 
-                                    Toast.makeText(this@LoginActivity, "로그인 성공", Toast.LENGTH_SHORT).show()
-                                }
-
-                                override fun onCancelled(databaseError: DatabaseError) {}
-                            })
-                    } else {
-                        Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+                                    override fun onCancelled(databaseError: DatabaseError) {}
+                                })
+                        } else {
+                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
-        }
-        binding.btnLoginSignup.setOnClickListener {
-            val signupFragment = LoginAddItemFragment()
-            signupFragment.show(supportFragmentManager, "signUpDialog")
-        }
-        binding.btnLoginResetPassword.setOnClickListener {
-            val findPasswordFragment = FindPwFragment()
-            findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
+            }
+            binding.btnLoginSignup.setOnClickListener {
+                val signupFragment = LoginAddItemFragment()
+                signupFragment.show(supportFragmentManager, "signUpDialog")
+            }
+            binding.btnLoginResetPassword.setOnClickListener {
+                val findPasswordFragment = FindPwFragment()
+                findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
+            }
         }
     }
 }
