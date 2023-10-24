@@ -28,6 +28,7 @@ data class Hospital(
     val date: String = "",
     val location: String = "",
     val price: String = "",
+    val disease : String = "",
     override val content: String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",

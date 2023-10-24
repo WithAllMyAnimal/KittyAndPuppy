@@ -5,7 +5,6 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -80,6 +79,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
+
         fun bind(homeModel: BaseModel) {
 
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
@@ -92,19 +92,21 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }
-            FBRef.users.child(homeModel.uid!!).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userId = snapshot.child("profile").child("userIdname").value.toString()
-                    binding.tvRvId.text = userId
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
-                }
-            })
-            binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
+            FBRef.users.child(homeModel.uid!!)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userId = snapshot.child("profile").child("userIdname").value.toString()
+                        binding.tvRvId.text = userId
+                    }
 
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
+                    }
+                })
+            binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(
@@ -114,15 +116,18 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             )
         )
     }
+
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<BaseModel>() {
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
                 return oldItem == newItem
             }
+
             override fun areItemsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
                 return oldItem.uid == newItem.uid
             }
