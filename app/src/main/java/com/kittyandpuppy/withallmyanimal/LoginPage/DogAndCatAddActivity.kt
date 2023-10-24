@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,10 +17,12 @@ import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
+import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
+    private val GALLERY_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,13 +75,31 @@ class DogAndCatAddActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
-        //아이디 중복 확인 버튼
         binding.btnLoginSignup.setOnClickListener {
             checkDuplicateId()
         }
-        //저장하기 버튼
         binding.btnDogAndCatAddSave.setOnClickListener {
             saveUserInfoToDatabase()
+        }
+
+        binding.ivCircleMy.setOnClickListener {
+            ImageUtils.openGallery(this, GALLERY_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GALLERY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val selectedImage = data?.data
+
+                if (selectedImage != null) {
+                    binding.ivCircleMy.setImageURI(selectedImage)
+
+                    ImageUtils.imageUpload(this, binding.ivCircleMy, "key")
+                }
+            }
         }
     }
 
