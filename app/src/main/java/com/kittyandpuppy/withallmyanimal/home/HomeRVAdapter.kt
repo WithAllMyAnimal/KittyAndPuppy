@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
@@ -28,6 +29,10 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivRvImage.load(uri.toString()) {
+                    crossfade(true)
+                }
+            }.addOnFailureListener {
+                binding.ivRvImage.load(R.drawable.image_no_images_found){
                     crossfade(true)
                 }
             }
