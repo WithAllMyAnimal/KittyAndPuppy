@@ -59,6 +59,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                 "Hospital" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
+
                                 )
 
                                 "pet" -> intent =
@@ -70,6 +71,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
                             binding.root.context.startActivity(intent)
+                            Log.d("hospital", "intent 넘어감")
                         }
                     }
 

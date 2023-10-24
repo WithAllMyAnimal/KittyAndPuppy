@@ -46,6 +46,7 @@ class MypageHospital : AppCompatActivity() {
             val location = binding.spMypageHospital.text.toString()
             val tags = tagListHospital.toList()
             val content = binding.etvMypageHospitalReview.text.toString()
+            val disease = binding.etvMypageHospitalCheckup.text.toString()
             val uid = FBAuth.getUid()
             val time = FBAuth.getTime()
 
@@ -58,7 +59,8 @@ class MypageHospital : AppCompatActivity() {
                 content = content,
                 tags = tags,
                 time = time,
-                title = title
+                title = title,
+                disease = disease,
             )
             FBRef.boardRef
                 .child(uid)
