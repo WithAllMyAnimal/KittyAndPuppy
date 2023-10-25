@@ -155,7 +155,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     Log.d("rv adapter", "success")
                 }
             }.addOnFailureListener {
-                binding.ivMypageRvImage.load(R.drawable.image_no_images_found) {
+                binding.ivMypageRvImage.load(R.drawable.add_image) {
                     crossfade(true)
                     Log.d(TAG, "binded")
                 }

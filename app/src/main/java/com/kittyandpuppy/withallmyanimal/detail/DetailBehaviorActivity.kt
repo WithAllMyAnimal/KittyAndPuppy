@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -56,7 +57,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-        FBRef.users.child(FBAuth.getUid())
+        FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userid = snapshot.child("profile").child("userIdname").value.toString()
@@ -67,12 +68,12 @@ class DetailBehaviorActivity : AppCompatActivity() {
                     Log.d("DetailBehaviorActivity", "Failed to read userId", error.toException())
                 }
             })
+        binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
             DetailCommentsFragment().show(supportFragmentManager, "comments")
         }
         binding.btnDetailBehaviorBack.setOnClickListener{
             finish()
         }
-
     }
 }

@@ -223,14 +223,14 @@
         app:layout_constraintStart_toStartOf="@id/view_detail_pink"
         app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_review"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/maple"
         android:layout_marginStart="20dp"
         android:hint="댓글을 입력하세요."
-        android:textSize="15dp"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
         app:layout_constraintStart_toEndOf="@id/iv_circle_my"
         app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
