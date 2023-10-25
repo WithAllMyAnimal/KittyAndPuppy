@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageLikeListBinding
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageListBinding
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
@@ -35,11 +36,14 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivMypageRvImage.load(uri.toString()) {
                     crossfade(true)
-
                     Log.d("rv adapter", "success")
                 }
+            }.addOnFailureListener {
+                binding.ivMypageRvImage.load(R.drawable.image_no_images_found) {
+                    crossfade(true)
+                    Log.d(TAG, "binded")
+                }
             }
-            Log.d(TAG, "binded")
         }
     }
 
@@ -76,10 +80,11 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
 
     private var selectedTab = TYPE_MY_LIST
 
-    fun selectedTab(tab : Int) {
+    fun selectedTab(tab: Int) {
         selectedTab = tab
         notifyDataSetChanged()
     }
+
     companion object {
 
         const val TYPE_LIKES = 0
