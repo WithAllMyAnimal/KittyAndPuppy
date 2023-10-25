@@ -63,11 +63,11 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                     DetailHospitalActivity::class.java
                                 )
 
-                                "pet" -> intent =
+                                "Pet" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                                    Intent(binding.root.context, DetailHospitalActivity::class.java)
                             }
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
