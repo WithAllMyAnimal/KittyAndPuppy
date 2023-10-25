@@ -116,7 +116,7 @@ class MypageFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        Log.d("mypagefragment", "set up rv")
+
         rvAdapter = MyPageRVAdapter(list)
 
         gridLayoutManager = GridLayoutManager(requireContext(), 3)

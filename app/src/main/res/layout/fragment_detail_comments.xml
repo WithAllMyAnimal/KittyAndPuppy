@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -16,7 +16,7 @@
         android:layout_height="40dp"
         android:layout_marginVertical="10dp"
         android:layout_marginStart="16dp"
-        android:src="@drawable/pet_like"
+        android:src="@drawable/pet_unlike"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,9 +24,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_detail_pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_user_like_list" />
@@ -52,8 +53,7 @@
         android:background="@color/pink"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerView">
+        app:layout_constraintStart_toStartOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_circle_my"
@@ -74,9 +74,9 @@
             android:id="@+id/et_review"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/maple"
             android:layout_marginStart="20dp"
-            android:text="댓글달기..."
+            android:fontFamily="@font/maple"
+            android:hint="댓글을 입력하세요. 여기는 BottomSheetDialog입니다."
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
             app:layout_constraintStart_toEndOf="@id/iv_circle_my"
@@ -86,16 +86,15 @@
             android:id="@+id/btn_ok"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/maple"
             android:text="확인"
             android:textColor="@color/black"
             android:textSize="13sp"
-            android:fontFamily="@font/maple"
-            android:background="@android:color/transparent"
-            app:layout_constraintStart_toEndOf="@id/et_review"
-            app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
-            app:layout_constraintTop_toTopOf="@id/view_detail_pink"
             app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-            />
+            app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
+            app:layout_constraintStart_toEndOf="@id/et_review"
+            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
