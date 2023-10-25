@@ -45,45 +45,81 @@
         app:layout_constraintStart_toEndOf="@id/tv_passworddialog_passwordchange"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_setting_logouttextview"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_setting_logout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/cafe24"
-        android:text="정말 로그아웃 하시겠습니까?"
-        android:textSize="25dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_passworddialog_passwordchange" />
+        app:layout_constraintTop_toBottomOf="@id/tv_passworddialog_passwordchange">
+
+        <TextView
+            android:id="@+id/tv_setting_logout_real"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="정말"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_setting_logout"
+            app:layout_constraintEnd_toStartOf="@id/tv_setting_logout_logout"
+            app:layout_constraintStart_toStartOf="@id/con_setting_logout" />
+
+        <TextView
+            android:id="@+id/tv_setting_logout_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="로그아웃"
+            android:textColor="@color/red"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_setting_logout"
+            app:layout_constraintEnd_toStartOf="@id/tv_setting_logout_quetion"
+            app:layout_constraintStart_toEndOf="@id/tv_setting_logout_real" />
+
+        <TextView
+            android:id="@+id/tv_setting_logout_quetion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="하시겠습니까?"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_setting_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_setting_logout_logout" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_settinglogout_checkbutton"
-        android:layout_width="106dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="180dp"
-        android:background="@drawable/btn_login"
-        android:fontFamily="@font/cafe24"
-        android:text="확인"
-        android:textColor="@color/black"
-        android:layout_marginTop="40dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_setting_logouttextview" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_settinglogout_checkbutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_login"
+            android:fontFamily="@font/cafe24"
+            android:text="확인"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_settinglogout_cancelbutton"
+            app:layout_constraintStart_toStartOf="@id/con_setting_logout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_setting_logout_real" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_settinglogout_cancelbutton"
-        android:layout_width="106dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_login"
-        android:fontFamily="@font/cafe24"
-        android:text="취소"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_settinglogout_checkbutton"
-        app:layout_constraintTop_toTopOf="@+id/btn_settinglogout_checkbutton" />
-
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_settinglogout_cancelbutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_login"
+            android:fontFamily="@font/cafe24"
+            android:text="취소"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="@id/con_setting_logout"
+            app:layout_constraintStart_toEndOf="@id/btn_settinglogout_checkbutton"
+            app:layout_constraintTop_toBottomOf="@id/tv_setting_logout_quetion"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

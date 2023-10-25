@@ -89,6 +89,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    android:maxLines="1"
                     app:layout_constraintEnd_toEndOf="@id/con_mypage_hospital"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/con_mypage_hospital"
