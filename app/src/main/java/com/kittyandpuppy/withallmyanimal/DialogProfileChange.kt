@@ -1,8 +1,12 @@
 package com.kittyandpuppy.withallmyanimal
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Point
+import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +24,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechange
 class DialogProfileChange : DialogFragment() {
     private lateinit var binding: FragmentDialogProfilechangeBinding
     private lateinit var userRef: DatabaseReference
+    private val GALLERY_REQUEST_CODE = 2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +35,37 @@ class DialogProfileChange : DialogFragment() {
 
         val database = FirebaseDatabase.getInstance()
         userRef = database.getReference("users")
+
+        binding.ivCircleMy.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, GALLERY_REQUEST_CODE)
+        }
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            userRef.child(userId).child("profile")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val profileMap = dataSnapshot.getValue() as? Map<String, Any>
+
+                        val retrievedUserIdname = profileMap?.get("userIdname") as? String
+                        val retrievedPetName = profileMap?.get("petName") as? String
+                        val retrievedBirth = profileMap?.get("birth") as? String
+                        val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
+
+                        binding.etProfilechangeNicknametext.text = Editable.Factory.getInstance().newEditable(retrievedUserIdname)
+                        binding.etProfilechangePetname.text = Editable.Factory.getInstance().newEditable(retrievedPetName)
+                        binding.etProfilechangePetbirthday.text = Editable.Factory.getInstance().newEditable(retrievedBirth)
+                        binding.etProfilechangeOnelinefeeling.text = Editable.Factory.getInstance().newEditable(retrievedStatusMessage)
+
+
+
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
+        }
 
         // 아이디 중복 확인 버튼
         binding.btnProfilechangeDoublecheckbutton.setOnClickListener {
@@ -46,9 +82,28 @@ class DialogProfileChange : DialogFragment() {
         binding.btnSettinglogoutCancelbutton.setOnClickListener {
             dismiss()
         }
+        val selectedImage = arguments?.getParcelable<Uri>("selectedImage")
+        if (selectedImage != null) {
+            binding.ivCircleMy.setImageURI(selectedImage)
+        }
 
         return binding.root
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                val selectedImage = data.data
+
+                if (selectedImage != null) {
+                    binding.ivCircleMy.setImageURI(selectedImage)
+                }
+            }
+        }
+    }
+
+
     private fun checkDuplicateId() {
         val userIdname = binding.etProfilechangeNicknametext.text.toString()
 
@@ -76,7 +131,7 @@ class DialogProfileChange : DialogFragment() {
         display.getSize(size)
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         params?.width = (size.x * 0.9).toInt()
-        params?.height = (size.y * 0.8).toInt()
+        params?.height = (size.y * 0.85).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
 
     }
