@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -67,5 +68,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 }
             })
 
+        binding.etReview.setOnClickListener {
+            DetailCommentsFragment().show(supportFragmentManager, "comments")
+        }
     }
 }
