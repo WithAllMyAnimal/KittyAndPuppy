@@ -67,7 +67,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
                     Log.d("DetailBehaviorActivity", "Failed to read userId", error.toException())
                 }
             })
-
         binding.etReview.setOnClickListener {
             DetailCommentsFragment().show(supportFragmentManager, "comments")
         }

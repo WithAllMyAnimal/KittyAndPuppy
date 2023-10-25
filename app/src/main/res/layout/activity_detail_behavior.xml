@@ -261,7 +261,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/maple"
         android:layout_marginStart="20dp"
-        android:text="댓글달기..."
+        android:hint="댓글을 달아주세요."
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
         app:layout_constraintStart_toEndOf="@id/iv_circle_my"

@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/maple"
-            android:hint="댓글을 입력하세요."
+            android:hint="댓글을 입력하세요. 여기는 BottomSheetDialog입니다."
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
             app:layout_constraintStart_toEndOf="@id/iv_circle_my"

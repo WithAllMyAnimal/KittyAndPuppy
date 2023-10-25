@@ -91,7 +91,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.image_no_images_found){
+                binding.ivRvImage.load(R.drawable.add_image){
                     crossfade(true)
                 }
             }
