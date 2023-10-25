@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailPetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -19,11 +20,12 @@ import com.kittyandpuppy.withallmyanimal.write.Pet
 
 class DetailPetActivity : AppCompatActivity() {
 
-    private lateinit var databaseRef : DatabaseReference
+    private lateinit var databaseRef: DatabaseReference
 
-    private val binding : ActivityDetailPetBinding by lazy {
+    private val binding: ActivityDetailPetBinding by lazy {
         ActivityDetailPetBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -47,6 +49,7 @@ class DetailPetActivity : AppCompatActivity() {
                 binding.tvDetailPetCautionContents.text = post.caution
                 binding.tvDetailPetReviewContents.text = post.content
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Log.d("DetailPetActivity", "Failed to read post data", error.toException())
             }
@@ -68,5 +71,11 @@ class DetailPetActivity : AppCompatActivity() {
                     Log.d("DetailPetActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.etReview.setOnClickListener {
+            DetailCommentsFragment().show(supportFragmentManager, "comments")
+        }
+        binding.btnDetailPetBack.setOnClickListener {
+            finish()
+        }
     }
 }

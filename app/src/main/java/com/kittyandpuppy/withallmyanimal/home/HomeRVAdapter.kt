@@ -36,9 +36,9 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 val key = clickedItem.key
                 val category = clickedItem.category
 
+                Log.d("uid값", "uid:$uid")
                 Log.d("Key값", "key: $key")
                 Log.d("category값", "category:$category")
-                Log.d("uid값", "uid:$uid")
 
 
                 val database = FirebaseDatabase.getInstance()
@@ -63,11 +63,11 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                     DetailHospitalActivity::class.java
                                 )
 
-                                "pet" -> intent =
+                                "Pet" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                                    Intent(binding.root.context, DetailHospitalActivity::class.java)
                             }
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
@@ -91,7 +91,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.image_no_images_found){
+                binding.ivRvImage.load(R.drawable.add_image){
                     crossfade(true)
                 }
             }
