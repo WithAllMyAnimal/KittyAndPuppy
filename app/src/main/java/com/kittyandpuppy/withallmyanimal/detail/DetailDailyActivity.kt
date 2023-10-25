@@ -65,5 +65,8 @@ class DetailDailyActivity : AppCompatActivity() {
                     Log.d("DetailDailyActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.btnDetailDailyBack.setOnClickListener{
+            finish()
+        }
     }
 }
