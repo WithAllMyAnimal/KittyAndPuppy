@@ -71,5 +71,9 @@ class DetailBehaviorActivity : AppCompatActivity() {
         binding.etReview.setOnClickListener {
             DetailCommentsFragment().show(supportFragmentManager, "comments")
         }
+        binding.btnDetailBehaviorBack.setOnClickListener{
+            finish()
+        }
+
     }
 }

@@ -68,5 +68,8 @@ class DetailPetActivity : AppCompatActivity() {
                     Log.d("DetailPetActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.btnDetailPetBack.setOnClickListener{
+            finish()
+        }
     }
 }

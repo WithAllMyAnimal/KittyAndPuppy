@@ -78,5 +78,8 @@ class DetailHospitalActivity : AppCompatActivity() {
         binding.etReview.setOnClickListener {
             DetailCommentsFragment().show(supportFragmentManager, "comments")
         }
+        binding.btnDetailHospitalBack.setOnClickListener{
+            finish()
+        }
     }
 }
