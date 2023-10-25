@@ -142,7 +142,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
-                val imageKey = "$key"
+                val imageKey = userRef.push().key
                 val imageRef = storageRef.child("$imageKey.png")
                 val uploadTask = imageRef.putFile(selectedImageUri!!)
 
@@ -169,7 +169,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
                             if (task.isSuccessful) {
                                 val intent = Intent(
                                     this@DogAndCatAddActivity,
-                                    DialogProfileChange::class.java
+                                    MainActivity::class.java
                                 )
                                 intent.putExtra("selectedImage", selectedImageUri)
                                 startActivity(intent)
