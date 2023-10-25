@@ -35,9 +35,9 @@ class MypagePet : AppCompatActivity() {
 
         binding.btnMypagePetSave.setOnClickListener {
             val title = binding.etvMypagePetTitle.text.toString()
-            val name = binding.etvMypagePetSupplies.toString()
+            val name = binding.etvMypagePetSupplies.text.toString()
             val price = binding.etvMypagePetPrice.text.toString()
-            val satisfaction = binding.ratMypagePetStar.toString()
+            val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
             val caution = binding.etvMypagePetCaution.text.toString()
             val tags = tagListPet.toList()
             val content = binding.etvMypagePetReview.text.toString()

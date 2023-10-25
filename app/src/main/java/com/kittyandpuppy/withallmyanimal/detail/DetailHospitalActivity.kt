@@ -29,11 +29,12 @@ class DetailHospitalActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val uid = intent.getStringExtra("uid") ?: return
         val key = intent.getStringExtra("key") ?: return
         val category = intent.getStringExtra("category") ?: return
         Log.d("DetailHospitalActivity", "Received key: $key, category: $category")
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(FBAuth.getUid()).child(key)
+        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(uid).child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")
@@ -42,7 +43,7 @@ class DetailHospitalActivity : AppCompatActivity() {
 
                 binding.tvDetailHospitalTitle.text = post.title
                 binding.tvDetailDate.text = FBAuth.getTime()
-                binding.tvDetailHospitalDate.text = post.date
+                binding.tvDetailHospitalDateContents.text = post.date
                 binding.tvDetailHospitalDiseaseContents.text = post.disease
                 binding.tvDetailHospitalLocationContents.text = post.location
                 binding.tvDetailHospitalPriceContents.text = post.price

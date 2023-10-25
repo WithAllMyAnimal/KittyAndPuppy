@@ -32,11 +32,13 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
         init {
             binding.root.setOnClickListener {
                 val clickedItem = boardList[adapterPosition]
+                val uid = clickedItem.uid
                 val key = clickedItem.key
                 val category = clickedItem.category
 
                 Log.d("Key값", "key: $key")
                 Log.d("category값", "category:$category")
+                Log.d("uid값", "uid:$uid")
 
 
                 val database = FirebaseDatabase.getInstance()
@@ -67,6 +69,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                 else -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
                             }
+                            intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
                             binding.root.context.startActivity(intent)
