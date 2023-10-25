@@ -17,10 +17,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import kotlinx.coroutines.NonCancellable.key
 
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
@@ -103,22 +105,29 @@ class DogAndCatAddActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun checkDuplicateId() {
         val userIdname = binding.etDogAndCatAddNick.text.toString()
 
-        userRef.orderByChild("profile/userIdname").equalTo(userIdname).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Toast.makeText(this@DogAndCatAddActivity, "중복된 아이디입니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@DogAndCatAddActivity, "사용 가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+        userRef.orderByChild("profile/userIdname").equalTo(userIdname)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(this@DogAndCatAddActivity, "중복된 아이디입니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(
+                            this@DogAndCatAddActivity,
+                            "사용 가능한 아이디입니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 
     private fun saveUserInfoToDatabase() {
@@ -133,12 +142,16 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
-                val imageKey = "key"
+                val imageKey = "$key"
                 val imageRef = storageRef.child("$imageKey.png")
                 val uploadTask = imageRef.putFile(selectedImageUri!!)
 
                 uploadTask.addOnFailureListener {
-                    Toast.makeText(this@DogAndCatAddActivity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@DogAndCatAddActivity,
+                        "이미지 업로드에 실패하였습니다.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }.addOnSuccessListener { _ ->
 
                     val userInfo = mapOf(
@@ -151,14 +164,24 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "profileImage" to imageKey
                     )
 
-                    userRef.child(userId).child("profile").setValue(userInfo).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            startActivity(Intent(this@DogAndCatAddActivity, MainActivity::class.java))
-                            finish()
-                        } else {
-                            Toast.makeText(this@DogAndCatAddActivity, "데이터 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    userRef.child(userId).child("profile").setValue(userInfo)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val intent = Intent(
+                                    this@DogAndCatAddActivity,
+                                    DialogProfileChange::class.java
+                                )
+                                intent.putExtra("selectedImage", selectedImageUri)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@DogAndCatAddActivity,
+                                    "데이터 저장에 실패하였습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
-                    }
                 }
             } else {
                 Toast.makeText(this@DogAndCatAddActivity, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
