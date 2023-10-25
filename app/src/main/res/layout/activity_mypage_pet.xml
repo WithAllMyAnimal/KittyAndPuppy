@@ -88,6 +88,8 @@
                     android:padding="15dp"
                     android:textSize="15sp"
                     android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:maxLength="20"
                     app:layout_constraintBottom_toTopOf="@id/view_mypage_pet_line_top"
                     app:layout_constraintEnd_toEndOf="@id/con_mypage_pet"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_pet"
