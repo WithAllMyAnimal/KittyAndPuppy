@@ -41,7 +41,7 @@ class MypageHospital : AppCompatActivity() {
 
         binding.btnMypageHospitalSave.setOnClickListener {
             val title = binding.etvMypageHospitalTitle.text.toString()
-            val date = binding.edtMypageHospital.toString()
+            val date = binding.edtMypageHospital.text.toString()
             val price = binding.etvMypageHospitalExpense.text.toString()
             val location = binding.spMypageHospital.text.toString()
             val tags = tagListHospital.toList()
@@ -54,6 +54,7 @@ class MypageHospital : AppCompatActivity() {
 
             val hospitalData = Hospital(
                 date = date,
+                disease = disease,
                 location = location,
                 price = price,
                 content = content,

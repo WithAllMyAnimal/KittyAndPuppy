@@ -28,11 +28,12 @@ class DetailPetActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val uid = intent.getStringExtra("uid") ?: return
         val key = intent.getStringExtra("key") ?: return
         val category = intent.getStringExtra("category") ?: return
         Log.d("DetailPetActivity", "Received key: $key, category: $category")
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(FBAuth.getUid()).child(key)
+        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(uid).child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {

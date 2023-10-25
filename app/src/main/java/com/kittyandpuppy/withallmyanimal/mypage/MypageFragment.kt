@@ -56,7 +56,6 @@ class MypageFragment : Fragment() {
                 when (tab?.position) {
                     0 -> {
                         gridLayoutManager.spanCount = 3
-//                        binding.recyclerviewMypageList.layoutManager = GridLayoutManager(requireContext(), 3)
                         binding.conMypageTag.visibility = View.VISIBLE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
 
@@ -64,7 +63,6 @@ class MypageFragment : Fragment() {
 
                     1 -> {
                         gridLayoutManager.spanCount = 1
-//                        binding.recyclerviewMypageList.layoutManager = GridLayoutManager(requireContext(), 1)
                         binding.conMypageTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
                     }
