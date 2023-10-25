@@ -67,5 +67,9 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 }
             })
 
+        binding.btnDetailBehaviorBack.setOnClickListener{
+            finish()
+        }
+
     }
 }

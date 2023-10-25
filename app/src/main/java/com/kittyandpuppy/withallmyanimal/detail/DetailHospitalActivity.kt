@@ -73,5 +73,8 @@ class DetailHospitalActivity : AppCompatActivity() {
                     Log.d("DetailHospitalActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.btnDetailHospitalBack.setOnClickListener{
+            finish()
+        }
     }
 }
