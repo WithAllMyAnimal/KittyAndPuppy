@@ -2,6 +2,7 @@ package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
@@ -23,7 +26,10 @@ class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
     private val GALLERY_REQUEST_CODE = 1
+    private var selectedImageUri: Uri? = null
 
+    val storage = Firebase.storage
+    val storageRef = storage.reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDogAndCatAddBinding.inflate(layoutInflater)
@@ -90,19 +96,13 @@ class DogAndCatAddActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == GALLERY_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                val selectedImage = data?.data
-
-                if (selectedImage != null) {
-                    binding.ivCircleMy.setImageURI(selectedImage)
-
-                    ImageUtils.imageUpload(this, binding.ivCircleMy, "key")
-                }
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            selectedImageUri = data?.data
+            if (selectedImageUri != null) {
+                binding.ivCircleMy.setImageURI(selectedImageUri)
             }
         }
     }
-
     private fun checkDuplicateId() {
         val userIdname = binding.etDogAndCatAddNick.text.toString()
 
@@ -132,24 +132,36 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
             val statusMessage = binding.etFeel.text.toString()
 
-            userRef.child(
-                userId
-            ).child("profile").setValue(
-                mapOf(
-                    "userIdname" to userIdname,
-                    "petName" to petName,
-                    "birth" to birth,
-                    "dogcat" to dogCat,
-                    "breed" to breed,
-                    "statusMessage" to statusMessage
-                )
-            )
-            binding.btnDogAndCatAddSave.setOnClickListener {
-                saveUserInfoToDatabase()
+            if (selectedImageUri != null) {
+                val imageKey = "key"
+                val imageRef = storageRef.child("$imageKey.png")
+                val uploadTask = imageRef.putFile(selectedImageUri!!)
 
-                startActivity(Intent(this@DogAndCatAddActivity, MainActivity::class.java))
+                uploadTask.addOnFailureListener {
+                    Toast.makeText(this@DogAndCatAddActivity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                }.addOnSuccessListener { _ ->
 
-                finish()
+                    val userInfo = mapOf(
+                        "userIdname" to userIdname,
+                        "petName" to petName,
+                        "birth" to birth,
+                        "dogcat" to dogCat,
+                        "breed" to breed,
+                        "statusMessage" to statusMessage,
+                        "profileImage" to imageKey
+                    )
+
+                    userRef.child(userId).child("profile").setValue(userInfo).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            startActivity(Intent(this@DogAndCatAddActivity, MainActivity::class.java))
+                            finish()
+                        } else {
+                            Toast.makeText(this@DogAndCatAddActivity, "데이터 저장에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this@DogAndCatAddActivity, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(this@DogAndCatAddActivity, "유저 ID 없음", Toast.LENGTH_SHORT).show()
