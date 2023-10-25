@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailDailyBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -65,6 +66,9 @@ class DetailDailyActivity : AppCompatActivity() {
                     Log.d("DetailDailyActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.etReview.setOnClickListener {
+            DetailCommentsFragment().show(supportFragmentManager, "comments")
+        }
         binding.btnDetailDailyBack.setOnClickListener{
             finish()
         }

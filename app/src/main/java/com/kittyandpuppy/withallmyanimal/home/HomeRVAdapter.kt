@@ -67,7 +67,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                                    Intent(binding.root.context, DetailHospitalActivity::class.java)
                             }
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
@@ -91,7 +91,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.image_no_images_found){
+                binding.ivRvImage.load(R.drawable.add_image){
                     crossfade(true)
                 }
             }

@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailHospitalBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -73,6 +74,9 @@ class DetailHospitalActivity : AppCompatActivity() {
                     Log.d("DetailHospitalActivity", "Failed to read userID", error.toException())
                 }
             })
+        binding.etReview.setOnClickListener {
+            DetailCommentsFragment().show(supportFragmentManager, "comments")
+        }
         binding.btnDetailHospitalBack.setOnClickListener{
             finish()
         }
