@@ -82,7 +82,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
-
         fun bind(homeModel: BaseModel) {
 
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
@@ -95,13 +94,12 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }
-            FBRef.users.child(homeModel.uid!!)
+            FBRef.users.child(homeModel.uid)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
                     }

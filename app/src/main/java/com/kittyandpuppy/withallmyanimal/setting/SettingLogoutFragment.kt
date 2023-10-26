@@ -1,4 +1,4 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.setting
 
 import android.content.Context
 import android.content.Intent

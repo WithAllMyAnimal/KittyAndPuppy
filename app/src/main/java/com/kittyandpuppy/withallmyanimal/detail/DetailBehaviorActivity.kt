@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -50,9 +51,15 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 Log.d("DetailBehaviorActivity","Failed to read post data",error.toException())
             }
         })
-        val storegeRef = Firebase.storage.reference.child("${key}.png")
-        storegeRef.downloadUrl.addOnSuccessListener { uri->
+        val storageRef = Firebase.storage.reference.child("${key}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri->
             binding.ivDetailBehaviorPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
@@ -69,7 +76,11 @@ class DetailBehaviorActivity : AppCompatActivity() {
             })
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
-            CommentsFragment().show(supportFragmentManager, "comments")
+            val commentsFragment = CommentsFragment()
+            val bundle = Bundle()
+            bundle.putString("key", key)
+            commentsFragment.arguments = bundle
+            commentsFragment.show(supportFragmentManager, "comments")
         }
         binding.btnDetailBehaviorBack.setOnClickListener{
             finish()

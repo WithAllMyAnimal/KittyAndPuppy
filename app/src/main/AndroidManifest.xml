@@ -54,10 +54,10 @@
             android:name=".write.MypagePet"
             android:exported="false" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".notice.NoticeActivity"
+            android:name=".setting.NoticeActivity"
             android:exported="false" />
         <activity
             android:name=".LoginPage.LoginActivity"

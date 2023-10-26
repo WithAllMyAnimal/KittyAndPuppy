@@ -1,3 +1,5 @@
+package com.kittyandpuppy.withallmyanimal.setting
+
 import android.content.Context
 import android.graphics.Point
 import android.os.Bundle

@@ -5,94 +5,106 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:context=".comments.CommentsFragment">
-
-    <ImageView
-        android:id="@+id/iv_user_likes"
-        android:layout_width="47dp"
-        android:layout_height="40dp"
-        android:layout_marginVertical="10dp"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/pet_unlike"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:paddingHorizontal="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/view_detail_pink"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user_like_list" />
-
-    <TextView
-        android:id="@+id/tv_user_like_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="무심맘님 외 20명이 공감합니다"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
-        app:layout_constraintStart_toEndOf="@+id/iv_user_likes"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context="com.kittyandpuppy.withallmyanimal.comments.CommentsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/view_detail_pink"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:background="@color/pink"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_circle_my"
-            android:layout_width="40dp"
+        <ImageView
+            android:id="@+id/iv_user_likes"
+            android:layout_width="47dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
+            android:layout_marginVertical="10dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/pet_unlike"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comments"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/image_maincharacter"
-            app:civ_border_color="@color/black"
-            app:civ_border_overlay="true"
-            app:civ_border_width="2dp"
-            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-            app:layout_constraintStart_toStartOf="@id/view_detail_pink"
-            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+            android:layout_marginEnd="10dp"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_like_list"
+            tools:listitem="@layout/item_comments" />
 
-        <EditText
-            android:id="@+id/et_review"
-            android:layout_width="280dp"
+        <TextView
+            android:id="@+id/tv_user_like_list"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:fontFamily="@font/maple"
-            android:hint="댓글을 입력하세요. BottomSheetDialog입니다."
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-            app:layout_constraintStart_toEndOf="@id/iv_circle_my"
-            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
-
-        <Button
-            android:id="@+id/btn_ok"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/maple"
-            android:text="확인"
+            android:fontFamily="@font/cafe24"
+            android:text="무심맘님 외 20명이 공감합니다"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-            app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
-            app:layout_constraintStart_toEndOf="@id/et_review"
-            app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user_likes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.17"
+            app:layout_constraintStart_toEndOf="@+id/iv_user_likes"
+            app:layout_constraintTop_toTopOf="@+id/iv_user_likes" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/view_detail_pink"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/pink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_comments">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_circle_my"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/transparent"
+                app:civ_border_color="@color/black"
+                app:civ_border_overlay="true"
+                app:civ_border_width="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+                app:layout_constraintStart_toStartOf="@id/view_detail_pink"
+                app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+
+            <EditText
+                android:id="@+id/et_review"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/maple"
+                android:hint="댓글을 입력하세요. BottomSheetDialog입니다."
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+                app:layout_constraintStart_toEndOf="@id/iv_circle_my"
+                app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+
+            <Button
+                android:id="@+id/btn_ok"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/maple"
+                android:text="확인"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
+                app:layout_constraintStart_toEndOf="@id/et_review"
+                app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -7,15 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.kittyandpuppy.withallmyanimal.DialogProfileChange
-import com.kittyandpuppy.withallmyanimal.SettingActivity
+import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
+import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
@@ -33,6 +31,8 @@ class MypageFragment : Fragment() {
 
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
+
+    private val TAG = MypageFragment::class.java.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -171,7 +171,6 @@ class MypageFragment : Fragment() {
             }
         })
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
