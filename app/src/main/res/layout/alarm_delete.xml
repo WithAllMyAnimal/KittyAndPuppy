@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_passworddialog_passwordchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:fontFamily="@font/cafe24"
+            android:text="삭제 확인"
+            android:textColor="@color/black"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/con_setting_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_passworddialog_passwordchange">
+
+            <TextView
+                android:id="@+id/tv_setting_logout_real"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/cafe24"
+                android:text="정말"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_setting_logout_logout"
+                app:layout_constraintStart_toStartOf="@id/con_setting_logout"
+                app:layout_constraintTop_toTopOf="@id/con_setting_logout" />
+
+            <TextView
+                android:id="@+id/tv_setting_logout_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/cafe24"
+                android:text="삭제"
+                android:textColor="@color/red"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_setting_logout_quetion"
+                app:layout_constraintStart_toEndOf="@id/tv_setting_logout_real"
+                app:layout_constraintTop_toTopOf="@id/con_setting_logout" />
+
+            <TextView
+                android:id="@+id/tv_setting_logout_quetion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/cafe24"
+                android:text="하시겠습니까?"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_setting_logout_logout"
+                app:layout_constraintTop_toTopOf="@id/con_setting_logout" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_settinglogout_checkbutton"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_login"
+                android:fontFamily="@font/cafe24"
+                android:text="확인"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/btn_settinglogout_cancelbutton"
+                app:layout_constraintStart_toStartOf="@id/con_setting_logout"
+                app:layout_constraintTop_toBottomOf="@+id/tv_setting_logout_real" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_settinglogout_cancelbutton"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/btn_cancel"
+                android:fontFamily="@font/cafe24"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/con_setting_logout"
+                app:layout_constraintStart_toEndOf="@id/btn_settinglogout_checkbutton"
+                app:layout_constraintTop_toBottomOf="@id/tv_setting_logout_quetion" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

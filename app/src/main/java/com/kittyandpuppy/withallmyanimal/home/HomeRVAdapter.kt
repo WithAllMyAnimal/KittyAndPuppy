@@ -107,7 +107,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
         }
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(
@@ -117,11 +116,9 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             )
         )
     }
-
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
-
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<BaseModel>() {
             @SuppressLint("DiffUtilEquals")

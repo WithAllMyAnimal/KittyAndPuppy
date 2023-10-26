@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,11 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
+import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
@@ -47,7 +50,6 @@ class HomeFragment : Fragment() {
         }
         getBoardData()
     }
-
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
         binding.rvHome.apply {
@@ -56,12 +58,10 @@ class HomeFragment : Fragment() {
             adapter = rvAdapter
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
     private fun getBoardData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
