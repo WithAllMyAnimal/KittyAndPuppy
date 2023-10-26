@@ -63,6 +63,12 @@ class DetailHospitalActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
+        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri.toString()){
+                crossfade(true)
+            }
+        }
         FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -76,7 +82,11 @@ class DetailHospitalActivity : AppCompatActivity() {
             })
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
-            CommentsFragment().show(supportFragmentManager, "comments")
+            val commentsFragment = CommentsFragment()
+            val bundle = Bundle()
+            bundle.putString("key", key)
+            commentsFragment.arguments = bundle
+            commentsFragment.show(supportFragmentManager, "comments")
         }
         binding.btnDetailHospitalBack.setOnClickListener{
             finish()

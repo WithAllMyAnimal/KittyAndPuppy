@@ -9,17 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
-import coil.load
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
@@ -42,6 +36,8 @@ class MypageFragment : Fragment() {
     private lateinit var database: DatabaseReference
     val storage = Firebase.storage
     val storageRef = storage.reference
+
+    private val TAG = MypageFragment::class.java.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,7 +82,7 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.btnMypageChange.setOnClickListener {
+        binding.btnMypageChange.setOnClickListener{
             val dialogFragment = DialogProfileChange()
             val transaction = parentFragmentManager.beginTransaction()
             dialogFragment.show(transaction, "ProfileChangeDialog")

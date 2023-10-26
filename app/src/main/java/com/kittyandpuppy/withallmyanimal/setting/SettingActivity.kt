@@ -1,14 +1,11 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.setting
 
-import SettingPasswordDialogFragment
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.FragmentTransaction
-import com.google.firebase.auth.FirebaseAuth
 import com.kittyandpuppy.withallmyanimal.databinding.ActivitySettingBinding
 import java.util.Locale
 
