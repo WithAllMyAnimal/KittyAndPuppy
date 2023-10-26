@@ -9,11 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
@@ -33,12 +38,14 @@ class MypageFragment : Fragment() {
 
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
+        database = Firebase.database.reference
         return binding.root
     }
 
@@ -47,6 +54,7 @@ class MypageFragment : Fragment() {
 
         setUpRecyclerView()
         loadDefaultTabData()
+        loadUserData()
 
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -75,7 +83,7 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.btnMypageChange.setOnClickListener{
+        binding.btnMypageChange.setOnClickListener {
             val dialogFragment = DialogProfileChange()
             val transaction = parentFragmentManager.beginTransaction()
             dialogFragment.show(transaction, "ProfileChangeDialog")
@@ -170,6 +178,34 @@ class MypageFragment : Fragment() {
                 Log.w("MyPageFragment", "loadPost:onCancelled", error.toException())
             }
         })
+    }
+
+    private fun loadUserData() {
+        val currentId = Firebase.auth.currentUser?.uid
+        if (currentId != null) {
+            val userProfileRef =
+                FirebaseDatabase.getInstance().getReference("users").child(currentId)
+                    .child("profile")
+            userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userIdname = snapshot.child("userIdname").getValue(String::class.java)
+                    val petName = snapshot.child("petName").getValue(String::class.java)
+                    val birth = snapshot.child("birth").getValue(String::class.java)
+                    val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
+                    val profileImage = snapshot.child("profileImage").getValue(String::class.java)
+
+                    binding.tvMypage.text = petName
+                    binding.tvMypageNickname.text = userIdname
+                    binding.tvMypageBirth.text = birth
+                    binding.tvMypageMessage.text = statsMessage
+                    binding.imgMypageProfile.load(profileImage)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("MypageFragment", "Error loading user data: ${error.message}")
+                }
+            })
+        }
     }
 
     override fun onDestroyView() {
