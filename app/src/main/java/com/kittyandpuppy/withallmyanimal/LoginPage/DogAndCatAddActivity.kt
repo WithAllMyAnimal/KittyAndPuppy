@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -144,7 +145,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
-                val imageRef = storageRef.child("$userId.png")
+                val imageRef = storageRef.child("profileImages").child("$userId.png")
                 val uploadTask = imageRef.putFile(selectedImageUri!!)
 
                 uploadTask.addOnFailureListener {

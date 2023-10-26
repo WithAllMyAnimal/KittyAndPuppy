@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.SettingActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
@@ -39,6 +40,8 @@ class MypageFragment : Fragment() {
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
+    val storage = Firebase.storage
+    val storageRef = storage.reference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -181,10 +184,10 @@ class MypageFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        val currentId = Firebase.auth.currentUser?.uid
-        if (currentId != null) {
+        val userId = Firebase.auth.currentUser?.uid
+        if (userId != null) {
             val userProfileRef =
-                FirebaseDatabase.getInstance().getReference("users").child(currentId)
+                FirebaseDatabase.getInstance().getReference("users").child(userId)
                     .child("profile")
             userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -192,13 +195,15 @@ class MypageFragment : Fragment() {
                     val petName = snapshot.child("petName").getValue(String::class.java)
                     val birth = snapshot.child("birth").getValue(String::class.java)
                     val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
-                    val profileImage = snapshot.child("profileImage").getValue(String::class.java)
+                    storageRef.child("profileImages").child("$userId.png").downloadUrl.addOnSuccessListener {
+                        binding.imgMypageProfile.load(it)
+                    }.addOnFailureListener {
+                    }
 
                     binding.tvMypage.text = petName
                     binding.tvMypageNickname.text = userIdname
                     binding.tvMypageBirth.text = birth
                     binding.tvMypageMessage.text = statsMessage
-                    binding.imgMypageProfile.load(profileImage)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
