@@ -18,12 +18,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
-import kotlinx.coroutines.NonCancellable.key
 
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding

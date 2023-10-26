@@ -1,28 +1,32 @@
 package com.kittyandpuppy.withallmyanimal.comments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.kittyandpuppy.withallmyanimal.R
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentCommentsBinding
+import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
+import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 
 class CommentsFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentCommentsBinding? = null
     private val binding get() = _binding!!
     private lateinit var rvAdapter: CommentsRVAdapter
-    private var isLiked = false
-    private lateinit var userId: String
-    private lateinit var likeRef: DatabaseReference
+    private val commentDataList = mutableListOf<CommentsModel>()
+
+    private val TAG = CommentsFragment::class.java.simpleName
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,92 +38,67 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        likeRef = FirebaseDatabase.getInstance().getReference("좋아요")
 
-        setUpRV()
-        checkLikeStatus()
+        val key = arguments?.getString("key").toString()
+        Log.d(TAG, key)
 
-        binding.ivUserUnlikes.setOnClickListener {
-            if (isLiked) {
-                onUnlikeClick()
-            } else {
-                onLikeClick()
-            }
+        binding.btnOk.setOnClickListener {
+            insertComments(key)
         }
+        setMyProfileImage()
+        setUpRV()
+        getComments(key)
     }
 
-    private fun checkLikeStatus() {
-        likeRef.child("좋아요 목록").child(userId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    isLiked = snapshot.exists()
-                    updateLikeButton()
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
+    private fun setUpRV() {
+        rvAdapter = CommentsRVAdapter(commentDataList)
+        binding.rvComments.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(requireContext(), 1)
+            adapter = rvAdapter
+        }
+        Log.d(TAG, "SET UP RV")
     }
 
-    private fun onLikeClick() {
-        likeRef.child("좋아요 목록").child(userId).setValue(true)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    isLiked = true
-                    updateLikeButton()
-                    updateLikeList()
-                } else {
-                }
-            }
-    }
+    private fun getComments(key: String) {
 
-    private fun onUnlikeClick() {
-        likeRef.child("좋아요 목록").child(userId).removeValue()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    isLiked = false
-                    updateLikeButton()
-                    updateLikeList()
-                } else {
-                }
-            }
-    }
-
-    private fun updateLikeButton() {
-        val likeImageRes = if (isLiked) R.drawable.pet_like else R.drawable.pet_unlike
-        binding.ivUserUnlikes.setImageResource(likeImageRes)
-    }
-
-    private fun updateLikeList() {
-        likeRef.child("좋아요 목록").addListenerForSingleValueEvent(object : ValueEventListener {
+        val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val likeCount = snapshot.childrenCount.toInt()
-
-                val userIds = mutableListOf<String>()
-                for (childSnapshot in snapshot.children) {
-                    val userId = childSnapshot.key
-                    userId?.let { userIds.add(it) }
+                commentDataList.clear()
+                for (dataModel in snapshot.children) {
+                    val item = dataModel.getValue(CommentsModel::class.java)
+                    if (item != null) {
+                        commentDataList.add(item)
+                    }
                 }
-
-                val firstUser = userIds.firstOrNull()
-                if (firstUser != null) {
-                    binding.tvUserLikeList.text = "${firstUser}님 외 ${likeCount - 1}명이 좋아합니다."
-                } else {
-                    binding.tvUserLikeList.text = ""
-                }
+                rvAdapter.submitList(commentDataList)
+                Log.d(TAG, commentDataList.size.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Post Failed", error.toException())
             }
-        })
+        }
+        FBRef.commentRef.child(key).addListenerForSingleValueEvent(postListener)
     }
-    private fun setUpRV() {
-        rvAdapter = CommentsRVAdapter()
-        binding.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            adapter = rvAdapter
+
+    private fun insertComments(key: String) {
+        FBRef.commentRef
+            .child(key)
+            .push()
+            .setValue(
+                CommentsModel(
+                    binding.etReview.text.toString(),
+                    FBAuth.getUid()
+                )
+            )
+    }
+    private fun setMyProfileImage() {
+        val storageRef = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri.toString()) {
+                crossfade(true)
+            }
         }
     }
 
