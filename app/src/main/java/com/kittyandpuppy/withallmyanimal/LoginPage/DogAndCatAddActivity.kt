@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -143,7 +144,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
-                val imageRef = storageRef.child("$imageKey.png")
+                val imageRef = storageRef.child("$userId.png")
                 val uploadTask = imageRef.putFile(selectedImageUri!!)
 
                 uploadTask.addOnFailureListener {
@@ -174,6 +175,11 @@ class DogAndCatAddActivity : AppCompatActivity() {
                                 intent.putExtra("selectedImage", selectedImageUri)
                                 startActivity(intent)
                                 finish()
+
+                                val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                                val editor = sharedPreferences.edit()
+                                editor.putString("imageKey", imageKey)
+                                editor.apply()
                             } else {
                                 Toast.makeText(
                                     this@DogAndCatAddActivity,

@@ -7,18 +7,23 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import coil.load
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechangeBinding
 
 class DialogProfileChange : DialogFragment() {
@@ -36,13 +41,22 @@ class DialogProfileChange : DialogFragment() {
         val database = FirebaseDatabase.getInstance()
         userRef = database.getReference("users")
 
-        binding.ivCircleMy.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, GALLERY_REQUEST_CODE)
-        }
         val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
         if (userId != null) {
+            val imageRef = storageRef.child("$userId.png")
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                binding.ivCircleMy.load(uri)
+            }
+
+            binding.ivCircleMy.setOnClickListener {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                startActivityForResult(intent, GALLERY_REQUEST_CODE)
+            }
+
             userRef.child(userId).child("profile")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -53,13 +67,10 @@ class DialogProfileChange : DialogFragment() {
                         val retrievedBirth = profileMap?.get("birth") as? String
                         val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
 
-                        binding.etProfilechangeNicknametext.text = Editable.Factory.getInstance().newEditable(retrievedUserIdname)
-                        binding.etProfilechangePetname.text = Editable.Factory.getInstance().newEditable(retrievedPetName)
-                        binding.etProfilechangePetbirthday.text = Editable.Factory.getInstance().newEditable(retrievedBirth)
-                        binding.etProfilechangeOnelinefeeling.text = Editable.Factory.getInstance().newEditable(retrievedStatusMessage)
-
-
-
+                        binding.etProfilechangeNicknametext.text = if (retrievedUserIdname != null) Editable.Factory.getInstance().newEditable(retrievedUserIdname) else null
+                        binding.etProfilechangePetname.text = if (retrievedPetName != null) Editable.Factory.getInstance().newEditable(retrievedPetName) else null
+                        binding.etProfilechangePetbirthday.text = if (retrievedBirth != null) Editable.Factory.getInstance().newEditable(retrievedBirth) else null
+                        binding.etProfilechangeOnelinefeeling.text = if (retrievedStatusMessage != null) Editable.Factory.getInstance().newEditable(retrievedStatusMessage) else null
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -103,7 +114,6 @@ class DialogProfileChange : DialogFragment() {
         }
     }
 
-
     private fun checkDuplicateId() {
         val userIdname = binding.etProfilechangeNicknametext.text.toString()
 
@@ -133,7 +143,6 @@ class DialogProfileChange : DialogFragment() {
         params?.width = (size.x * 0.9).toInt()
         params?.height = (size.y * 0.85).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
-
     }
 
     private fun saveUserInfoToDatabase() {
