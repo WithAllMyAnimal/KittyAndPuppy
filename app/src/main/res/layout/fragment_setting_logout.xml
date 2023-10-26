@@ -111,7 +111,7 @@
             android:id="@+id/btn_settinglogout_cancelbutton"
             android:layout_width="106dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_login"
+            android:background="@drawable/btn_cancel"
             android:fontFamily="@font/cafe24"
             android:text="취소"
             android:textColor="@color/black"
