@@ -12,8 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
-import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
@@ -70,7 +69,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             })
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
-            DetailCommentsFragment().show(supportFragmentManager, "comments")
+            CommentsFragment().show(supportFragmentManager, "comments")
         }
         binding.btnDetailBehaviorBack.setOnClickListener{
             finish()

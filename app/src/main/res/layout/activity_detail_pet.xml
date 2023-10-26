@@ -239,9 +239,9 @@
                 android:layout_width="240dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:isIndicator="false"
                 android:numStars="5"
                 android:rating="0"
+                android:isIndicator="true"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_satisfaction" />

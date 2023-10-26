@@ -12,8 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.DetailCommentsFragment
-import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailDailyBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
@@ -59,7 +58,7 @@ class DetailDailyActivity : AppCompatActivity() {
         FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val userId = snapshot.child("Profile").child("userIdname").value.toString()
+                    val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailDailyNickname.text = userId
                 }
 
@@ -69,7 +68,7 @@ class DetailDailyActivity : AppCompatActivity() {
             })
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
-            DetailCommentsFragment().show(supportFragmentManager, "comments")
+            CommentsFragment().show(supportFragmentManager, "comments")
         }
         binding.btnDetailDailyBack.setOnClickListener{
             finish()

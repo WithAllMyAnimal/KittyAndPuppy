@@ -1,4 +1,4 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.comments
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
