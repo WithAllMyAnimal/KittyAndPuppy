@@ -11,6 +11,7 @@ open class BaseModel(
 
 data class Behavior(
     val review: String = "",
+    override var uid : String = "",
     override val content: String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
@@ -19,6 +20,7 @@ data class Behavior(
 
 data class Daily(
     override val content: String = "",
+    override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = ""
@@ -30,6 +32,7 @@ data class Hospital(
     val price: String = "",
     val disease : String = "",
     override val content: String = "",
+    override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = ""
@@ -41,6 +44,7 @@ data class Pet(
     val price: String = "",
     val satisfaction: String = "",
     override val content: String = "",
+    override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = ""
