@@ -1,4 +1,4 @@
-package com.kittyandpuppy.withallmyanimal.notice
+package com.kittyandpuppy.withallmyanimal.setting
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

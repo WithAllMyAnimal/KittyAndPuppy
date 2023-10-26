@@ -49,9 +49,15 @@ class DetailDailyActivity : AppCompatActivity() {
                 Log.d("DetailDailyActivity", "failed to read post data",error.toException())
             }
         })
-        val strageRef = Firebase.storage.reference.child("${key}.png")
-        strageRef.downloadUrl.addOnSuccessListener { uri ->
+        val storageRef = Firebase.storage.reference.child("${key}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
             binding.ivDetailDailyPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
@@ -68,7 +74,11 @@ class DetailDailyActivity : AppCompatActivity() {
             })
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
-            CommentsFragment().show(supportFragmentManager, "comments")
+            val commentsFragment = CommentsFragment()
+            val bundle = Bundle()
+            bundle.putString("key", key)
+            commentsFragment.arguments = bundle
+            commentsFragment.show(supportFragmentManager, "comments")
         }
         binding.btnDetailDailyBack.setOnClickListener{
             finish()

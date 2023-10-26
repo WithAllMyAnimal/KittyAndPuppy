@@ -17,12 +17,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.DialogProfileChange
 import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
-import kotlinx.coroutines.NonCancellable.key
 
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
@@ -143,7 +141,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
-                val imageRef = storageRef.child("$imageKey.png")
+                val imageRef = storageRef.child("$userId.png")
                 val uploadTask = imageRef.putFile(selectedImageUri!!)
 
                 uploadTask.addOnFailureListener {
