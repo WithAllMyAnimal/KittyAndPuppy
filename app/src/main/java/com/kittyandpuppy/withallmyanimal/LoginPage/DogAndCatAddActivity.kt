@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -172,6 +173,11 @@ class DogAndCatAddActivity : AppCompatActivity() {
                                 intent.putExtra("selectedImage", selectedImageUri)
                                 startActivity(intent)
                                 finish()
+
+                                val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                                val editor = sharedPreferences.edit()
+                                editor.putString("imageKey", imageKey)
+                                editor.apply()
                             } else {
                                 Toast.makeText(
                                     this@DogAndCatAddActivity,
