@@ -1,21 +1,22 @@
 package com.kittyandpuppy.withallmyanimal
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMainBinding
 import com.kittyandpuppy.withallmyanimal.databinding.FabLayoutBinding
 import com.kittyandpuppy.withallmyanimal.home.HomeFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageFragment
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 import com.kittyandpuppy.withallmyanimal.write.MypageDaily
 import com.kittyandpuppy.withallmyanimal.write.MypageHospital
@@ -29,6 +30,21 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var fabBinding: FabLayoutBinding
     private lateinit var fragmentManager: FragmentManager
+    private val auth = Firebase.auth
+    private val storage = Firebase.storage
+
+    init {
+        Log.d("JINA", "${auth.currentUser?.uid} ")
+        Constants.currentUserUid = auth.currentUser!!.uid
+        storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png").downloadUrl.addOnSuccessListener {
+                Log.d("JINA", "성공 $it")
+                Constants.currentUserProfileImg = it
+                Log.d("JINA", "${Constants.currentUserProfileImg} ")
+            }.addOnFailureListener {
+                Log.d("JINA", "실패 $it")
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation()
         setupFloatingActionButton()
         setupFABclick()
-
+        Log.d("JINA", "${Constants.currentUserProfileImg}")
     }
 
     // BottomNavigation이 눌렸을 때 화면전환
@@ -55,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                     switchFragment(HomeFragment())
                     true
                 }
+
                 R.id.main_bn_home -> {
                     switchFragment(MypageFragment())
                     true
@@ -83,26 +100,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupFABclick() {
-        fabBinding.fabHospital.setOnClickListener{
-            val intent = Intent(this,MypageHospital::class.java)
+        fabBinding.fabHospital.setOnClickListener {
+            val intent = Intent(this, MypageHospital::class.java)
             startActivity(intent)
         }
 
         fabBinding.fabPet.setOnClickListener {
-            val intent = Intent(this,MypagePet::class.java)
+            val intent = Intent(this, MypagePet::class.java)
             startActivity(intent)
         }
 
         fabBinding.fabBehavior.setOnClickListener {
-            val intent = Intent(this,MypageBehavior::class.java)
+            val intent = Intent(this, MypageBehavior::class.java)
             startActivity(intent)
         }
 
         fabBinding.fabDaily.setOnClickListener {
-            val intent = Intent(this,MypageDaily::class.java)
+            val intent = Intent(this, MypageDaily::class.java)
             startActivity(intent)
         }
     }
+
     // Fragment 전환 시 필요한 것
     private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
