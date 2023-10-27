@@ -6,7 +6,7 @@ open class BaseModel(
     open val tags: List<String> = listOf(),
     open val time: String = "",
     open val title: String = "",
-    open var uid : String = ""
+    open var uid : String = "",
 )
 
 data class Behavior(
