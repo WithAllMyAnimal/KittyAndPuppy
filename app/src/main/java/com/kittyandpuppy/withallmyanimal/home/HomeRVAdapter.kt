@@ -105,6 +105,8 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     }
                 })
             binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
+            binding.tvRvLikes.text = homeModel.likesCount.toString()
+            binding.tvRvChat.text = homeModel.commentsCount.toString()
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
