@@ -17,6 +17,22 @@
 | 신승철 | 팀원 | https://velog.io/@tlstmdcjfekt                                      |  https://github.com/developShin                          |
 
 
+## 🎩 Project Introduce 🎩
+### 기본 화면 구성
+
+<details>
+<summary>와이어 프레임</summary>
+![figma](https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/1f2f666a-ca24-4d0a-8dc6-83dad76781af)
+![figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0-1&mode=design&t=T1692JWVx6zhKjF7-0)
+회의를 통하여 구체적인 설계에 들어가기 전에 `대략적인 틀`을 구성하였습니다.
+</details>
+
+## 📗 Platforms & Languages 📒
+<img src="https://img.shields.io/badge/android-3DDC84?style=flat-square&logo=android&logoColor=white"/>  <img src="https://img.shields.io/badge/kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white"/>
+
+## 📕 Tools 📘
+<img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/>  <img src="https://img.shields.io/badge/git-F05032?style=flat-square&logo=git&logoColor=white"/>  <img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/>  <img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/> 
+
 
 
 
