@@ -9,16 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.kittyandpuppy.withallmyanimal.DialogProfileChange
-import com.kittyandpuppy.withallmyanimal.SettingActivity
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
@@ -34,9 +40,6 @@ class MypageFragment : Fragment() {
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
-    val storage = Firebase.storage
-    val storageRef = storage.reference
-
     private val TAG = MypageFragment::class.java.simpleName
 
     override fun onCreateView(
@@ -45,6 +48,7 @@ class MypageFragment : Fragment() {
     ): View? {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
         database = Firebase.database.reference
+        binding.imgMypageProfile.load(Constants.currentUserProfileImg)
         return binding.root
     }
 
@@ -82,7 +86,7 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.btnMypageChange.setOnClickListener{
+        binding.btnMypageChange.setOnClickListener {
             val dialogFragment = DialogProfileChange()
             val transaction = parentFragmentManager.beginTransaction()
             dialogFragment.show(transaction, "ProfileChangeDialog")
@@ -187,19 +191,17 @@ class MypageFragment : Fragment() {
                     .child("profile")
             userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val userIdname = snapshot.child("userIdname").getValue(String::class.java)
-                    val petName = snapshot.child("petName").getValue(String::class.java)
-                    val birth = snapshot.child("birth").getValue(String::class.java)
-                    val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
-                    storageRef.child("profileImages").child("$userId.png").downloadUrl.addOnSuccessListener {
-                        binding.imgMypageProfile.load(it)
-                    }.addOnFailureListener {
-                    }
+                    if (isAdded && !isDetached && !isRemoving) {
+                        val userIdname = snapshot.child("userIdname").getValue(String::class.java)
+                        val petName = snapshot.child("petName").getValue(String::class.java)
+                        val birth = snapshot.child("birth").getValue(String::class.java)
+                        // val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
 
-                    binding.tvMypage.text = petName
-                    binding.tvMypageNickname.text = userIdname
-                    binding.tvMypageBirth.text = birth
-                    binding.tvMypageMessage.text = statsMessage
+                        binding.tvMypage.text = petName
+                        binding.tvMypageNickname.text = userIdname
+                        binding.tvMypageBirth.text = birth
+                        // binding.tvMypageMessage.text = statsMessage
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
