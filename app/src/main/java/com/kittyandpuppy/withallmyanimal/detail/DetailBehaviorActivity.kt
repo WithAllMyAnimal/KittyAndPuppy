@@ -61,6 +61,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 FBRef.boardRef.child(uid).child(key).removeValue()
                 Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                 val resultIntent = Intent().putExtra("postDeleted", true)
+                resultIntent.putExtra("deletedPostUid", uid)
+                resultIntent.putExtra("deletedPostKey", key)
                 setResult(RESULT_OK, resultIntent)
                 finish()
             }

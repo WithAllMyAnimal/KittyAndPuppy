@@ -127,7 +127,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             }
 
             override fun areItemsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
-                return oldItem.uid == newItem.uid
+                return oldItem.key == newItem.key
             }
         }
     }

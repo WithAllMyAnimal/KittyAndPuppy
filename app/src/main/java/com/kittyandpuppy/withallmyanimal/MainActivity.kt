@@ -1,10 +1,13 @@
 package com.kittyandpuppy.withallmyanimal
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation()
         setupFloatingActionButton()
         setupFABclick()
+
     }
 
     // BottomNavigation이 눌렸을 때 화면전환
@@ -99,7 +103,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
     // Fragment 전환 시 필요한 것
     private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()

@@ -66,6 +66,10 @@ class MypageBehavior : AppCompatActivity() {
             if (isImageUpload) {
                 ImageUtils.imageUpload(this, binding.ivMypageBehaviorPictureLeft, key)
             }
+            val resultIntent = Intent().putExtra("postAdded", true)
+            resultIntent.putExtra("addedPostUid", uid)
+            resultIntent.putExtra("addedPostKey", key)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 

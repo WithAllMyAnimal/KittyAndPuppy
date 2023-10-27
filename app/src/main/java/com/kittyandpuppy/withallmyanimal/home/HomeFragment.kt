@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var rvAdapter: HomeRVAdapter
+    private var rvAdapter: HomeRVAdapter? = null
 
     private val boardList = mutableListOf<BaseModel>()
 
@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
         }
-        getBoardData()
     }
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
@@ -62,6 +61,13 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onResume() {
+        super.onResume()
+        getBoardData()
+        Log.d(TAG, "RESUME")
+    }
+
     private fun getBoardData() {
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -90,7 +96,8 @@ class HomeFragment : Fragment() {
                     }
                 }
                 boardList.reverse()
-                rvAdapter.submitList(boardList)
+                Log.d(TAG,boardList.size.toString())
+                rvAdapter?.submitList(boardList.toList())
             }
 
             override fun onCancelled(error: DatabaseError) {

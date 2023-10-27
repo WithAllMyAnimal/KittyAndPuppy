@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +59,10 @@ class DetailDailyActivity : AppCompatActivity() {
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
                 FBRef.boardRef.child(uid).child(key).removeValue()
                 Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                val resultIntent = Intent().putExtra("postDeleted", true)
+                resultIntent.putExtra("deletedPostUid", uid)
+                resultIntent.putExtra("deletedPostKey", key)
+                setResult(RESULT_OK, resultIntent)
                 finish()
             }
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
