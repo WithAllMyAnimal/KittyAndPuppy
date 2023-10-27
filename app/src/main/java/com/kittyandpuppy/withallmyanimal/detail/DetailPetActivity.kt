@@ -23,6 +23,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailPetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Pet
 
 class DetailPetActivity : AppCompatActivity() {
@@ -91,12 +92,22 @@ class DetailPetActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        val storageProfile = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailPetProfile.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+
+        val storageProfileReview = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
+        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
+
         FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
