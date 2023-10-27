@@ -8,13 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
-import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
@@ -49,6 +48,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
     }
+
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
         binding.rvHome.apply {
@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
             adapter = rvAdapter
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -92,11 +93,43 @@ class HomeFragment : Fragment() {
 
                         if (post != null) {
                             boardList.add(post)
+
+                            val likesRef = FBRef.likesRef.child(postKey).child("likes")
+                            likesRef.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    post.likesCount = snapshot.childrenCount.toInt()
+                                    rvAdapter?.notifyDataSetChanged()
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.d(
+                                        "HomeFragment",
+                                        "Failed to read likes count",
+                                        error.toException()
+                                    )
+                                }
+                            })
+
+                            val commentsRef = FBRef.commentRef.child(postKey)
+                            commentsRef.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    post.commentsCount = snapshot.childrenCount.toInt()
+                                    rvAdapter?.notifyDataSetChanged()
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.d(
+                                        "HomeFragment",
+                                        "Failed to read comments count",
+                                        error.toException()
+                                    )
+                                }
+                            })
                         }
                     }
                 }
                 boardList.reverse()
-                Log.d(TAG,boardList.size.toString())
+                Log.d(TAG, boardList.size.toString())
                 rvAdapter?.submitList(boardList.toList())
             }
 

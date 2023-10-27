@@ -7,6 +7,8 @@ open class BaseModel(
     open val time: String = "",
     open val title: String = "",
     open var uid : String = "",
+    open var likesCount: Int = 0,
+    open var commentsCount: Int = 0
 )
 
 data class Behavior(
