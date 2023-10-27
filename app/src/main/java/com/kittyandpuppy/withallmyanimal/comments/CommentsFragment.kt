@@ -19,7 +19,6 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentCommentsBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 
-
 class CommentsFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentCommentsBinding? = null
@@ -43,9 +42,12 @@ class CommentsFragment : BottomSheetDialogFragment() {
         val key = arguments?.getString("key").toString()
         Log.d(TAG, key)
 
+        val uid = FBAuth.getUid()
+        val likesRef = FBRef.likesRef.child(key).child("likes")
+
+        checkLikeStatus(uid, likesRef)
+
         binding.ivUserLikes.setOnClickListener {
-            val uid = FBAuth.getUid()
-            val likesRef = FBRef.likesRef.child(key).child("likes")
             likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.hasChild(uid)) {
@@ -69,6 +71,23 @@ class CommentsFragment : BottomSheetDialogFragment() {
         setMyProfileImage()
         setUpRV()
         getComments(key)
+    }
+
+    private fun checkLikeStatus(uid: String, likesRef: DatabaseReference) {
+        likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.hasChild(uid)) {
+                    binding.ivUserLikes.setImageResource(R.drawable.pet_like)
+                } else {
+                    binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
+                }
+                updateLikes(likesRef)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Like Status Checking Failed", error.toException())
+            }
+        })
     }
 
     private fun setUpRV() {
