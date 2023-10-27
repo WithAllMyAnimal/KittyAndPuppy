@@ -1,8 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.comments
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +10,15 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentCommentsBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+
 
 class CommentsFragment : BottomSheetDialogFragment() {
 
@@ -42,6 +43,26 @@ class CommentsFragment : BottomSheetDialogFragment() {
         val key = arguments?.getString("key").toString()
         Log.d(TAG, key)
 
+        binding.ivUserLikes.setOnClickListener {
+            val uid = FBAuth.getUid()
+            val likesRef = FBRef.likesRef.child(key).child("likes")
+            likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.hasChild(uid)) {
+                        likesRef.child(uid).removeValue()
+                        binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
+                    } else {
+                        likesRef.child(uid).setValue(true)
+                        binding.ivUserLikes.setImageResource(R.drawable.pet_like)
+                    }
+                    updateLikes(likesRef)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Like Checking Failed", error.toException())
+                }
+            })
+        }
+
         binding.btnOk.setOnClickListener {
             insertComments(key)
         }
@@ -61,7 +82,6 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getComments(key: String) {
-
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
@@ -93,6 +113,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
                 )
             )
     }
+
     private fun setMyProfileImage() {
         val storageRef = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
         storageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -100,6 +121,34 @@ class CommentsFragment : BottomSheetDialogFragment() {
                 crossfade(true)
             }
         }
+    }
+
+    private fun updateLikes(likesRef: DatabaseReference) {
+        likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val count = snapshot.childrenCount
+                if (count > 0) {
+                    val firstUserUid = snapshot.children.first().key
+                    FBRef.users.child(firstUserUid!!).child("profile").child("userIdname")
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val firstUserName = snapshot.value.toString()
+                                binding.tvUserLikeList.text = "$firstUserName 외 ${count - 1}명이 좋아합니다!"
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.w(TAG, "User Name Loading Failed", error.toException())
+                            }
+                        })
+                } else {
+                    binding.tvUserLikeList.text = ""
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Like Updating Failed", error.toException())
+            }
+        })
     }
 
     override fun onDestroyView() {
