@@ -7,16 +7,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
-import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
@@ -31,7 +39,7 @@ class MypageFragment : Fragment() {
 
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
-
+    private lateinit var database: DatabaseReference
     private val TAG = MypageFragment::class.java.simpleName
 
     override fun onCreateView(
@@ -39,6 +47,8 @@ class MypageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
+        database = Firebase.database.reference
+        binding.imgMypageProfile.load(Constants.currentUserProfileImg)
         return binding.root
     }
 
@@ -47,6 +57,7 @@ class MypageFragment : Fragment() {
 
         setUpRecyclerView()
         loadDefaultTabData()
+        loadUserData()
 
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -75,7 +86,7 @@ class MypageFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        binding.btnMypageChange.setOnClickListener{
+        binding.btnMypageChange.setOnClickListener {
             val dialogFragment = DialogProfileChange()
             val transaction = parentFragmentManager.beginTransaction()
             dialogFragment.show(transaction, "ProfileChangeDialog")
@@ -171,6 +182,35 @@ class MypageFragment : Fragment() {
             }
         })
     }
+
+    private fun loadUserData() {
+        val userId = Firebase.auth.currentUser?.uid
+        if (userId != null) {
+            val userProfileRef =
+                FirebaseDatabase.getInstance().getReference("users").child(userId)
+                    .child("profile")
+            userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (isAdded && !isDetached && !isRemoving) {
+                        val userIdname = snapshot.child("userIdname").getValue(String::class.java)
+                        val petName = snapshot.child("petName").getValue(String::class.java)
+                        val birth = snapshot.child("birth").getValue(String::class.java)
+                        // val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
+
+                        binding.tvMypage.text = petName
+                        binding.tvMypageNickname.text = userIdname
+                        binding.tvMypageBirth.text = birth
+                        // binding.tvMypageMessage.text = statsMessage
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("MypageFragment", "Error loading user data: ${error.message}")
+                }
+            })
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
