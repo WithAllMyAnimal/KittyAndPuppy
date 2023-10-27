@@ -1,19 +1,14 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import coil.load
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +23,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 
 
@@ -92,12 +88,22 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
-        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+        val storageProfileReview = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
+        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
+
+        val storageProfile = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
+        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailBehaviorProfile.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+
         FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {

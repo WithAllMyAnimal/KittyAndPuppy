@@ -28,6 +28,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailDailyBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Daily
 
 class DetailDailyActivity : AppCompatActivity() {
@@ -92,12 +93,22 @@ class DetailDailyActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-        val storageProfile = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        val storageProfile = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailDailyProfile.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+
+        val storageProfileReview = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
+        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
+
         FBRef.users.child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -109,6 +120,7 @@ class DetailDailyActivity : AppCompatActivity() {
                     Log.d("DetailDailyActivity", "Failed to read userID", error.toException())
                 }
             })
+
         binding.etReview.paintFlags = binding.etReview.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         binding.etReview.setOnClickListener {
             val commentsFragment = CommentsFragment()
