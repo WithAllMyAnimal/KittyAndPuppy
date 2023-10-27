@@ -211,7 +211,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 oldItem: BaseModel,
                 newItem: BaseModel
             ): Boolean {
-                return oldItem.uid == newItem.uid
+                return oldItem.key == newItem.key
             }
 
             @SuppressLint("DiffUtilEquals")

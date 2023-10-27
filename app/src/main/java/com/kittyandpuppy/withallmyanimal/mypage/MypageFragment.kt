@@ -173,7 +173,7 @@ class MypageFragment : Fragment() {
                     }
                 }
                 list.reverse()
-                rvAdapter.submitList(list)
+                rvAdapter.submitList(list.toList())
                 Log.d("MypageFragment", "${list.size}")
             }
 

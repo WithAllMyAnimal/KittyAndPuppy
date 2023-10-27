@@ -1,9 +1,15 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import coil.load
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -12,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailPetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -34,6 +41,30 @@ class DetailPetActivity : AppCompatActivity() {
         val key = intent.getStringExtra("key") ?: return
         val category = intent.getStringExtra("category") ?: return
         Log.d("DetailPetActivity", "Received key: $key, category: $category")
+
+        if (uid == FBAuth.getUid()) {
+            binding.ivDetailEdit.isVisible = true
+            binding.ivDetailDelete.isVisible = true
+        }
+        binding.ivDetailDelete.setOnClickListener {
+            val myDialog = LayoutInflater.from(this).inflate(R.layout.alarm_delete, null)
+            val builder = AlertDialog.Builder(this)
+                .setView(myDialog)
+
+            val alertDialog = builder.show()
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
+                FBRef.boardRef.child(uid).child(key).removeValue()
+                Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                val resultIntent = Intent().putExtra("postDeleted", true)
+                resultIntent.putExtra("deletedPostUid", uid)
+                resultIntent.putExtra("deletedPostKey", key)
+                setResult(RESULT_OK, resultIntent)
+                finish()
+            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
+                alertDialog.dismiss()
+            }
+        }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(uid).child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {

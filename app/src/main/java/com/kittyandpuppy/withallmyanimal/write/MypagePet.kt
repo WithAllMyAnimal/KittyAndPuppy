@@ -67,6 +67,10 @@ class MypagePet : AppCompatActivity() {
             if (isImageUpload) {
                 ImageUtils.imageUpload(this, binding.ivMypagePetPictureLeft, key)
             }
+            val resultIntent = Intent().putExtra("postAdded", true)
+            resultIntent.putExtra("addedPostUid", uid)
+            resultIntent.putExtra("addedPostKey", key)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
         binding.ivMypagePetPictureLeft.setOnClickListener {
