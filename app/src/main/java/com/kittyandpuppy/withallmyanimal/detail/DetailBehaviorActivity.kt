@@ -89,7 +89,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             }
         }
         val storageProfileReview = Firebase.storage.reference.child("profileImages")
-            .child("${Constants.currentUserUid}.png")
+            .child("$uid.png")
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)

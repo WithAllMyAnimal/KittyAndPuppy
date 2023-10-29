@@ -128,7 +128,6 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-                boardList.reverse()
                 Log.d(TAG, boardList.size.toString())
                 rvAdapter?.submitList(boardList.toList())
             }
