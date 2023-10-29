@@ -28,6 +28,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     private val TAG = CommentsFragment::class.java.simpleName
 
+    val key = arguments?.getString("key").toString()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,7 +41,6 @@ class CommentsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val key = arguments?.getString("key").toString()
         Log.d(TAG, key)
 
         val uid = FBAuth.getUid()
@@ -70,6 +71,11 @@ class CommentsFragment : BottomSheetDialogFragment() {
         }
         setMyProfileImage()
         setUpRV()
+//        getComments(key)
+    }
+
+    override fun onResume() {
+        super.onResume()
         getComments(key)
     }
 
