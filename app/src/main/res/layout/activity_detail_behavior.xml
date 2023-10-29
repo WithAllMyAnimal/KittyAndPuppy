@@ -28,6 +28,19 @@
         app:layout_constraintTop_toTopOf="@id/tb_detail_behavior" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이심\n동심"
+        android:fontFamily="@font/ari"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintTop_toTopOf="@id/tb_detail_behavior"
+        app:layout_constraintBottom_toBottomOf="@id/tb_detail_behavior"
+        app:layout_constraintStart_toStartOf="@id/tb_detail_behavior"
+        app:layout_constraintEnd_toEndOf="@id/tb_detail_behavior"
+        />
+
+    <TextView
         android:id="@+id/btn_detail_behavior_tag"
         android:layout_width="80dp"
         android:layout_height="40dp"
@@ -84,19 +97,21 @@
             android:id="@+id/con_detail_behavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            >
 
             <TextView
                 android:id="@+id/tv_detail_behavior_title"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginVertical="10dp"
+                android:layout_margin="10dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
                 android:text="엉엉 우는 설기"
                 android:textColor="@color/black"
-                android:textSize="15.4sp"
+                android:textSize="17sp"
+                android:maxLength="20"
+                android:paddingHorizontal="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/view_detail_behavior"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_behavior"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"
@@ -173,7 +188,7 @@
                 android:fontFamily="@font/cafe24"
                 android:text=" 상황 및 행동 "
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/view_detail_behavior_line_bottom" />
 
@@ -189,7 +204,7 @@
                 android:gravity="left"
                 android:text="잠깐 화장실에 간 사이에 설기가 계속 문 앞에서\n울고 있었음 ㅠㅠ 울음 소리 듣고 호다닥 나왔는데\n품에 안겨서도 계속 울던 설기ㅠㅠ"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_behavior"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_behavior_caution" />
@@ -204,7 +219,7 @@
                 android:fontFamily="@font/cafe24"
                 android:text=" 내용 "
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_behavior_caution_contents" />
 
@@ -220,7 +235,7 @@
                 android:gravity="left"
                 android:text="친구중에 5년차 냥집사가 있어서 물어봤는데 설기가 태어난지 몇 주 안 지나서 나를 엄마로 인식하는 것 같아서 떨어지기 싫어서 그런 거 같다고 함...\n다음부턴 설기 잘 데리고 다니던지 화장실 문을 살짝 열어줘야겠음ㅠㅠ"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_behavior"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"

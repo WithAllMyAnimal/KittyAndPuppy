@@ -18,6 +18,7 @@ import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentCommentsBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.util.Constants
 
 class CommentsFragment : BottomSheetDialogFragment() {
 
@@ -140,7 +141,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setMyProfileImage() {
-        val storageRef = Firebase.storage.reference.child("${FBAuth.getUid()}.png")
+        val storageRef = Firebase.storage.reference.child("profileImages").child("${Constants.currentUserUid}.png")
         storageRef.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()) {
                 crossfade(true)

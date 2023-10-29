@@ -7,7 +7,6 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import coil.load
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,6 +23,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechangeBinding
+import com.kittyandpuppy.withallmyanimal.util.Constants
 
 class DialogProfileChange : DialogFragment() {
     private lateinit var binding: FragmentDialogProfilechangeBinding
@@ -67,10 +66,18 @@ class DialogProfileChange : DialogFragment() {
                         val retrievedBirth = profileMap?.get("birth") as? String
                         val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
 
-                        binding.etProfilechangeNicknametext.text = if (retrievedUserIdname != null) Editable.Factory.getInstance().newEditable(retrievedUserIdname) else null
-                        binding.etProfilechangePetname.text = if (retrievedPetName != null) Editable.Factory.getInstance().newEditable(retrievedPetName) else null
-                        binding.etProfilechangePetbirthday.text = if (retrievedBirth != null) Editable.Factory.getInstance().newEditable(retrievedBirth) else null
-                        binding.etProfilechangeOnelinefeeling.text = if (retrievedStatusMessage != null) Editable.Factory.getInstance().newEditable(retrievedStatusMessage) else null
+                        binding.etProfilechangeNicknametext.text =
+                            if (retrievedUserIdname != null) Editable.Factory.getInstance()
+                                .newEditable(retrievedUserIdname) else null
+                        binding.etProfilechangePetname.text =
+                            if (retrievedPetName != null) Editable.Factory.getInstance()
+                                .newEditable(retrievedPetName) else null
+                        binding.etProfilechangePetbirthday.text =
+                            if (retrievedBirth != null) Editable.Factory.getInstance()
+                                .newEditable(retrievedBirth) else null
+                        binding.etProfilechangeOnelinefeeling.text =
+                            if (retrievedStatusMessage != null) Editable.Factory.getInstance()
+                                .newEditable(retrievedStatusMessage) else null
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -100,6 +107,7 @@ class DialogProfileChange : DialogFragment() {
 
         return binding.root
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -109,6 +117,7 @@ class DialogProfileChange : DialogFragment() {
 
                 if (selectedImage != null) {
                     binding.ivCircleMy.setImageURI(selectedImage)
+                    uploadImageToFirebase(selectedImage)
                 }
             }
         }
@@ -117,19 +126,20 @@ class DialogProfileChange : DialogFragment() {
     private fun checkDuplicateId() {
         val userIdname = binding.etProfilechangeNicknametext.text.toString()
 
-        userRef.orderByChild("profile/userIdname").equalTo(userIdname).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Toast.makeText(requireContext(), "중복된 아이디입니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(requireContext(), "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+        userRef.orderByChild("profile/userIdname").equalTo(userIdname)
+            .addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(requireContext(), "중복된 아이디입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
     }
 
     override fun onResume() {
@@ -173,8 +183,33 @@ class DialogProfileChange : DialogFragment() {
                     override fun onCancelled(databaseError: DatabaseError) {
                     }
                 })
+            val userProfileImage = Firebase.storage.reference.child("profileImages")
+                .child("${Constants.currentUserUid}.png")
+            userProfileImage.downloadUrl.addOnSuccessListener { uri ->
+                binding.ivCircleMy.load(uri.toString()) {
+                    crossfade(true)
+                }
+            }
         } else {
             Toast.makeText(context, "유저 ID 없음", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun uploadImageToFirebase(uri: Uri?) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (userId != null && uri != null) {
+            val storageRef = Firebase.storage.reference.child("profileImages/$userId.png")
+
+            val uploadTask = storageRef.putFile(uri)
+            uploadTask.addOnSuccessListener {
+                Constants.currentUserProfileImg = uri
+                binding.ivCircleMy.load(uri)
+                storageRef.downloadUrl.addOnSuccessListener {
+                    binding.ivCircleMy.load(it)
+                }
+            }.addOnFailureListener {
+            }
         }
     }
 }

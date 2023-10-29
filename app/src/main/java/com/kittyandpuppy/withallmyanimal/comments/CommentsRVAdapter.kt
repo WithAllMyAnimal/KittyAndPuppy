@@ -26,7 +26,7 @@ class CommentsRVAdapter(val commentDataList: MutableList<CommentsModel>) :
             Log.d(TAG, "BIND")
             Log.d(TAG, commentDataList.toString())
 
-            val storageRef = Firebase.storage.reference.child("${baseModel.uid}.png")
+            val storageRef = Firebase.storage.reference.child("profileImages").child("${baseModel.uid}.png")
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 binding.circleIvMy.load(uri.toString()) {
                     crossfade(true)

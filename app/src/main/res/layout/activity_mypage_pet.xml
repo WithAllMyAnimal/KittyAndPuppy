@@ -86,7 +86,7 @@
                     android:gravity="center_vertical"
                     android:hint="20자 이내로 제목을 입력해주세요"
                     android:padding="15dp"
-                    android:textSize="15sp"
+                    android:textSize="15.4sp"
                     android:textColor="@color/black"
                     android:maxLines="1"
                     android:maxLength="20"

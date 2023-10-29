@@ -141,9 +141,10 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/maple"
             android:lineSpacingMultiplier="1.5"
-            android:text="1) 양파: 구토나 설사 혹은 급성 빈혈 유발 \n2) 초콜릿: 테오브로민 성분이 독성으로 작용 심장질환 유발\n3) 포도: 구토,설사,복통,발작 유발\n4) 닭뼈: 위에 상처 및 염증,위천공 유발\n5) 우유: 설사 유발"
+            android:text="1) 양파: 구토나 설사 혹은 급성 빈혈 유발 \n2) 초콜릿: 테오브로민 성분이 독성으로 작용, 심장질환 유발\n3) 포도: 구토,설사,복통,발작 유발\n4) 닭뼈: 위에 상처 및 염증,위천공 유발\n5) 우유: 설사 유발"
             android:textColor="@color/black"
             android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/con_notice_cat_dog"
             app:layout_constraintBottom_toBottomOf="@id/con_notice_cat_dog"
             app:layout_constraintStart_toStartOf="@id/con_notice_cat_dog"
             app:layout_constraintTop_toBottomOf="@id/tv_notice_second" />

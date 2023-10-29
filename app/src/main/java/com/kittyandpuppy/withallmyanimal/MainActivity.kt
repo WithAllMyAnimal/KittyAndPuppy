@@ -33,16 +33,13 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     private val storage = Firebase.storage
 
+    // 리팩토링 시 필요한 것
     init {
-        Log.d("JINA", "${auth.currentUser?.uid} ")
         Constants.currentUserUid = auth.currentUser!!.uid
         storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png").downloadUrl.addOnSuccessListener {
-                Log.d("JINA", "성공 $it")
                 Constants.currentUserProfileImg = it
-                Log.d("JINA", "${Constants.currentUserProfileImg} ")
             }.addOnFailureListener {
-                Log.d("JINA", "실패 $it")
             }
     }
 
