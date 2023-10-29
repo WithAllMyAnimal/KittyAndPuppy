@@ -137,8 +137,10 @@
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
+                android:layout_marginTop="56dp"
                 android:background="@color/lightblack"
                 app:layout_constraintEnd_toEndOf="@id/view_detail_hospital"
+                app:layout_constraintHorizontal_bias="0.268"
                 app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
                 app:layout_constraintTop_toTopOf="@+id/view_detail_hospital" />
 
@@ -146,9 +148,9 @@
                 android:id="@+id/iv_detail_hospital_picture_left"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/add_image"
+                android:layout_marginVertical="10dp"
                 app:layout_constraintBottom_toTopOf="@id/view_detail_hospital_line_bottom"
                 app:layout_constraintStart_toStartOf="@id/view_detail_hospital"
                 app:layout_constraintTop_toBottomOf="@id/view_detail_hospital_line_top" />
@@ -273,10 +275,10 @@
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
-                android:gravity="center"
+                android:gravity="center|vertical"
                 android:text="55,000원"
                 android:textColor="@color/textColor"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
                 app:layout_constraintStart_toStartOf="@id/tv_detail_hospital_price"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_price" />
