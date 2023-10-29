@@ -172,7 +172,6 @@ class MypageFragment : Fragment() {
                         list.add(post)
                     }
                 }
-                list.reverse()
                 rvAdapter.submitList(list.toList())
                 Log.d("MypageFragment", "${list.size}")
             }

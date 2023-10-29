@@ -158,8 +158,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     FBRef.users.child(firstUserUid!!).child("profile").child("userIdname")
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                val firstUserName = snapshot.value.toString()
-                                binding.tvUserLikeList.text = "$firstUserName 외 ${count - 1}명이 좋아합니다!"
+//                                val firstUserName = snapshot.value.toString()
+                                binding.tvUserLikeList.text = "${count}명이 좋아합니다!"
                             }
 
                             override fun onCancelled(error: DatabaseError) {
