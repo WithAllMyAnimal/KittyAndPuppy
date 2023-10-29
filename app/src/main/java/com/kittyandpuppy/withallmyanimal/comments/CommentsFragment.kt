@@ -26,8 +26,11 @@ class CommentsFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private lateinit var rvAdapter: CommentsRVAdapter
     private val commentDataList = mutableListOf<CommentsModel>()
+    private lateinit var key: String
 
     private val TAG = CommentsFragment::class.java.simpleName
+
+    private lateinit var commentsListener: ValueEventListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +42,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        key = arguments?.getString("key").toString()
 
-        val key = arguments?.getString("key").toString()
         Log.d(TAG, key)
 
         val uid = FBAuth.getUid()
@@ -49,7 +52,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
         checkLikeStatus(uid, likesRef)
 
         binding.ivUserLikes.setOnClickListener {
-            likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.hasChild(uid)) {
                         likesRef.child(uid).removeValue()
@@ -60,6 +63,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     }
                     updateLikes(likesRef)
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.w(TAG, "Like Checking Failed", error.toException())
                 }
@@ -75,7 +79,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun checkLikeStatus(uid: String, likesRef: DatabaseReference) {
-        likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
+        likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.hasChild(uid)) {
                     binding.ivUserLikes.setImageResource(R.drawable.pet_like)
@@ -102,7 +106,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getComments(key: String) {
-        val postListener = object : ValueEventListener {
+
+        commentsListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
                 for (dataModel in snapshot.children) {
@@ -111,7 +116,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
                         commentDataList.add(item)
                     }
                 }
-                rvAdapter.submitList(commentDataList)
+                rvAdapter.submitList(commentDataList.toList())
                 Log.d(TAG, commentDataList.size.toString())
             }
 
@@ -119,7 +124,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         }
-        FBRef.commentRef.child(key).addListenerForSingleValueEvent(postListener)
+        FBRef.commentRef.child(key).addValueEventListener(commentsListener)
     }
 
     private fun insertComments(key: String) {
@@ -132,10 +137,12 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     FBAuth.getUid()
                 )
             )
+        binding.etReview.setText("")
     }
 
     private fun setMyProfileImage() {
-        val storageRef = Firebase.storage.reference.child("profileImages").child("${Constants.currentUserUid}.png")
+        val storageRef = Firebase.storage.reference.child("profileImages")
+            .child("${Constants.currentUserUid}.png")
         storageRef.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()) {
                 crossfade(true)
@@ -152,8 +159,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     FBRef.users.child(firstUserUid!!).child("profile").child("userIdname")
                         .addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
-                                val firstUserName = snapshot.value.toString()
-                                binding.tvUserLikeList.text = "$firstUserName 외 ${count - 1}명이 좋아합니다!"
+//                                val firstUserName = snapshot.value.toString()
+                                binding.tvUserLikeList.text = "${count}명이 좋아합니다!"
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -173,6 +180,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        FBRef.commentRef.child(key).removeEventListener(commentsListener)
         _binding = null
     }
 }

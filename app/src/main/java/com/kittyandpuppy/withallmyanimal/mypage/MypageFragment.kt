@@ -42,6 +42,9 @@ class MypageFragment : Fragment() {
     private lateinit var database: DatabaseReference
     private val TAG = MypageFragment::class.java.simpleName
 
+    private lateinit var userProfileRef: DatabaseReference
+    private lateinit var valueEventListener: ValueEventListener
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -172,7 +175,6 @@ class MypageFragment : Fragment() {
                         list.add(post)
                     }
                 }
-                list.reverse()
                 rvAdapter.submitList(list.toList())
                 Log.d("MypageFragment", "${list.size}")
             }
@@ -186,10 +188,10 @@ class MypageFragment : Fragment() {
     private fun loadUserData() {
         val userId = Firebase.auth.currentUser?.uid
         if (userId != null) {
-            val userProfileRef =
-                FirebaseDatabase.getInstance().getReference("users").child(userId)
-                    .child("profile")
-            userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            userProfileRef =
+                FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
+
+            valueEventListener = userProfileRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (isAdded && !isDetached && !isRemoving) {
                         val userIdname = snapshot.child("userIdname").getValue(String::class.java)
@@ -213,6 +215,9 @@ class MypageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        if (::userProfileRef.isInitialized && ::valueEventListener.isInitialized) {
+            userProfileRef.removeEventListener(valueEventListener)
+        }
         _binding = null
     }
 }

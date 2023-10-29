@@ -104,7 +104,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                         Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
                     }
                 })
-            binding.tvRvTag.text = boardList[adapterPosition].tags.toString()
+            binding.tvRvTag.text = homeModel.tags.toString()
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
         }

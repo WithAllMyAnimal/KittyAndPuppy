@@ -93,7 +93,7 @@ class DetailPetActivity : AppCompatActivity() {
             }
         }
         val storageProfile = Firebase.storage.reference.child("profileImages")
-            .child("${Constants.currentUserUid}.png")
+            .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
             binding.ivDetailPetProfile.load(uri.toString()){
                 crossfade(true)

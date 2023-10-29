@@ -72,7 +72,7 @@ class CommentsRVAdapter(val commentDataList: MutableList<CommentsModel>) :
             }
 
             override fun areItemsTheSame(oldItem: CommentsModel, newItem: CommentsModel): Boolean {
-                return oldItem.uid == newItem.uid
+                return oldItem.key == newItem.key
             }
         }
     }

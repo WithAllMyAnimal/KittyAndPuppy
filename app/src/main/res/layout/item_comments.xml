@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_item_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -36,6 +37,7 @@
             android:text="아련한 셀카"
             android:textColor="#878787"
             android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_comments"
             app:layout_constraintStart_toEndOf="@+id/circle_iv_my"
             app:layout_constraintTop_toTopOf="@+id/circle_iv_my" />
 
@@ -48,6 +50,10 @@
             android:text="넘모 귀여워용 오홍홍~~"
             android:textColor="@color/black"
             android:textSize="15sp"
+            android:layout_marginVertical="5dp"
+            android:paddingVertical="5dp"
+            app:layout_constraintEnd_toEndOf="@id/con_item_comments"
+            app:layout_constraintTop_toBottomOf="@id/tv_user_name"
             app:layout_constraintBottom_toBottomOf="@+id/circle_iv_my"
             app:layout_constraintStart_toEndOf="@+id/circle_iv_my" />
 
