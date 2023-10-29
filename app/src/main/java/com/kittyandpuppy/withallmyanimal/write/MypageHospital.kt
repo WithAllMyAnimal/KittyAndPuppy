@@ -8,11 +8,14 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.chip.Chip
 import com.kittyandpuppy.withallmyanimal.R
@@ -29,11 +32,39 @@ class MypageHospital : AppCompatActivity() {
         )
     }
 
-    private val PICK_IMAGE_REQUEST = 0
-    private val PERMISSION_REQUEST_CODE = 1
+    private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    }
 
-    private var isImageUpload = false
     private var tagListHospital = mutableListOf<String>()
+    private var isImageUpload = false
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            // 권한이 부여된 경우 갤러리 열기
+            val intent = ImageUtils.createGalleryIntent()
+            pickImageLauncher.launch(intent)
+        } else {
+            AlertDialog.Builder(this)
+                .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
+                .setPositiveButton("설정으로 이동") { _, _ ->
+                    // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", this.packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                }
+                .setNegativeButton("취소") { _, _ -> }
+                .show()
+        }
+    }
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            binding.ivMypageHospitalPictureLeft.setImageURI(result.data?.data)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,15 +111,14 @@ class MypageHospital : AppCompatActivity() {
         }
         binding.ivMypageHospitalPictureLeft.setOnClickListener {
             isImageUpload = true
-            ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
-        }
-        binding.btnMypageHospitalBack.setOnClickListener {
-            finish()
-        }
-
-        binding.ivMypageHospitalPictureLeft.setOnClickListener {
-            isImageUpload = true
-            ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
+            if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 이미 부여되었을 경우
+                val intent = ImageUtils.createGalleryIntent()
+                pickImageLauncher.launch(intent)
+            } else {
+                // 권한이 부여되지 않았을 경우 권한 요청
+                requestPermissionLauncher.launch(storagePermission)
+            }
         }
         binding.btnMypageHospitalBack.setOnClickListener {
             finish()
@@ -132,41 +162,6 @@ class MypageHospital : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 부여된 경우 갤러리 열기
-                ImageUtils.openGallery(this, PICK_IMAGE_REQUEST)
-            } else {
-                AlertDialog.Builder(this)
-                    .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
-                    .setPositiveButton("설정으로 이동") { _, _ ->
-                        // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                        val uri = Uri.fromParts("package", this.packageName, null)
-                        intent.data = uri
-                        startActivity(intent)
-                    }
-                    .setNegativeButton("취소") { _, _ -> }
-                    .show()
-            }
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            binding.ivMypageHospitalPictureLeft.setImageURI(data.data)
         }
     }
 }
