@@ -43,14 +43,13 @@
         android:id="@+id/tv_setting_system"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:fontFamily="@font/cafe24"
         android:text="시스템"
         android:paddingStart="20dp"
         android:paddingVertical="5dp"
         android:background="@color/blue"
-        android:textColor="@color/lightblack"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tb_setting_toolbar" />
 
@@ -72,11 +71,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginVertical="25dp"
         android:fontFamily="@font/cafe24"
         android:text="English Mode"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_setting_alarm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_setting_darkmod" />
 
@@ -90,8 +90,8 @@
         android:paddingStart="20dp"
         android:paddingVertical="5dp"
         android:background="@color/blue"
-        android:textColor="@color/lightblack"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_setting_englishmod" />
 
@@ -113,11 +113,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginVertical="25dp"
         android:fontFamily="@font/cafe24"
         android:text="댓글"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_setting_account"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_setting_like" />
 
@@ -131,8 +132,8 @@
         android:paddingStart="20dp"
         android:paddingVertical="5dp"
         android:background="@color/blue"
-        android:textColor="@color/lightblack"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_setting_comment" />
 

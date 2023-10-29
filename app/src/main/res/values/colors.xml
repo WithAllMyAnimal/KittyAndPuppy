@@ -11,4 +11,5 @@
     <color name="diary">#FFFADE</color>
     <color name="realblue">#2E58ED</color>
     <color name="lightblack">#405057</color>
+    <color name="textColor">#676767</color>
 </resources>
