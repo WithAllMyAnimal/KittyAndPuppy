@@ -141,6 +141,7 @@
                     android:text="병원 방문 날짜"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@id/edt_mypage_hospital"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/view_mypage_hospital_line_bottom" />
 
@@ -158,6 +159,7 @@
                     android:inputType="date"
                     android:fontFamily="@font/cafe24"
                     android:background="@drawable/mypage_diary_edittext"
+                    app:layout_constraintBottom_toTopOf="@id/tv_mypage_hospital_expense"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_mypage_hospital_date" />
@@ -172,6 +174,7 @@
                     android:text="진료 비용"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@id/etv_mypage_hospital_expense"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/edt_mypage_hospital" />
 
@@ -188,6 +191,7 @@
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:maxLines="1"
+                    app:layout_constraintBottom_toTopOf="@id/tv_mypage_hospital_location"
                     app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_expense"
                     app:layout_constraintEnd_toEndOf="@id/con_mypage_hospital"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
@@ -203,6 +207,7 @@
                     android:text="병원 지역"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@id/sp_mypage_hospital"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/etv_mypage_hospital_expense" />
 
@@ -219,6 +224,7 @@
                     android:layout_marginTop="10dp"
                     android:textSize="14sp"
                     android:maxLines="1"
+                    app:layout_constraintBottom_toTopOf="@id/tv_mypage_hospital_checkup"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintEnd_toEndOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/tv_mypage_hospital_location"
@@ -234,6 +240,7 @@
                     android:text="방문 사유"
                     android:textColor="@color/black"
                     android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@id/etv_mypage_hospital_checkup"
                     app:layout_constraintStart_toStartOf="@id/con_mypage_hospital"
                     app:layout_constraintTop_toBottomOf="@id/sp_mypage_hospital" />
 
