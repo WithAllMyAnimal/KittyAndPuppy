@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="380dp"
-    android:layout_height="700dp"
+    android:layout_height="600dp"
     android:background="@color/white"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -14,7 +14,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:src="@drawable/image_no_images_found"
         app:civ_border_color="@color/black"
@@ -127,38 +127,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_profilechange_petname" />
 
-    <TextView
-        android:id="@+id/tv_profilechange_onelinefeeling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/maple"
-        android:text="상태메시지"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/et_profilechange_onelinefeeling"
-        app:layout_constraintStart_toStartOf="@id/et_profilechange_petbirthday"
-        app:layout_constraintTop_toBottomOf="@id/et_profilechange_petbirthday"
-        />
-
-
-    <EditText
-        android:id="@+id/et_profilechange_onelinefeeling"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/background_roundcorner"
-        android:fontFamily="@font/maple"
-        android:hint="상태메시지를 작성해주세요"
-        android:textColor="@color/black"
-        android:inputType="text"
-        android:paddingHorizontal="20dp"
-        android:textSize="13sp"
-        android:maxLines="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_profilechange_petbirthday" />
-
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_settinglogout_checkbutton"
         android:layout_width="106dp"
@@ -171,7 +139,7 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_settinglogout_cancelbutton"
-        app:layout_constraintTop_toBottomOf="@+id/et_profilechange_onelinefeeling" />
+        app:layout_constraintTop_toBottomOf="@+id/et_profilechange_petbirthday" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_settinglogout_cancelbutton"

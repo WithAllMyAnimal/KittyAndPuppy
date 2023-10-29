@@ -139,7 +139,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val birth = binding.etDogAndCatAddBirth.text.toString()
             val dogCat = binding.spDogAndCatAddDogcat.selectedItem.toString()
             val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
-            val statusMessage = binding.etFeel.text.toString()
+//            val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
@@ -160,7 +160,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "birth" to birth,
                         "dogcat" to dogCat,
                         "breed" to breed,
-                        "statusMessage" to statusMessage,
+//                        "statusMessage" to statusMessage,
                         "profileImage" to imageKey
                     )
 

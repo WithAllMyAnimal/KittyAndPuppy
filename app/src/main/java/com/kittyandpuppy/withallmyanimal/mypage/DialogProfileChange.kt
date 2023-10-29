@@ -75,9 +75,9 @@ class DialogProfileChange : DialogFragment() {
                         binding.etProfilechangePetbirthday.text =
                             if (retrievedBirth != null) Editable.Factory.getInstance()
                                 .newEditable(retrievedBirth) else null
-                        binding.etProfilechangeOnelinefeeling.text =
-                            if (retrievedStatusMessage != null) Editable.Factory.getInstance()
-                                .newEditable(retrievedStatusMessage) else null
+//                        binding.etProfilechangeOnelinefeeling.text =
+//                            if (retrievedStatusMessage != null) Editable.Factory.getInstance()
+//                                .newEditable(retrievedStatusMessage) else null
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
@@ -151,7 +151,7 @@ class DialogProfileChange : DialogFragment() {
         display.getSize(size)
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         params?.width = (size.x * 0.9).toInt()
-        params?.height = (size.y * 0.85).toInt()
+        params?.height = (size.y * 0.7).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
@@ -162,7 +162,7 @@ class DialogProfileChange : DialogFragment() {
             val userIdname = binding.etProfilechangeNicknametext.text.toString()
             val petName = binding.etProfilechangePetname.text.toString()
             val birth = binding.etProfilechangePetbirthday.text.toString()
-            val statusMessage = binding.etProfilechangeOnelinefeeling.text.toString()
+//            val statusMessage = binding.etProfilechangeOnelinefeeling.text.toString()
 
             userRef.child(userId).child("profile")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -175,7 +175,7 @@ class DialogProfileChange : DialogFragment() {
                         existingProfileMap["userIdname"] = userIdname
                         existingProfileMap["petName"] = petName
                         existingProfileMap["birth"] = birth
-                        existingProfileMap["statusMessage"] = statusMessage
+//                        existingProfileMap["statusMessage"] = statusMessage
 
                         userRef.child(userId).child("profile").setValue(existingProfileMap)
                     }
