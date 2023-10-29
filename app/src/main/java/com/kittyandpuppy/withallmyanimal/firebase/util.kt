@@ -16,56 +16,10 @@ import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 
 object ImageUtils {
-    fun openGallery(activity: Activity, requestCode: Int) {
-
-        val permissionsToRequest = mutableListOf<String>()
-
-        if (ContextCompat.checkSelfPermission(
-                activity,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                activity,
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_IMAGES)
-        }
-
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                activity,
-                android.Manifest.permission.READ_MEDIA_VIDEO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_VIDEO)
-        }
-
-        if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(
-                activity,
-                android.Manifest.permission.READ_MEDIA_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permissionsToRequest.add(android.Manifest.permission.READ_MEDIA_AUDIO)
-        }
-
-        if (permissionsToRequest.isNotEmpty()) {
-            // 권한 요청
-            ActivityCompat.requestPermissions(
-                activity,
-                permissionsToRequest.toTypedArray(),
-                requestCode
-            )
-        } else {
-            // 이미 권한이 있는 경우
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            intent.type = "image/*"
-            activity.startActivityForResult(intent, requestCode)
-        }
+    fun createGalleryIntent(): Intent {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        return intent
     }
 
     fun imageUpload(activity: Activity, imageView: ImageView, key: String) {
