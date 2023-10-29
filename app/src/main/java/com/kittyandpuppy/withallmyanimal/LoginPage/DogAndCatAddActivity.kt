@@ -39,6 +39,12 @@ class DogAndCatAddActivity : AppCompatActivity() {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
+    private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.Manifest.permission.READ_MEDIA_IMAGES
+    } else {
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
             // 권한이 부여된 경우 갤러리 열기
@@ -61,6 +67,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             binding.ivCircleMy.setImageURI(result.data?.data)
+            selectedImageUri = result.data?.data
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,18 +129,13 @@ class DogAndCatAddActivity : AppCompatActivity() {
         }
 
         binding.ivCircleMy.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !Environment.isExternalStorageManager()) {
-                val permissionIntent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                val uri = Uri.fromParts("package", packageName, null)
-                permissionIntent.data = uri
-                startActivity(permissionIntent)
-            } else if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
                 // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
                 // 권한이 부여되지 않았을 경우 권한 요청
-                requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermissionLauncher.launch(storagePermission)
             }
         }
     }
