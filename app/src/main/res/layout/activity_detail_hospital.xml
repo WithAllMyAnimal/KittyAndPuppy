@@ -275,7 +275,7 @@
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
-                android:gravity="center|vertical"
+                android:gravity="center"
                 android:text="55,000원"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
