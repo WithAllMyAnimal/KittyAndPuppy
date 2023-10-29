@@ -26,10 +26,9 @@ class CommentsFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private lateinit var rvAdapter: CommentsRVAdapter
     private val commentDataList = mutableListOf<CommentsModel>()
+    private lateinit var key : String
 
     private val TAG = CommentsFragment::class.java.simpleName
-
-    val key = arguments?.getString("key").toString()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +40,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        key = arguments?.getString("key").toString()
 
         Log.d(TAG, key)
 
@@ -72,14 +72,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
         }
         setMyProfileImage()
         setUpRV()
-//        getComments(key)
-    }
-
-    override fun onResume() {
-        super.onResume()
         getComments(key)
     }
-
     private fun checkLikeStatus(uid: String, likesRef: DatabaseReference) {
         likesRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -108,6 +102,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getComments(key: String) {
+
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
@@ -138,6 +133,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     FBAuth.getUid()
                 )
             )
+        binding.etReview.setText("")
     }
 
     private fun setMyProfileImage() {
