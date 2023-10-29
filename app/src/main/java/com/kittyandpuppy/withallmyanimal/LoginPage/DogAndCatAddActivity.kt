@@ -3,14 +3,21 @@ package com.kittyandpuppy.withallmyanimal.LoginPage
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,11 +34,35 @@ import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
-    private val GALLERY_REQUEST_CODE = 1
     private var selectedImageUri: Uri? = null
 
     val storage = Firebase.storage
     val storageRef = storage.reference
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            // 권한이 부여된 경우 갤러리 열기
+            val intent = ImageUtils.createGalleryIntent()
+            pickImageLauncher.launch(intent)
+        } else {
+            android.app.AlertDialog.Builder(this)
+                .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
+                .setPositiveButton("설정으로 이동") { _, _ ->
+                    // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", this.packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                }
+                .setNegativeButton("취소") { _, _ -> }
+                .show()
+        }
+    }
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            binding.ivCircleMy.setImageURI(result.data?.data)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDogAndCatAddBinding.inflate(layoutInflater)
@@ -91,17 +122,18 @@ class DogAndCatAddActivity : AppCompatActivity() {
         }
 
         binding.ivCircleMy.setOnClickListener {
-            ImageUtils.openGallery(this, GALLERY_REQUEST_CODE)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            selectedImageUri = data?.data
-            if (selectedImageUri != null) {
-                binding.ivCircleMy.setImageURI(selectedImageUri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !Environment.isExternalStorageManager()) {
+                val permissionIntent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val uri = Uri.fromParts("package", packageName, null)
+                permissionIntent.data = uri
+                startActivity(permissionIntent)
+            } else if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                // 권한이 이미 부여되었을 경우
+                val intent = ImageUtils.createGalleryIntent()
+                pickImageLauncher.launch(intent)
+            } else {
+                // 권한이 부여되지 않았을 경우 권한 요청
+                requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
