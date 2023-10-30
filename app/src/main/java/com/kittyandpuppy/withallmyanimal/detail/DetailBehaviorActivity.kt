@@ -43,7 +43,9 @@ class DetailBehaviorActivity : AppCompatActivity() {
         val uid = intent.getStringExtra("uid") ?: return
         val key = intent.getStringExtra("key") ?: return
         val category = intent.getStringExtra("category") ?: return
-        Log.d("DetailBehaviorActivity","key: $key, category: $category")
+        Log.d("DetailBehaviorActivity","$uid, key: $key, category: $category")
+        Log.d("DetailBehaviorActivity", FBAuth.getUid())
+
 
         if (uid == FBAuth.getUid()) {
             binding.ivDetailEdit.isVisible = true
@@ -90,18 +92,18 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-        val storageProfileReview = Firebase.storage.reference.child("profileImages")
+        val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
-        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()){
+        storageProfile.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailBehaviorProfile.load(uri.toString()){
                 crossfade(true)
             }
         }
 
-        val storageProfile = Firebase.storage.reference.child("profileImages")
+        val storageProfileReview = Firebase.storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png")
-        storageProfile.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailBehaviorProfile.load(uri.toString()){
+        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
             }
         }
