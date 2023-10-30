@@ -8,11 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
@@ -32,6 +37,9 @@ class HomeFragment : Fragment() {
 
     private val TAG = HomeFragment::class.java.simpleName
 
+    var isDogAndCatSpinnerInitialized = false
+    var isBreedSpinnerInitialized = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,10 +51,75 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
         }
+
+        val dogCatAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.dogandcat,
+            android.R.layout.simple_spinner_item
+        )
+        dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerDogandcat.adapter = dogCatAdapter
+
+        binding.spinnerDogandcat.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (!isDogAndCatSpinnerInitialized) {
+                        isDogAndCatSpinnerInitialized = true
+                        return
+                    }
+
+                    if (position == 0) {
+                        Toast.makeText(context, "종류를 선택하세요", Toast.LENGTH_SHORT).show()
+                    }
+
+                    val selectedItem = parent?.getItemAtPosition(position).toString()
+                    val breedArray = when (selectedItem) {
+                        "전체" -> R.array.all
+                        "강아지" -> R.array.dogbreed
+                        "고양이" -> R.array.catbreed
+                        else -> return
+                    }
+                    val breedAdapter = ArrayAdapter.createFromResource(
+                        requireContext(),
+                        breedArray,
+                        android.R.layout.simple_spinner_item
+                    )
+                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spinnerBreed.adapter = breedAdapter
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+
+        binding.spinnerBreed.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (!isBreedSpinnerInitialized) {
+                        isBreedSpinnerInitialized = true
+                        return
+                    }
+
+                    if (position == 0) {
+                        Toast.makeText(context, "품종을 선택하세요", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
     }
 
     private fun setUpRecyclerView() {
