@@ -24,7 +24,7 @@
 <summary>와이어 프레임</summary>
   
 ![image](https://github.com/WithAllMyAnimal/KittyAndPuppy/blob/dev/wireframe_figma.png)
-- ### [Team Figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0%3A1&mode=design&t=Gk9iIecXx5N5Zk3x-1))
+- ### [Team Figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0%3A1&mode=design&t=Gk9iIecXx5N5Zk3x-1)
 </details>
 
 ## 📗 Platforms & Languages 📒
