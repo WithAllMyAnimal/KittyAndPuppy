@@ -41,7 +41,7 @@
 
     <EditText
         android:id="@+id/et_login_add_item_id_hint"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/edit_text_sample"
         android:fontFamily="@font/maple"
@@ -52,6 +52,7 @@
         android:textSize="15sp"
         android:layout_marginTop="15dp"
         android:textColor="@color/black"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_login_add_item_login_id"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +88,7 @@
 
     <EditText
         android:id="@+id/et_login_add_item_pw_hint"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/edit_text_sample"
         android:paddingHorizontal="20dp"
@@ -98,6 +99,7 @@
         android:textSize="15sp"
         android:fontFamily="@font/maple"
         android:textColor="@color/black"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_login_pw" />
@@ -118,7 +120,7 @@
 
     <EditText
         android:id="@+id/et_login_add_item_pw_hint_check"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/edit_text_sample"
@@ -129,13 +131,14 @@
         android:textSize="15sp"
         android:fontFamily="@font/maple"
         android:textColor="@color/black"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_login_add_item_pw_check" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_save_dialog"
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_login"
@@ -144,6 +147,7 @@
         android:textSize="18sp"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -30,7 +30,7 @@
             android:text="이심동심"
             android:fontFamily="@font/ari"
             android:textColor="@color/black"
-            android:textSize="35sp"
+            android:textSize="30sp"
             app:layout_constraintTop_toBottomOf="@id/splash_icon"
             app:layout_constraintStart_toStartOf="@id/splash_icon"
             app:layout_constraintEnd_toEndOf="@id/splash_icon"

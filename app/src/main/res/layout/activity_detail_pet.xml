@@ -192,6 +192,8 @@
                 android:text="통통 튀는 낚시대"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_satisfaction"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_name" />
 
@@ -212,7 +214,6 @@
                 android:id="@+id/tv_detail_pet_price_contents"
                 android:layout_width="150dp"
                 android:layout_height="45dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
@@ -220,6 +221,9 @@
                 android:text="15,000원"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintTop_toTopOf="@id/tv_detail_pet_name_contents"
+                app:layout_constraintBottom_toBottomOf="@id/tv_detail_pet_name_contents"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_price" />
 
@@ -269,12 +273,12 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/cafe24"
                 android:gravity="left"
                 android:text="낚시대 미끼 부분에 방울이 달려있음!\n냥이들이 혹시라도 먹지 않게 조심!"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_review"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_caution" />
@@ -290,6 +294,7 @@
                 android:text=" 후기 "
                 android:textColor="@color/black"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_review_contents"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_caution_contents" />
 
