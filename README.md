@@ -22,8 +22,7 @@
 
 <details>
 <summary>와이어 프레임</summary>
-[figma]<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FM0ZK13PiR2EQHOeFlHHSkq%2FNBC_2%25EC%25A1%25B0%3Ftype%3Ddesign%26node-id%3D0%253A1%26mode%3Ddesign%26t%3DGk9iIecXx5N5Zk3x-1" allowfullscreen></iframe>
-회의를 통하여 구체적인 설계에 들어가기 전에 `대략적인 틀`을 구성하였습니다.
+![figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0%3A1&mode=design&t=Gk9iIecXx5N5Zk3x-1)
 </details>
 
 ## 📗 Platforms & Languages 📒
