@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -36,6 +37,7 @@ class DetailPetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(binding.root)
 
         val uid = intent.getStringExtra("uid") ?: return
