@@ -206,6 +206,7 @@
                 android:text="잠깐 화장실에 간 사이에 설기가 계속 문 앞에서\n울고 있었음 ㅠㅠ 울음 소리 듣고 호다닥 나왔는데\n품에 안겨서도 계속 울던 설기ㅠㅠ"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_behavior_review"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_behavior"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_behavior_caution" />

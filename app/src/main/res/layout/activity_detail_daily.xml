@@ -168,15 +168,19 @@
 
             <TextView
                 android:id="@+id/tv_detail_daily_caution"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="15dp"
                 android:background="@color/pink"
                 android:fontFamily="@font/cafe24"
-                android:text=" 오늘은 어떤 일상이었는지 기록해주세요 "
+                android:text="오늘은 어떤 일상이었는지 기록해주세요 "
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:gravity="start"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_daily_caution_contents"
+                app:layout_constraintEnd_toEndOf="@id/view_detail_daily"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_daily"
                 app:layout_constraintTop_toBottomOf="@+id/view_detail_daily_line_bottom" />
 

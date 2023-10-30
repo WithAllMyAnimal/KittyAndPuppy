@@ -33,10 +33,14 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     private val storage = Firebase.storage
 
+    companion object {
+        const val USER_PROFILE_IMAGES = "profileImages"
+    }
+
     // 리팩토링 시 필요한 것
     init {
         Constants.currentUserUid = auth.currentUser!!.uid
-        storage.reference.child("profileImages")
+        storage.reference.child(USER_PROFILE_IMAGES)
             .child("${Constants.currentUserUid}.png").downloadUrl.addOnSuccessListener {
                 Constants.currentUserProfileImg = it
             }.addOnFailureListener {
@@ -56,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigation()
         setupFloatingActionButton()
         setupFABclick()
-        Log.d("JINA", "${Constants.currentUserProfileImg}")
     }
 
     // BottomNavigation이 눌렸을 때 화면전환

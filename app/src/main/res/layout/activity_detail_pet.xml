@@ -44,8 +44,8 @@
 
     <ImageView
         android:id="@+id/iv_detail_pet_profile"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="20dp"
         android:layout_marginVertical="10dp"
         android:background="@drawable/detail_circle_shape"
@@ -64,7 +64,7 @@
         android:fontFamily="@font/cafe24"
         android:text="설기"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/iv_detail_pet_profile"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_pet_profile"
@@ -182,16 +182,19 @@
 
             <TextView
                 android:id="@+id/tv_detail_pet_name_contents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
                 android:text="통통 튀는 낚시대"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_satisfaction"
-                app:layout_constraintStart_toStartOf="@+id/tv_detail_pet_name"
+                app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_name" />
 
             <TextView
@@ -209,17 +212,20 @@
 
             <TextView
                 android:id="@+id/tv_detail_pet_price_contents"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
                 android:text="15,000원"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="@id/tv_detail_pet_price"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_pet_price"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintTop_toTopOf="@id/tv_detail_pet_name_contents"
-                app:layout_constraintBottom_toBottomOf="@id/tv_detail_pet_name_contents" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_detail_pet_name_contents"
+                app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_price" />
 
             <TextView
                 android:id="@+id/tv_detail_pet_satisfaction"
@@ -239,11 +245,10 @@
                 android:id="@+id/rat_detail_pet_star"
                 android:layout_width="240dp"
                 android:layout_height="40dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginTop="5dp"
                 android:numStars="5"
                 android:rating="0"
                 android:isIndicator="true"
-                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_caution"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_pet"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_satisfaction" />
@@ -259,7 +264,6 @@
                 android:text=" 주의사항 "
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_caution_contents"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/rat_detail_pet_star" />
 
@@ -268,8 +272,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="20dp"
-                android:paddingVertical="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/cafe24"
                 android:gravity="left"
                 android:text="낚시대 미끼 부분에 방울이 달려있음!\n냥이들이 혹시라도 먹지 않게 조심!"
@@ -291,6 +294,7 @@
                 android:text=" 후기 "
                 android:textColor="@color/black"
                 android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_review_contents"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_pet"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_pet_caution_contents" />
 
@@ -299,7 +303,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="20dp"
-                android:paddingVertical="10dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="@font/cafe24"
                 android:gravity="left"
