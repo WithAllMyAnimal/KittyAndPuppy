@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -39,37 +40,43 @@ class DogAndCatAddActivity : AppCompatActivity() {
     val storage = Firebase.storage
     val storageRef = storage.reference
 
+    var isDogAndCatSpinnerInitialized = false
+    var isBreedSpinnerInitialized = false
+
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
     } else {
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted) {
-            // 권한이 부여된 경우 갤러리 열기
-            val intent = ImageUtils.createGalleryIntent()
-            pickImageLauncher.launch(intent)
-        } else {
-            android.app.AlertDialog.Builder(this)
-                .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
-                .setPositiveButton("설정으로 이동") { _, _ ->
-                    // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                    val uri = Uri.fromParts("package", this.packageName, null)
-                    intent.data = uri
-                    startActivity(intent)
-                }
-                .setNegativeButton("취소") { _, _ -> }
-                .show()
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                // 권한이 부여된 경우 갤러리 열기
+                val intent = ImageUtils.createGalleryIntent()
+                pickImageLauncher.launch(intent)
+            } else {
+                android.app.AlertDialog.Builder(this)
+                    .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
+                    .setPositiveButton("설정으로 이동") { _, _ ->
+                        // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                        val uri = Uri.fromParts("package", this.packageName, null)
+                        intent.data = uri
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("취소") { _, _ -> }
+                    .show()
+            }
         }
-    }
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            binding.ivCircleMy.setImageURI(result.data?.data)
-            selectedImageUri = result.data?.data
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                binding.ivCircleMy.setImageURI(result.data?.data)
+                selectedImageUri = result.data?.data
+            }
         }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDogAndCatAddBinding.inflate(layoutInflater)
@@ -79,16 +86,12 @@ class DogAndCatAddActivity : AppCompatActivity() {
         userRef = database.getReference("users")
 
         val dogCatAdapter = ArrayAdapter.createFromResource(
-            this, R.array.dogandcat, android.R.layout.simple_spinner_item
+            this,
+            R.array.dogandcat,
+            android.R.layout.simple_spinner_item
         )
         dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDogAndCatAddDogcat.adapter = dogCatAdapter
-
-        val petTypeAdapter = ArrayAdapter.createFromResource(
-            this, R.array.dogbreed, android.R.layout.simple_spinner_item
-        )
-        petTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spDogAndCatAddPetType.adapter = petTypeAdapter
 
         binding.spDogAndCatAddDogcat.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -98,29 +101,57 @@ class DogAndCatAddActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    val selectedItem = binding.spDogAndCatAddDogcat.selectedItem.toString()
-                    if (selectedItem == "강아지") {
-                        val dogAdapter = ArrayAdapter.createFromResource(
-                            applicationContext,
-                            R.array.dogbreed,
-                            android.R.layout.simple_spinner_item
-                        )
-                        dogAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        binding.spDogAndCatAddPetType.adapter = dogAdapter
-                    } else if (selectedItem == "고양이") {
-                        val catAdapter = ArrayAdapter.createFromResource(
-                            applicationContext,
-                            R.array.catbreed,
-                            android.R.layout.simple_spinner_item
-                        )
-                        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        binding.spDogAndCatAddPetType.adapter = catAdapter
+                    if (!isDogAndCatSpinnerInitialized) {
+                        isDogAndCatSpinnerInitialized = true
+                        return
+                    }
+
+                    if (position == 0) {
+                        Toast.makeText(this@DogAndCatAddActivity, "종류를 선택하세요", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    val selectedItem = parent?.getItemAtPosition(position).toString()
+                    val breedArray = when (selectedItem) {
+                        "전체" -> R.array.all
+                        "강아지" -> R.array.dogbreed
+                        "고양이" -> R.array.catbreed
+                        else -> return
+                    }
+                    val breedAdapter = ArrayAdapter.createFromResource(
+                        applicationContext,
+                        breedArray,
+                        android.R.layout.simple_spinner_item
+                    )
+                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    binding.spDogAndCatAddPetType.adapter = breedAdapter
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+
+        binding.spDogAndCatAddPetType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (!isBreedSpinnerInitialized) {
+                        isBreedSpinnerInitialized = true
+                        return
+                    }
+
+                    if (position == 0) {
+                        Toast.makeText(this@DogAndCatAddActivity, "품종을 선택하세요", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
+
         binding.btnLoginSignup.setOnClickListener {
             checkDuplicateId()
         }
@@ -129,7 +160,11 @@ class DogAndCatAddActivity : AppCompatActivity() {
         }
 
         binding.ivCircleMy.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    storagePermission
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
@@ -209,7 +244,8 @@ class DogAndCatAddActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 finish()
 
-                                val sharedPreferences = getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                                val sharedPreferences =
+                                    getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                                 val editor = sharedPreferences.edit()
                                 editor.putString("imageKey", imageKey)
                                 editor.apply()
