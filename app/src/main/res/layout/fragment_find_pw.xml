@@ -27,7 +27,7 @@
 
     <EditText
         android:id="@+id/et_login_add_item_id_hint"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="120dp"
         android:background="@drawable/edit_text_sample"
@@ -38,13 +38,14 @@
         android:paddingHorizontal="15dp"
         android:textSize="13sp"
         android:textColor="@color/black"
+        android:layout_marginHorizontal="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_login_add_item_signup" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_find_pw_save_dialog"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:background="@drawable/btn_login"
@@ -52,6 +53,7 @@
         android:text="전송"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:layout_marginHorizontal="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_login_add_item_id_hint" />
