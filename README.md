@@ -9,12 +9,12 @@
 
 - ### [Canva](https://www.canva.com/design/DAFwTIBILho/2GmYVZDvnnnt3G2f4-i6MA/view?utm_content=DAFwTIBILho&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
 
-| 이름   | 역할 | BLOG                                                               | GitHub                                                   | 
-| ------ | ---- | --------------------------------------------------                 | -------------------------------------------------------- |
-| 김민지 | 리더 | https://www.notion.so/about-Kotlin-18bc152c266a40d3a1b0e0d7bc9ab5f8 |  https://github.com/minji-0420                           |
-| 김진아 | 부리더| https://velog.io/@jxxn_a                                           |  https://github.com/Jxxna613                             |
-| 정도균 | 팀원 | https://jeongtrip.tistory.com/                                      |  https://github.com/wjdehrbs                             |
-| 신승철 | 팀원 | https://velog.io/@tlstmdcjfekt                                      |  https://github.com/developShin                          |
+| 이름   | 역할   | BLOG                           | GitHub                         | 
+| ------ | ------ | ------------------------------ | -----------------------------  |
+| 김민지 | 리더   | https://url.kr/q2f3kv          | https://github.com/minji-0420  |
+| 김진아 | 부리더 | https://velog.io/@jxxn_a       | https://github.com/Jxxna613    |
+| 정도균 | 팀원   | https://jeongtrip.tistory.com/ | https://github.com/wjdehrbs    |
+| 신승철 | 팀원   | https://velog.io/@tlstmdcjfekt | https://github.com/developShin |
 
 
 ## 🎩 Project Introduce 🎩
@@ -22,9 +22,7 @@
 
 <details>
 <summary>와이어 프레임</summary>
-![figma](https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/1f2f666a-ca24-4d0a-8dc6-83dad76781af)
-![figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0-1&mode=design&t=T1692JWVx6zhKjF7-0)
-회의를 통하여 구체적인 설계에 들어가기 전에 `대략적인 틀`을 구성하였습니다.
+![figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0%3A1&mode=design&t=Gk9iIecXx5N5Zk3x-1)
 </details>
 
 ## 📗 Platforms & Languages 📒
