@@ -62,7 +62,6 @@ class MypageFragment : Fragment() {
         setUpRecyclerView()
         loadDefaultTabData()
         loadUserData()
-        birthday()
 
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -214,39 +213,6 @@ class MypageFragment : Fragment() {
             })
         }
     }
-
-    private fun birthday() {
-        val userId = FBAuth.getUid()
-        userProfileRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile").child("birth")
-
-        // 현재 날짜 가져오기:
-        val currentDate = Calendar.getInstance()
-        val currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
-        val currentMonth = currentDate.get(Calendar.MONTH) + 1  // January is 0, December is 11
-
-        userProfileRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val birth = snapshot.getValue(String::class.java) ?: return
-                val birthDateParts = birth.split("-")
-                if (birthDateParts.size == 3) {
-                    val birthYear = birthDateParts[0].toIntOrNull()
-                    val birthMonth = birthDateParts[1].toIntOrNull()
-                    val birthDay = birthDateParts[2].toIntOrNull()
-
-                    if (birthYear != null && birthMonth != null && birthDay != null) {
-                        // 두 날짜를 비교해서 동일한 경우 XML에 있는 아이콘을 보이게 만들기:
-                        if (birthMonth == currentMonth && birthDay == currentDay) {
-                            binding.ivMypageCakeLeft.visibility = View.VISIBLE
-                        }
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("MypageFragment", "Error loading birthday data: ${error.message}")
-            }
-        })
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
