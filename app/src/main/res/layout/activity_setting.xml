@@ -44,90 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
-        android:text="시스템"
-        android:paddingStart="20dp"
-        android:paddingVertical="5dp"
-        android:background="@color/blue"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_setting_toolbar" />
-
-    <TextView
-        android:id="@+id/tv_setting_darkmod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="다크모드"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_system" />
-
-    <TextView
-        android:id="@+id/tv_setting_englishmod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginVertical="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="English Mode"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_setting_alarm"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_darkmod" />
-
-    <TextView
-        android:id="@+id/tv_setting_alarm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="알림"
-        android:paddingStart="20dp"
-        android:paddingVertical="5dp"
-        android:background="@color/blue"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_englishmod" />
-
-    <TextView
-        android:id="@+id/tv_setting_like"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="좋아요"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_alarm" />
-
-    <TextView
-        android:id="@+id/tv_setting_comment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginVertical="25dp"
-        android:fontFamily="@font/cafe24"
-        android:text="댓글"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@id/tv_setting_account"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_like" />
-
-    <TextView
-        android:id="@+id/tv_setting_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/cafe24"
         android:text="계정"
         android:paddingStart="20dp"
         android:paddingVertical="5dp"
@@ -135,7 +51,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_comment" />
+        app:layout_constraintTop_toBottomOf="@id/tb_setting_toolbar" />
 
     <TextView
         android:id="@+id/tv_setting_passwordchange"
@@ -148,63 +64,34 @@
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_account" />
+        app:layout_constraintTop_toBottomOf="@id/tv_setting_system" />
 
     <TextView
         android:id="@+id/tv_setting_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
         android:fontFamily="@font/cafe24"
         android:text="로그아웃"
         android:textColor="@color/red"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_setting_passwordchange" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_setting_passwordchange" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sw_setting_switchbutton"
+    <TextView
+        android:id="@+id/tv_setting_Cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:thumb="@drawable/switch_thumb_selector"
-        android:track="@drawable/switch_track_selector"
-        android:layout_marginEnd="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_darkmod"
-        app:layout_constraintTop_toTopOf="@id/tv_setting_darkmod" />
+        android:layout_marginVertical="25dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="@font/cafe24"
+        android:text="회원탈퇴"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_setting_logout" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sw_setting_switchbutton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:thumb="@drawable/switch_thumb_selector"
-        android:track="@drawable/switch_track_selector"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_englishmod"
-        app:layout_constraintTop_toTopOf="@id/tv_setting_englishmod" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sw_setting_switchbutton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:thumb="@drawable/switch_thumb_selector"
-        android:track="@drawable/switch_track_selector"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_like"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_setting_like" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/sw_setting_switchbutton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:thumb="@drawable/switch_thumb_selector"
-        android:track="@drawable/switch_track_selector"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_setting_comment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sw_setting_switchbutton3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

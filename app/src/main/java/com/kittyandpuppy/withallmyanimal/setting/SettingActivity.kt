@@ -25,32 +25,6 @@ class SettingActivity : AppCompatActivity() {
             finish()
         }
 
-        val isDarkMode = sharedPrefs.getBoolean("darkMode", false)
-        binding.swSettingSwitchbutton.isChecked = isDarkMode
-
-        // 다크모드 On/Off코드
-        binding.swSettingSwitchbutton.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }else{
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-            sharedPrefs.edit().putBoolean("darkMode", isChecked).apply()
-        }
-
-        // English On/Off코드
-        val isEnglishMode: Boolean = sharedPrefs.getBoolean("englishMode", false)
-        binding.swSettingSwitchbutton2.isChecked = isEnglishMode
-
-        binding.swSettingSwitchbutton2.setOnCheckedChangeListener{ _, isChecked ->
-            if(isChecked){
-                changeLocale("en",this)
-            }else{
-                changeLocale("default",this)
-            }
-            sharedPrefs.edit().putBoolean("englishMode", isChecked).apply()
-        }
-
         // 비밀번호 변경 버튼
         binding.tvSettingPasswordchange.setOnClickListener{
             val dialogFragment = SettingPasswordDialogFragment()
