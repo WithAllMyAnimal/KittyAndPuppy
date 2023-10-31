@@ -8,7 +8,8 @@ open class BaseModel(
     open val title: String = "",
     open var uid : String = "",
     open var likesCount: Int = 0,
-    open var commentsCount: Int = 0
+    open var commentsCount: Int = 0,
+    open val animalAndCategory: String = ""
 )
 
 data class Behavior(
@@ -17,7 +18,8 @@ data class Behavior(
     override val content: String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
-    override val title: String = ""
+    override val title: String = "",
+    override val animalAndCategory: String = ""
 ) : BaseModel(category = "Behavior")
 
 data class Daily(
@@ -25,7 +27,8 @@ data class Daily(
     override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
-    override val title: String = ""
+    override val title: String = "",
+    override val animalAndCategory: String = ""
 ) : BaseModel(category = "Daily")
 
 data class Hospital(
@@ -37,7 +40,8 @@ data class Hospital(
     override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
-    override val title: String = ""
+    override val title: String = "",
+    override val animalAndCategory: String = ""
 ) : BaseModel(category = "Hospital")
 
 data class Pet(
@@ -49,5 +53,6 @@ data class Pet(
     override var uid : String = "",
     override val tags: List<String> = emptyList(),
     override val time: String = "",
-    override val title: String = ""
+    override val title: String = "",
+    override val animalAndCategory: String = ""
 ) : BaseModel(category = "Pet")

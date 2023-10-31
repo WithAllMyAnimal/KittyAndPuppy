@@ -109,20 +109,11 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun getBoardData(dogOrCat: String? = null, category: String? = null) {
-        val query: Query = when {
-            dogOrCat != null && category != null && category != "전체" -> {
-                FBRef.users.orderByChild("profile/dogcat").equalTo(dogOrCat)
-            }
-            category != null && category != "전체" -> {
-                FBRef.users.orderByChild("category").equalTo(category)
-            }
-            dogOrCat != null -> {
-                FBRef.users.orderByChild("profile/dogcat").equalTo(dogOrCat)
-            }
-            else -> {
-                boardRef
-            }
+    private fun getBoardData(spinnerValue: String? = null) {
+        val query: Query = if (spinnerValue != null) {
+            FBRef.users.orderByChild("profile/dogcat").equalTo(spinnerValue)
+        } else {
+            boardRef
         }
 
         query.addValueEventListener(object : ValueEventListener {
@@ -133,7 +124,7 @@ class HomeFragment : Fragment() {
                 for (userSnapshot in users) {
                     val uid = userSnapshot.key ?: continue
 
-                    if (dogOrCat != null || (category != null && category != "전체")) {
+                    if (spinnerValue != null) {
                         val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
                         boardRef.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(boardSnapshot: DataSnapshot) {
@@ -212,7 +203,6 @@ class HomeFragment : Fragment() {
         } else {
             binding.spinnerDogandcat.selectedItem.toString()
         }
-        val category = binding.spinnerCategory.selectedItem.toString()
-        getBoardData(spinnerValue, category)
+        getBoardData(spinnerValue)
     }
 }
