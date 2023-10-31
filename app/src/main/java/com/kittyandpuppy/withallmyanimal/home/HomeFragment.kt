@@ -19,6 +19,7 @@ import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.boardRef
+import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.users
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -34,6 +35,7 @@ class HomeFragment : Fragment() {
     private val boardList = mutableListOf<BaseModel>()
     private val TAG = HomeFragment::class.java.simpleName
     var isDogAndCatSpinnerInitialized = false
+    var isCategorySpinnerInitialized = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +48,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-        binding.spinnerDogandcat.setSelection(1)
-        onSpinnerItemSelected()
 
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
@@ -69,12 +69,14 @@ class HomeFragment : Fragment() {
                     view: View?,
                     position: Int,
                     id: Long
-                ) {  if (!isDogAndCatSpinnerInitialized) {
-                    isDogAndCatSpinnerInitialized = true
-                    return
-                }
+                ) {
+                    if (!isDogAndCatSpinnerInitialized) {
+                        isDogAndCatSpinnerInitialized = true
+                        return
+                    }
                     onSpinnerItemSelected()
-                 }
+                }
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
@@ -89,10 +91,19 @@ class HomeFragment : Fragment() {
         binding.spinnerCategory.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (!isCategorySpinnerInitialized) {
+                        isCategorySpinnerInitialized = true
+                        return
+                    }
                     onSpinnerItemSelected()
                 }
+
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+
+        binding.spinnerDogandcat.setSelection(1)
+        binding.spinnerCategory.setSelection(1)
+        onSpinnerItemSelected()
     }
 
     private fun setUpRecyclerView() {
@@ -109,34 +120,56 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun getBoardData(spinnerValue: String? = null) {
-        val query: Query = if (spinnerValue != null) {
-            FBRef.users.orderByChild("profile/dogcat").equalTo(spinnerValue)
-        } else {
-            boardRef
+    enum class QueryType {
+        COMBINED_SPINNER,
+        ONLY_CATEGORY,
+        ONLY_ANIMAL,
+        DEFAULT
+    }
+
+    private fun getBoardData(
+        combinedSpinnerValue: String? = null,
+        onlyCategory: String? = null,
+        onlyAnimal: String? = null
+    ) {
+        val query: Pair<QueryType, Query> = when {
+            combinedSpinnerValue != null -> {
+                Pair(QueryType.COMBINED_SPINNER, boardRef.orderByChild("animalAndCategory").equalTo(combinedSpinnerValue))
+            }
+            onlyCategory != null -> {
+                Pair(QueryType.ONLY_CATEGORY, boardRef.orderByChild("category").equalTo(onlyCategory))
+            }
+            onlyAnimal != null -> {
+                Pair(QueryType.ONLY_ANIMAL, users.orderByChild("profile/dogcat").equalTo(onlyAnimal))
+            }
+            else -> { Pair(QueryType.DEFAULT, boardRef) }
         }
 
-        query.addValueEventListener(object : ValueEventListener {
+        query.second.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d(TAG, "Snapshot size: ${snapshot.childrenCount}")
+
                 boardList.clear()
                 val users: Iterable<DataSnapshot> = snapshot.children
 
                 for (userSnapshot in users) {
                     val uid = userSnapshot.key ?: continue
 
-                    if (spinnerValue != null) {
-                        val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
-                        boardRef.addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(boardSnapshot: DataSnapshot) {
-                                handlePostsData(boardSnapshot, uid)
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                Log.w(TAG, "Failed to get board data", error.toException())
-                            }
-                        })
-                    } else {
-                        handlePostsData(userSnapshot, uid)
+                    when (query.first) {
+                        QueryType.COMBINED_SPINNER -> {
+                            val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
+                            boardRef.addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(boardSnapshot: DataSnapshot) {
+                                    handlePostsData(boardSnapshot, uid)
+                                }
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.w(TAG, "Failed to get board data", error.toException())
+                                }
+                            })
+                        }
+                        else -> {
+                            handlePostsData(userSnapshot, uid)
+                        }
                     }
                 }
             }
@@ -147,6 +180,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun handlePostsData(snapshot: DataSnapshot, uid: String) {
+        Log.d(TAG, "handlePostsData called with UID: $uid")
+
         for (postSnapshot in snapshot.children) {
             val postKey = postSnapshot.key ?: continue
 
@@ -197,12 +232,25 @@ class HomeFragment : Fragment() {
         }
         rvAdapter?.submitList(boardList.toList())
     }
+
     fun onSpinnerItemSelected() {
-        val spinnerValue = if (binding.spinnerDogandcat.selectedItem.toString() == "전체") {
-            null
-        } else {
-            binding.spinnerDogandcat.selectedItem.toString()
+        val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()
+        val spinnerCategoryValue = binding.spinnerCategory.selectedItem.toString()
+
+        when {
+            spinnerDogCatValue == "전체" && spinnerCategoryValue != "전체" -> {
+                getBoardData(onlyCategory = spinnerCategoryValue)
+            }
+            spinnerDogCatValue != "전체" && spinnerCategoryValue == "전체" -> {
+                getBoardData(onlyAnimal = spinnerDogCatValue)
+            }
+            spinnerDogCatValue != "전체" && spinnerCategoryValue != "전체" -> {
+                val combinedKey = "$spinnerDogCatValue$spinnerCategoryValue"
+                getBoardData(combinedSpinnerValue = combinedKey)
+            }
+            else -> {
+                getBoardData()
+            }
         }
-        getBoardData(spinnerValue)
     }
 }
