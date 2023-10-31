@@ -16,10 +16,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.boardRef
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -32,13 +36,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
-
     private val boardList = mutableListOf<BaseModel>()
-
     private val TAG = HomeFragment::class.java.simpleName
-
     var isDogAndCatSpinnerInitialized = false
-    var isBreedSpinnerInitialized = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +51,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+        binding.spinnerDogandcat.setSelection(1)
+        onSpinnerItemSelected()
 
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
@@ -77,16 +79,24 @@ class HomeFragment : Fragment() {
                         isDogAndCatSpinnerInitialized = true
                         return
                     }
-
                     if (position == 0) {
                         Toast.makeText(context, "종류를 선택하세요", Toast.LENGTH_SHORT).show()
                     }
+                    val breedArray = when (parent?.getItemAtPosition(position).toString()) {
+                        "전체" -> {
+                            onSpinnerItemSelected()
+                            R.array.all
+                        }
 
-                    val selectedItem = parent?.getItemAtPosition(position).toString()
-                    val breedArray = when (selectedItem) {
-                        "전체" -> R.array.all
-                        "강아지" -> R.array.dogbreed
-                        "고양이" -> R.array.catbreed
+                        "강아지" -> {
+                            onSpinnerItemSelected()
+                            R.array.dogbreed
+                        }
+
+                        "고양이" -> {
+                            onSpinnerItemSelected()
+                            R.array.catbreed
+                        }
                         else -> return
                     }
                     val breedAdapter = ArrayAdapter.createFromResource(
@@ -95,28 +105,6 @@ class HomeFragment : Fragment() {
                         android.R.layout.simple_spinner_item
                     )
                     breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spinnerBreed.adapter = breedAdapter
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-
-        binding.spinnerBreed.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isBreedSpinnerInitialized) {
-                        isBreedSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(context, "품종을 선택하세요", Toast.LENGTH_SHORT).show()
-                    }
                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
@@ -136,79 +124,100 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    override fun onResume() {
-        super.onResume()
-        getBoardData()
-        Log.d(TAG, "RESUME")
-    }
+    private fun getBoardData(spinnerValue: String? = null) {
+        val query: Query = if (spinnerValue != null) {
+            FBRef.users.orderByChild("profile/dogcat").equalTo(spinnerValue)
+        } else {
+            boardRef
+        }
 
-    private fun getBoardData() {
-        val postListener = object : ValueEventListener {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 boardList.clear()
-                for (userSnapshot in snapshot.children) {
+                val users: Iterable<DataSnapshot> = snapshot.children
+
+                for (userSnapshot in users) {
                     val uid = userSnapshot.key ?: continue
-                    for (postSnapshot in userSnapshot.children) {
-                        val postKey = postSnapshot.key ?: continue
 
-                        val category =
-                            postSnapshot.child("category").getValue(String::class.java) ?: ""
-                        val post: BaseModel? = when (category) {
-                            "Behavior" -> postSnapshot.getValue(Behavior::class.java)
-                            "Daily" -> postSnapshot.getValue(Daily::class.java)
-                            "Hospital" -> postSnapshot.getValue(Hospital::class.java)
-                            "Pet" -> postSnapshot.getValue(Pet::class.java)
-                            else -> null
-                        }?.apply {
-                            this.uid = uid
-                            this.key = postKey
-                        }
+                    if (spinnerValue != null) {
+                        val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
+                        boardRef.addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(boardSnapshot: DataSnapshot) {
+                                handlePostsData(boardSnapshot, uid)
+                            }
 
-                        if (post != null) {
-                            boardList.add(post)
-
-                            val likesRef = FBRef.likesRef.child(postKey).child("likes")
-                            likesRef.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    post.likesCount = snapshot.childrenCount.toInt()
-                                    rvAdapter?.notifyDataSetChanged()
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d(
-                                        "HomeFragment",
-                                        "Failed to read likes count",
-                                        error.toException()
-                                    )
-                                }
-                            })
-
-                            val commentsRef = FBRef.commentRef.child(postKey)
-                            commentsRef.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    post.commentsCount = snapshot.childrenCount.toInt()
-                                    rvAdapter?.notifyDataSetChanged()
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.d(
-                                        "HomeFragment",
-                                        "Failed to read comments count",
-                                        error.toException()
-                                    )
-                                }
-                            })
-                        }
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.w(TAG, "Failed to get board data", error.toException())
+                            }
+                        })
+                    } else {
+                        handlePostsData(userSnapshot, uid)
                     }
                 }
-                Log.d(TAG, boardList.size.toString())
-                rvAdapter?.submitList(boardList.toList())
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Post Failed", error.toException())
             }
+        })
+    }
+
+    private fun handlePostsData(snapshot: DataSnapshot, uid: String) {
+        for (postSnapshot in snapshot.children) {
+            val postKey = postSnapshot.key ?: continue
+
+            val category =
+                postSnapshot.child("category").getValue(String::class.java) ?: ""
+            val post: BaseModel? = when (category) {
+                "Behavior" -> postSnapshot.getValue(Behavior::class.java)
+                "Daily" -> postSnapshot.getValue(Daily::class.java)
+                "Hospital" -> postSnapshot.getValue(Hospital::class.java)
+                "Pet" -> postSnapshot.getValue(Pet::class.java)
+                else -> null
+            }?.apply {
+                this.uid = uid
+                this.key = postKey
+            }
+
+            if (post != null) {
+                boardList.add(post)
+
+                val likesRef = FBRef.likesRef.child(postKey).child("likes")
+                likesRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        post.likesCount = snapshot.childrenCount.toInt()
+                        rvAdapter?.notifyDataSetChanged()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("HomeFragment", "Failed to read likes count", error.toException())
+                    }
+                })
+
+                val commentsRef = FBRef.commentRef.child(postKey)
+                commentsRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        post.commentsCount = snapshot.childrenCount.toInt()
+                        rvAdapter?.notifyDataSetChanged()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d(
+                            "HomeFragment",
+                            "Failed to read comments count",
+                            error.toException()
+                        )
+                    }
+                })
+            }
         }
-        FBRef.boardRef.addListenerForSingleValueEvent(postListener)
+        rvAdapter?.submitList(boardList.toList())
+    }
+    fun onSpinnerItemSelected() {
+        val spinnerValue = if (binding.spinnerDogandcat.selectedItem.toString() == "전체") {
+            null
+        } else {
+            binding.spinnerDogandcat.selectedItem.toString()
+        }
+        getBoardData(spinnerValue)
     }
 }

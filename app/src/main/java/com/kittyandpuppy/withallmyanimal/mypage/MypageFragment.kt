@@ -197,12 +197,10 @@ class MypageFragment : Fragment() {
                         val userIdname = snapshot.child("userIdname").getValue(String::class.java)
                         val petName = snapshot.child("petName").getValue(String::class.java)
                         val birth = snapshot.child("birth").getValue(String::class.java)
-                        // val statsMessage = snapshot.child("statusMessage").getValue(String::class.java)
 
                         binding.tvMypage.text = petName
                         binding.tvMypageNickname.text = userIdname
                         binding.tvMypageBirth.text = birth
-                        // binding.tvMypageMessage.text = statsMessage
                     }
                 }
 
