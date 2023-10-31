@@ -84,45 +84,10 @@ class DogAndCatAddActivity : AppCompatActivity() {
         val dogCatAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.dogandcat,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_dropdown_item
         )
         dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDogAndCatAddDogcat.adapter = dogCatAdapter
-
-        binding.spDogAndCatAddDogcat.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isDogAndCatSpinnerInitialized) {
-                        isDogAndCatSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(this@DogAndCatAddActivity, "종류를 선택하세요", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    val selectedItem = parent?.getItemAtPosition(position).toString()
-                    val breedArray = when (selectedItem) {
-                        "전체" -> R.array.all
-                        "강아지" -> R.array.dogbreed
-                        "고양이" -> R.array.catbreed
-                        else -> return
-                    }
-                    val breedAdapter = ArrayAdapter.createFromResource(
-                        applicationContext,
-                        breedArray,
-                        android.R.layout.simple_spinner_item
-                    )
-                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
 
         binding.btnLoginSignup.setOnClickListener {
             checkDuplicateId()

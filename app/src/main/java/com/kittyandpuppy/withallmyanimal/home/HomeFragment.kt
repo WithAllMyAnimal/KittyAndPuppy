@@ -1,6 +1,5 @@
 package com.kittyandpuppy.withallmyanimal.home
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,16 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
@@ -43,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -62,7 +57,7 @@ class HomeFragment : Fragment() {
         val dogCatAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.dogandcat,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_dropdown_item
         )
         dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerDogandcat.adapter = dogCatAdapter
@@ -74,39 +69,29 @@ class HomeFragment : Fragment() {
                     view: View?,
                     position: Int,
                     id: Long
-                ) {
-                    if (!isDogAndCatSpinnerInitialized) {
-                        isDogAndCatSpinnerInitialized = true
-                        return
-                    }
-                    if (position == 0) {
-                        Toast.makeText(context, "종류를 선택하세요", Toast.LENGTH_SHORT).show()
-                    }
-                    val breedArray = when (parent?.getItemAtPosition(position).toString()) {
-                        "전체" -> {
-                            onSpinnerItemSelected()
-                            R.array.all
-                        }
-
-                        "강아지" -> {
-                            onSpinnerItemSelected()
-                            R.array.dogbreed
-                        }
-
-                        "고양이" -> {
-                            onSpinnerItemSelected()
-                            R.array.catbreed
-                        }
-                        else -> return
-                    }
-                    val breedAdapter = ArrayAdapter.createFromResource(
-                        requireContext(),
-                        breedArray,
-                        android.R.layout.simple_spinner_item
-                    )
-                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                ) {  if (!isDogAndCatSpinnerInitialized) {
+                    isDogAndCatSpinnerInitialized = true
+                    return
                 }
+                    onSpinnerItemSelected()
+                 }
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+
+        val categoryAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.category,
+            android.R.layout.simple_spinner_dropdown_item
+        )
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCategory.adapter = categoryAdapter
+
+        binding.spinnerCategory.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    onSpinnerItemSelected()
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
     }
 
@@ -124,11 +109,20 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun getBoardData(spinnerValue: String? = null) {
-        val query: Query = if (spinnerValue != null) {
-            FBRef.users.orderByChild("profile/dogcat").equalTo(spinnerValue)
-        } else {
-            boardRef
+    private fun getBoardData(dogOrCat: String? = null, category: String? = null) {
+        val query: Query = when {
+            dogOrCat != null && category != null && category != "전체" -> {
+                FBRef.users.orderByChild("profile/dogcat").equalTo(dogOrCat)
+            }
+            category != null && category != "전체" -> {
+                FBRef.users.orderByChild("category").equalTo(category)
+            }
+            dogOrCat != null -> {
+                FBRef.users.orderByChild("profile/dogcat").equalTo(dogOrCat)
+            }
+            else -> {
+                boardRef
+            }
         }
 
         query.addValueEventListener(object : ValueEventListener {
@@ -139,7 +133,7 @@ class HomeFragment : Fragment() {
                 for (userSnapshot in users) {
                     val uid = userSnapshot.key ?: continue
 
-                    if (spinnerValue != null) {
+                    if (dogOrCat != null || (category != null && category != "전체")) {
                         val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
                         boardRef.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(boardSnapshot: DataSnapshot) {
@@ -218,6 +212,7 @@ class HomeFragment : Fragment() {
         } else {
             binding.spinnerDogandcat.selectedItem.toString()
         }
-        getBoardData(spinnerValue)
+        val category = binding.spinnerCategory.selectedItem.toString()
+        getBoardData(spinnerValue, category)
     }
 }

@@ -7,35 +7,6 @@
         <item>고양이</item>
     </string-array>
 
-    <string-array name="all">
-        <item>품종</item>
-        <item>전체</item>
-    </string-array>
-
-    <string-array name="dogbreed">
-        <item>품종</item>
-        <item>전체</item>
-        <item>몰티즈</item>
-        <item>푸들</item>
-        <item>포메라니안</item>
-        <item>진돗개</item>
-        <item>시추</item>
-        <item>비숑프리제</item>
-        <item>기타</item>
-    </string-array>
-
-    <string-array name="catbreed">
-        <item>품종</item>
-        <item>전체</item>
-        <item>코리안숏헤어</item>
-        <item>페르시안</item>
-        <item>러시안블루</item>
-        <item>샴</item>
-        <item>터키쉬앙고라</item>
-        <item>스코티쉬폴드</item>
-        <item>기타</item>
-    </string-array>
-
     <string-array name="category">
         <item>일지 카테고리</item>
         <item>전체</item>
