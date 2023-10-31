@@ -74,18 +74,17 @@
                 android:id="@+id/tv_dog_and_cat_add_nick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/maple"
                 android:text="아이디"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/et_dog_and_cat_add_nick"
                 app:layout_constraintTop_toBottomOf="@+id/iv_circle_my" />
 
             <EditText
                 android:id="@+id/et_dog_and_cat_add_nick"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edit_text_sample"
@@ -95,8 +94,8 @@
                 android:paddingHorizontal="15dp"
                 android:textColor="@color/black"
                 android:textSize="13sp"
+                android:layout_marginHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_nick" />
 
@@ -118,13 +117,12 @@
                 android:id="@+id/tv_dog_and_cat_add_petname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/maple"
                 android:text="반려견/반려묘 이름"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/et_dog_and_cat_add_petname"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_nick" />
 
 
@@ -142,7 +140,6 @@
                 android:textSize="13sp"
                 android:layout_marginHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_petname" />
 
@@ -150,104 +147,76 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/maple"
                 android:text="반려견/반려묘 생일"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/et_dog_and_cat_add_birth"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
             <EditText
                 android:id="@+id/et_dog_and_cat_add_birth"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_text_sample"
-                android:fontFamily="@font/cafe24"
-                android:hint="생일을 작성해주세요 ex) 2022.02.02"
-                android:maxLines="1"
-                android:paddingHorizontal="15dp"
-                android:textColor="@color/black"
-                android:textSize="13sp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginHorizontal="20dp"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:fontFamily="@font/maple"
+                android:hint="반려견/반려묘 생일을 입력해주세요"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:padding="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_roundcorner"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
             <TextView
                 android:id="@+id/tv_dog_and_cat_add_dog_cat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/maple"
                 android:text="강아지/고양이"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/sp_dog_and_cat_add_dogcat"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_birth" />
 
             <Spinner
                 android:id="@+id/sp_dog_and_cat_add_dogcat"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_spinner_background"
                 android:dropDownWidth="wrap_content"
                 android:popupBackground="@drawable/custom_spinner_background"
                 android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toStartOf="@id/sp_dog_and_cat_add_pet_type"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_dog_cat" />
-
-            <TextView
-                android:id="@+id/tv_dog_and_cat_add_pet_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="220dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/maple"
-                android:text="견종/묘죵"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_birth" />
-
-            <Spinner
-                android:id="@+id/sp_dog_and_cat_add_pet_type"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/custom_spinner_background"
-                android:dropDownWidth="wrap_content"
-                android:popupBackground="@drawable/custom_spinner_background"
-                android:spinnerMode="dropdown"
-                app:layout_constraintStart_toEndOf="@id/sp_dog_and_cat_add_dogcat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_pet_type" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_dog_and_cat_add_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="25dp"
                 android:background="@drawable/btn_signup"
                 android:fontFamily="@font/maple"
                 android:text="저장하기"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_marginHorizontal="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/sp_dog_and_cat_add_pet_type" />
+                app:layout_constraintTop_toBottomOf="@+id/sp_dog_and_cat_add_dogcat" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

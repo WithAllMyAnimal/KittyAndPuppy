@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
@@ -24,6 +25,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechangeBinding
 import com.kittyandpuppy.withallmyanimal.util.Constants
+import java.util.Calendar
 
 class DialogProfileChange : DialogFragment() {
     private lateinit var binding: FragmentDialogProfilechangeBinding
@@ -64,7 +66,7 @@ class DialogProfileChange : DialogFragment() {
                         val retrievedUserIdname = profileMap?.get("userIdname") as? String
                         val retrievedPetName = profileMap?.get("petName") as? String
                         val retrievedBirth = profileMap?.get("birth") as? String
-                        val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
+//                        val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
 
                         binding.etProfilechangeNicknametext.text =
                             if (retrievedUserIdname != null) Editable.Factory.getInstance()
@@ -72,14 +74,31 @@ class DialogProfileChange : DialogFragment() {
                         binding.etProfilechangePetname.text =
                             if (retrievedPetName != null) Editable.Factory.getInstance()
                                 .newEditable(retrievedPetName) else null
-                        binding.etProfilechangePetbirthday.text =
-                            if (retrievedBirth != null) Editable.Factory.getInstance()
-                                .newEditable(retrievedBirth) else null
+                        // 생일 DatePicker
+                        binding.etProfilechangePetbirthday.setOnClickListener {
+                            val c = Calendar.getInstance()
+
+                            val year = c.get(Calendar.YEAR)
+                            val month = c.get(Calendar.MONTH)
+                            val day = c.get(Calendar.DAY_OF_MONTH)
+
+                            val datePickerDialog = DatePickerDialog(
+                                requireContext(),
+                                { view, selectedYear, selectedMonthOfYear, selectedDayOfMonth ->
+                                    val selectedDate =
+                                        "$selectedYear.${selectedMonthOfYear + 1}.$selectedDayOfMonth"
+                                    binding.etProfilechangePetbirthday.setText(selectedDate)
+                                },
+                                year,
+                                month,
+                                day
+                            )
+                            datePickerDialog.show()
 //                        binding.etProfilechangeOnelinefeeling.text =
 //                            if (retrievedStatusMessage != null) Editable.Factory.getInstance()
 //                                .newEditable(retrievedStatusMessage) else null
+                        }
                     }
-
                     override fun onCancelled(databaseError: DatabaseError) {
                     }
                 })

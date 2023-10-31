@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,6 +32,7 @@ import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.util.Calendar
 
 class DogAndCatAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDogAndCatAddBinding
@@ -123,14 +125,14 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         breedArray,
                         android.R.layout.simple_spinner_item
                     )
-                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spDogAndCatAddPetType.adapter = breedAdapter
+//                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                    binding.spDogAndCatAddPetType.adapter = breedAdapter
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-        binding.spDogAndCatAddPetType.onItemSelectedListener =
+//        binding.spDogAndCatAddPetType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -173,6 +175,26 @@ class DogAndCatAddActivity : AppCompatActivity() {
                 requestPermissionLauncher.launch(storagePermission)
             }
         }
+        // 생일 DatePicker
+        binding.etDogAndCatAddBirth.setOnClickListener {
+
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                    val selectedDate =   "$selectedYear.${selectedMonth + 1}.$selectedDayOfMonth"
+                    binding.etDogAndCatAddBirth.setText(selectedDate)
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
+        }
     }
 
     private fun checkDuplicateId() {
@@ -207,7 +229,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val petName = binding.etDogAndCatAddPetname.text.toString()
             val birth = binding.etDogAndCatAddBirth.text.toString()
             val dogCat = binding.spDogAndCatAddDogcat.selectedItem.toString()
-            val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
+//            val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
 //            val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
@@ -228,7 +250,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "petName" to petName,
                         "birth" to birth,
                         "dogcat" to dogCat,
-                        "breed" to breed,
+//                        "breed" to breed,
 //                        "statusMessage" to statusMessage,
                         "profileImage" to imageKey
                     )
