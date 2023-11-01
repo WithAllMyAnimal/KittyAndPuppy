@@ -43,7 +43,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "key: $key")
                 Log.d("MyPageRVAdapter", "category: $category")
 
-
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
@@ -54,20 +53,16 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                             when (category) {
                                 "이상행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
-
                                 "일상" -> intent = Intent(
                                     binding.root.context,
                                     DetailDailyActivity::class.java
                                 )
-
                                 "병원" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
                                 )
-
                                 "펫용품" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
-
                                 else -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
                             }
@@ -79,7 +74,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.d("MyPageRvAdapter","Faild to read userID",error.toException())
+                        Log.d("MyPageRvAdapter", "Faild to read userID", error.toException())
                     }
                 })
             }
@@ -88,6 +83,31 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
         fun bind(model: BaseModel) {
             binding.tvMypageListTitle.text = model.title
             binding.tvMypageListDate.text = model.time
+            binding.tvMypageListReview.text = model.content
+
+            val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid).child("profile")
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userProfileImageKey = snapshot.child("profileImage").getValue(String::class.java)
+                    val userIdName = snapshot.child("userIdname").getValue(String::class.java)
+
+                    userProfileImageKey?.let { key ->
+                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
+                        storageRef.downloadUrl.addOnSuccessListener { uri ->
+                            binding.ivMypageListProfile.load(uri.toString()) {
+                                crossfade(true)
+                            }
+                        }.addOnFailureListener {
+                        }
+                    }
+
+                    binding.tvMypageListNickname.text = userIdName ?: ""
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(TAG, "Failed to read user info", error.toException())
+                }
+            })
         }
     }
 

@@ -32,6 +32,7 @@ class FindPwFragment : DialogFragment() {
         binding = FragmentFindPwBinding.bind(view)
         return view
     }
+
     override fun onResume() {
         super.onResume()
         //다이얼로그 size
@@ -56,9 +57,17 @@ class FindPwFragment : DialogFragment() {
             auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(requireContext(), "비밀번호 재설정 이메일을 보냈습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "비밀번호 재설정 이메일을 보냈습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                        val findPwGuideFragment = FindPwGuideFragment()
+                        findPwGuideFragment.show(parentFragmentManager, "FindPwGuideFragment")
+                        dismiss()
                     } else {
-                        Toast.makeText(requireContext(), "비밀번호 재설정 이메일을 보내지 못했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "비밀번호 재설정 이메일을 보내지 못했습니다.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
         }
