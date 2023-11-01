@@ -43,7 +43,7 @@ class MypageBehavior : AppCompatActivity() {
     }
 
     private var isImageUpload = false
-    private var tagListBehavior: MutableList<String> = mutableListOf()
+    private var tagListBehavior = mutableListOf<String>()
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -84,7 +84,7 @@ class MypageBehavior : AppCompatActivity() {
 
                         val title = binding.etvMypageBehaviorTitle.text.toString()
                         val content = binding.etvMypageBehavior.text.toString()
-                        val tags = tagListBehavior.joinToString(", ")
+                        val tags = tagListBehavior.toList()
                         val review = binding.etvMypageBehaviorReview.text.toString()
                         val time = FBAuth.getTime()
                         val uidAndCategory = "${uid}이상행동"
@@ -138,16 +138,6 @@ class MypageBehavior : AppCompatActivity() {
         binding.btnMypageBehaviorBack.setOnClickListener {
             finish()
         }
-
-        binding.etvMypageBehaviorTag.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0 != null && p0.contains(",")) {
-                    binding.etvMypageBehaviorTag.error = ",는 입력할 수 없습니다."
-                }
-            }
-            override fun afterTextChanged(p0: Editable?) {}
-        })
 
         binding.btnBehaviorAdd.setOnClickListener {
             val chipName = binding.etvMypageBehaviorTag.text.toString()

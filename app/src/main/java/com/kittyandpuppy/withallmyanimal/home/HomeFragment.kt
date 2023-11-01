@@ -144,17 +144,20 @@ class HomeFragment : Fragment() {
     }
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
-        val query = boardRef.orderByChild("tags").startAt(search).endAt("$search\uf8ff")
-        query.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                boardList.clear()
-                handlePostsData(snapshot)
-            }
+        val positions = listOf("tags/0", "tags/1", "tags/2")
+        boardList.clear()
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Search Failed", error.toException())
-            }
-        })
+        positions.forEach { position ->
+            val query = boardRef.orderByChild(position).equalTo(search)
+            query.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    handlePostsData(snapshot)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "Search Failed", error.toException())
+                }
+            })
+        }
     }
     private fun getBoardData(
         combinedSpinnerValue: String? = null,
