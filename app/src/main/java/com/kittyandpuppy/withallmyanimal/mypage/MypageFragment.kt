@@ -30,6 +30,7 @@ import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
+import java.time.DayOfWeek
 import java.util.Calendar
 
 class MypageFragment : Fragment() {
@@ -204,6 +205,12 @@ class MypageFragment : Fragment() {
                         binding.tvMypageNickname.text = userIdname
                         binding.tvMypageBirth.text = birth
                         // binding.tvMypageMessage.text = statsMessage
+
+                        if (birth != null && todayBirthday(birth)) {
+                            binding.ivMypageCakeLeft.visibility = View.VISIBLE
+                        } else {
+                            binding.ivMypageCakeLeft.visibility = View.INVISIBLE
+                        }
                     }
                 }
 
@@ -213,6 +220,36 @@ class MypageFragment : Fragment() {
             })
         }
     }
+
+    private fun todayBirthday(birth:String):Boolean {
+        // 오늘 날짜 불러오기
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // Log to see today's date
+        Log.d("BirthdayCheck", "Today's Date: ${month + 1}/$day")
+
+        val birthParts = birth.split(".")
+        if(birthParts.size < 2) {
+            Log.d("BirthdayCheck", "Invalid birth format: $birth")
+            return false
+        }
+        val birthMonth = birthParts[0].toIntOrNull() ?: run {
+            Log.d("BirthdayCheck", "Invalid birth month in: $birth")
+            return false
+        }
+        val birthDay = birthParts[1].toIntOrNull() ?: run {
+            Log.d("BirthdayCheck", "Invalid birth day in: $birth")
+            return false
+        }
+
+        // Log to see parsed birth date
+        Log.d("BirthdayCheck", "Parsed Birth Date: $birthMonth/$birthDay")
+
+        return day == birthDay && month + 1 == birthMonth
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

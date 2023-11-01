@@ -85,8 +85,12 @@ class DialogProfileChange : DialogFragment() {
                             val datePickerDialog = DatePickerDialog(
                                 requireContext(),
                                 { view, selectedYear, selectedMonthOfYear, selectedDayOfMonth ->
-                                    val selectedDate =
-                                        "$selectedYear.${selectedMonthOfYear + 1}.$selectedDayOfMonth"
+                                    val selectedDate = String.format(
+                                        "%d.%02d.%02d",
+                                        selectedYear,
+                                        selectedMonthOfYear + 1,
+                                        selectedDayOfMonth
+                                    )
                                     binding.etProfilechangePetbirthday.setText(selectedDate)
                                 },
                                 year,
