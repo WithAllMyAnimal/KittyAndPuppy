@@ -9,7 +9,6 @@ class FBRef {
 
         val users = database.getReference("users")
         val writeCategory = database.getReference("writeCategory")
-        val likesRef = database.getReference("likesList")
         val boardRef = database.getReference("board")
         val commentRef = database.getReference("comment")
     }

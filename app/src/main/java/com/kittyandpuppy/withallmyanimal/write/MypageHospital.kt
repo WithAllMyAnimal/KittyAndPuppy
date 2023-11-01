@@ -28,6 +28,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageHospitalBindi
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.text.DecimalFormat
 
 class MypageHospital : AppCompatActivity() {
 
@@ -141,6 +142,43 @@ class MypageHospital : AppCompatActivity() {
         binding.btnMypageHospitalBack.setOnClickListener {
             finish()
         }
+
+        binding.etvMypageHospitalExpense.addTextChangedListener(object : TextWatcher {
+            private var current: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                current = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
+
+                if (s.toString() != current) {
+                    binding.etvMypageHospitalExpense.removeTextChangedListener(this)
+
+                    if (cleanString.isNotEmpty()) {
+                        val formatted = try {
+                            val number = cleanString.toLong()
+                            val formatter = DecimalFormat("#,###")
+                            val formattedNumber = formatter.format(number)
+                            val result = "$formattedNumber 원"
+                            result
+                        } catch (e: NumberFormatException) {
+                            cleanString
+                        }
+                        binding.etvMypageHospitalExpense.setText(formatted)
+                        binding.etvMypageHospitalExpense.setSelection(formatted.length - 2)
+                    } else {
+                        binding.etvMypageHospitalExpense.text = null
+                    }
+
+                    binding.etvMypageHospitalExpense.addTextChangedListener(this)
+                }
+            }
+        })
 
         binding.btnDailyAdd.setOnClickListener {
             val chipName = binding.etvMypageHospitalTag.text.toString()
