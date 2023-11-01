@@ -89,6 +89,7 @@ class MypageHospital : AppCompatActivity() {
                         val tags = tagListHospital.toList()
                         val content = binding.etvMypageHospitalReview.text.toString()
                         val disease = binding.etvMypageHospitalCheckup.text.toString()
+                        val uidAndCategory = "${uid}병원"
 
                         val key = FBRef.boardRef.push().key.toString()
 
@@ -103,7 +104,8 @@ class MypageHospital : AppCompatActivity() {
                             title = title,
                             animalAndCategory = animalAndCategory,
                             uid = uid,
-                            animal = dogcatValue
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory
                         )
                         FBRef.boardRef
                             .child(key)

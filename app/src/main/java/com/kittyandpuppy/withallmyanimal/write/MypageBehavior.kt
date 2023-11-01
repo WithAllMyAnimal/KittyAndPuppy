@@ -85,6 +85,7 @@ class MypageBehavior : AppCompatActivity() {
                         val tags = tagListBehavior.toList()
                         val review = binding.etvMypageBehaviorReview.text.toString()
                         val time = FBAuth.getTime()
+                        val uidAndCategory = "${uid}이상행동"
 
                         val key = FBRef.boardRef.push().key.toString()
 
@@ -96,7 +97,8 @@ class MypageBehavior : AppCompatActivity() {
                             title = title,
                             animalAndCategory = animalAndCategory,
                             uid = uid,
-                            animal = dogcatValue
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory
                         )
 
                         FBRef.boardRef
