@@ -103,20 +103,39 @@ class MypageFragment : Fragment() {
         binding.btnMypageTagHospital.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
+            if (it.isSelected){
+                getMyData("병원")
+            } else {
+                getMyData()
+            }
         }
         binding.btnMypageTagPet.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
+            if (it.isSelected){
+                getMyData("펫용품")
+            } else {
+                getMyData()
+            }
         }
         binding.btnMypageTagBehavior.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
+            if (it.isSelected){
+                getMyData("이상행동")
+            } else {
+                getMyData()
+            }
         }
         binding.btnMypageTagDaily.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
+            if (it.isSelected){
+                getMyData("일상")
+            } else {
+                getMyData()
+            }
         }
-
     }
 
     // 버튼 2번 클릭 시 원래 대로 돌아가기
@@ -148,10 +167,16 @@ class MypageFragment : Fragment() {
         getMyData()
     }
 
-    private fun getMyData() {
+    private fun getMyData(filter : String? = null) {
         val currentUserId = FBAuth.getUid()
 
-        FBRef.boardRef.orderByChild("uid").equalTo(currentUserId).addValueEventListener(object : ValueEventListener {
+        val query = if (filter != null) {
+            FBRef.boardRef.orderByChild("uidAndCategory").equalTo("${currentUserId}$filter")
+        } else {
+            FBRef.boardRef.orderByChild("uid").equalTo(currentUserId)
+        }
+
+        query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list.clear()
 
@@ -175,7 +200,6 @@ class MypageFragment : Fragment() {
                     }
                 }
                 rvAdapter.submitList(list.toList())
-                Log.d("MypageFragment", "${list.size}")
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -204,7 +228,7 @@ class MypageFragment : Fragment() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("MypageFragment", "Error loading user data: ${error.message}")
+                    Log.e(TAG, "Error loading user data: ${error.message}")
                 }
             })
         }
