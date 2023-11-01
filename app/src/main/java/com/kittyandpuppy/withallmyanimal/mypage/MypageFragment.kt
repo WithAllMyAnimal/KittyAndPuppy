@@ -30,6 +30,7 @@ import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
+import java.util.Calendar
 
 class MypageFragment : Fragment() {
 
@@ -220,10 +221,17 @@ class MypageFragment : Fragment() {
                         val userIdname = snapshot.child("userIdname").getValue(String::class.java)
                         val petName = snapshot.child("petName").getValue(String::class.java)
                         val birth = snapshot.child("birth").getValue(String::class.java)
+                        Log.d("JINA", "onDataChange: ${birth}")
 
                         binding.tvMypage.text = petName
                         binding.tvMypageNickname.text = userIdname
                         binding.tvMypageBirth.text = birth
+
+                        if (birth != null && todayBirthday(birth)) {
+                            binding.ivMypageCakeLeft.visibility = View.VISIBLE
+                        } else {
+                            binding.ivMypageCakeLeft.visibility = View.INVISIBLE
+                        }
                     }
                 }
 
@@ -232,6 +240,36 @@ class MypageFragment : Fragment() {
                 }
             })
         }
+    }
+
+    private fun todayBirthday(birth:String):Boolean {
+        // 오늘 날짜 불러오기
+        val calendar = Calendar.getInstance()
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        Log.d("jina", "Today's Date: ${month}/$day")
+
+        val birthParts = birth.split("/")
+        if (birthParts.size < 3) {
+            Log.d("jina", "Invalid birth format: $birth")
+            return false
+        }
+
+        val birthYear = birthParts[0].toIntOrNull()
+        val birthMonth = birthParts[1].toIntOrNull() ?: run {
+            Log.d("jina", "Invalid birth month in: $birth")
+            return false
+        }
+        val birthDay = birthParts[2].toIntOrNull() ?: run {
+            Log.d("jina", "Invalid birth day in: $birth")
+            return false
+        }
+
+        Log.d("rina", "Parsed Birth Date: $birthMonth$birthDay")
+
+        return day == birthDay && month == birthMonth
+
     }
 
     override fun onDestroyView() {
