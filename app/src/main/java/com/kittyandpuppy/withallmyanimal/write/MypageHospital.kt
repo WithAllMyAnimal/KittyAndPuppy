@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,7 +43,7 @@ class MypageHospital : AppCompatActivity() {
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     }
 
-    private var tagListHospital = mutableListOf<String>()
+    private var tagListHospital: MutableList<String> = mutableListOf()
     private var isImageUpload = false
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -86,7 +88,7 @@ class MypageHospital : AppCompatActivity() {
                         val date = binding.edtMypageHospital.text.toString()
                         val price = binding.etvMypageHospitalExpense.text.toString()
                         val location = binding.spMypageHospital.text.toString()
-                        val tags = tagListHospital.toList()
+                        val tags = tagListHospital.joinToString(", ")
                         val content = binding.etvMypageHospitalReview.text.toString()
                         val disease = binding.etvMypageHospitalCheckup.text.toString()
                         val uidAndCategory = "${uid}병원"
@@ -139,6 +141,15 @@ class MypageHospital : AppCompatActivity() {
         binding.btnMypageHospitalBack.setOnClickListener {
             finish()
         }
+        binding.etvMypageHospitalTag.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null && p0.contains(",")) {
+                    binding.etvMypageHospitalTag.error = ",는 입력할 수 없습니다."
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
 
         binding.btnDailyAdd.setOnClickListener {
             val chipName = binding.etvMypageHospitalTag.text.toString()
