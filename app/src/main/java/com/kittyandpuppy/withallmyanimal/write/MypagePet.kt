@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -29,7 +31,6 @@ import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 class MypagePet : AppCompatActivity() {
 
     private val binding : ActivityMypagePetBinding by lazy { ActivityMypagePetBinding.inflate(layoutInflater) }
-    private var tagListPet = mutableListOf<String>()
 
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -38,6 +39,7 @@ class MypagePet : AppCompatActivity() {
     }
 
     private var isImageUpload = false
+    private var tagListPet: MutableList<String> = mutableListOf()
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -81,7 +83,7 @@ class MypagePet : AppCompatActivity() {
                         val price = binding.etvMypagePetPrice.text.toString()
                         val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
                         val caution = binding.etvMypagePetCaution.text.toString()
-                        val tags = tagListPet.toList()
+                        val tags = tagListPet.joinToString(", ")
                         val content = binding.etvMypagePetReview.text.toString()
                         val uidAndCategory = "${uid}펫용품"
 
@@ -133,6 +135,15 @@ class MypagePet : AppCompatActivity() {
         binding.btnMypagePetBack.setOnClickListener {
             finish()
         }
+        binding.etvMypagePetTag.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null && p0.contains(",")) {
+                    binding.etvMypagePetTag.error = ",는 입력할 수 없습니다."
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
 
         binding.btnPetAdd.setOnClickListener {
             val chipName = binding.etvMypagePetTag.text.toString()

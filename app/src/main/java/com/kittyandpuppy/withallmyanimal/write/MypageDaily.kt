@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -41,7 +43,7 @@ class MypageDaily : AppCompatActivity() {
     }
 
     private var isImageUpload = false
-    private var tagListDaily = mutableListOf<String>()
+    private var tagListDaily: MutableList<String> = mutableListOf()
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -83,7 +85,7 @@ class MypageDaily : AppCompatActivity() {
 
                         val time = FBAuth.getTime()
                         val title = binding.etvMypageDailyTitle.text.toString()
-                        val tags = tagListDaily.toList()
+                        val tags = tagListDaily.joinToString(", ")
                         val content = binding.etvMypageDaily.text.toString()
                         val uidAndCategory = "${uid}일상"
 
@@ -131,6 +133,15 @@ class MypageDaily : AppCompatActivity() {
         binding.btnMypageDailyBack.setOnClickListener {
             finish()
         }
+        binding.etvMypageDailyTag.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null && p0.contains(",")) {
+                    binding.etvMypageDailyTag.error = ",는 입력할 수 없습니다."
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
 
         binding.btnDailyAdd.setOnClickListener {
             val chipName = binding.etvMypageDailyTag.text.toString()

@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -41,7 +43,7 @@ class MypageBehavior : AppCompatActivity() {
     }
 
     private var isImageUpload = false
-    private var tagListBehavior = mutableListOf<String>()
+    private var tagListBehavior: MutableList<String> = mutableListOf()
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -82,7 +84,7 @@ class MypageBehavior : AppCompatActivity() {
 
                         val title = binding.etvMypageBehaviorTitle.text.toString()
                         val content = binding.etvMypageBehavior.text.toString()
-                        val tags = tagListBehavior.toList()
+                        val tags = tagListBehavior.joinToString(", ")
                         val review = binding.etvMypageBehaviorReview.text.toString()
                         val time = FBAuth.getTime()
                         val uidAndCategory = "${uid}이상행동"
@@ -136,6 +138,16 @@ class MypageBehavior : AppCompatActivity() {
         binding.btnMypageBehaviorBack.setOnClickListener {
             finish()
         }
+
+        binding.etvMypageBehaviorTag.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0 != null && p0.contains(",")) {
+                    binding.etvMypageBehaviorTag.error = ",는 입력할 수 없습니다."
+                }
+            }
+            override fun afterTextChanged(p0: Editable?) {}
+        })
 
         binding.btnBehaviorAdd.setOnClickListener {
             val chipName = binding.etvMypageBehaviorTag.text.toString()
