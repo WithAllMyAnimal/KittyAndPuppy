@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,6 +32,7 @@ import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.util.Calendar
 
 class DogAndCatAddActivity : AppCompatActivity() {
 
@@ -126,7 +128,7 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val datePickerDialog = DatePickerDialog(
                 this,
                 { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                    val selectedDate =   "$selectedYear.${selectedMonth + 1}.$selectedDayOfMonth"
+                    val selectedDate =   "$selectedYear/${selectedMonth + 1}/$selectedDayOfMonth"
                     binding.etDogAndCatAddBirth.setText(selectedDate)
                 },
                 year,

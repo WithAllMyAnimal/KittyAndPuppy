@@ -86,7 +86,7 @@ class DialogProfileChange : DialogFragment() {
                                 requireContext(),
                                 { view, selectedYear, selectedMonthOfYear, selectedDayOfMonth ->
                                     val selectedDate = String.format(
-                                        "%d.%02d.%02d",
+                                        "%d/%02d/%02d",
                                         selectedYear,
                                         selectedMonthOfYear + 1,
                                         selectedDayOfMonth
