@@ -58,7 +58,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
 
             val alertDialog = builder.show()
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
-                FBRef.boardRef.child(uid).child(key).removeValue()
+                FBRef.boardRef.child(key).removeValue()
                 Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                 val resultIntent = Intent().putExtra("postDeleted", true)
                 resultIntent.putExtra("deletedPostUid", uid)

@@ -151,7 +151,7 @@ class MypageFragment : Fragment() {
     private fun getMyData() {
         val currentUserId = FBAuth.getUid()
 
-        FBRef.boardRef.orderByChild("uid").equalTo(currentUserId).addListenerForSingleValueEvent(object : ValueEventListener {
+        FBRef.boardRef.orderByChild("uid").equalTo(currentUserId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list.clear()
 
