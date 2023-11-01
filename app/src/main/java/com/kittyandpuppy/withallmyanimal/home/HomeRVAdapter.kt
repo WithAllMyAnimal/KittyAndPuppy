@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.comments.CommentsRVAdapter.Companion.diffUtil
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
@@ -40,7 +41,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 Log.d("Key값", "key: $key")
                 Log.d("category값", "category:$category")
 
-
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
@@ -50,20 +50,20 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
 
                             val intent: Intent
                             when (category) {
-                                "Behavior" -> intent =
+                                "이상행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
-                                "Daily" -> intent = Intent(
+                                "일상" -> intent = Intent(
                                     binding.root.context,
                                     DetailDailyActivity::class.java
                                 )
 
-                                "Hospital" -> intent = Intent(
+                                "병원" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
                                 )
 
-                                "Pet" -> intent =
+                                "펫용품" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =
@@ -82,6 +82,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
+
         fun bind(homeModel: BaseModel) {
 
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
@@ -90,7 +91,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                     crossfade(true)
                 }
             }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.add_image){
+                binding.ivRvImage.load(R.drawable.add_image) {
                     crossfade(true)
                 }
             }
@@ -100,6 +101,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
                     }
+
                     override fun onCancelled(error: DatabaseError) {
                         Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
                     }
@@ -109,6 +111,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             binding.tvRvChat.text = homeModel.commentsCount.toString()
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(
@@ -118,9 +121,11 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             )
         )
     }
+
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<BaseModel>() {
             @SuppressLint("DiffUtilEquals")

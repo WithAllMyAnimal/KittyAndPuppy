@@ -20,8 +20,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/ari"
         android:text="이심\n동심"
-        android:textSize="20sp"
         android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/appbar_home"
         app:layout_constraintEnd_toEndOf="@+id/appbar_home"
         app:layout_constraintStart_toStartOf="@+id/appbar_home"
@@ -44,8 +44,8 @@
         android:layout_marginEnd="20dp"
         android:fontFamily="@font/maple"
         android:text="필독!"
-        android:textSize="10sp"
         android:textColor="@color/black"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_home_megaphone" />
 
@@ -57,8 +57,8 @@
         android:layout_margin="10dp"
         android:hint="검색어를 입력하세요."
         android:paddingHorizontal="4dp"
-        app:endIconMode="clear_text"
         android:textColor="@color/black"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,58 +68,47 @@
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textAutoComplete"
             android:fontFamily="@font/cafe24"
-            />
+            android:inputType="textAutoComplete" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/spinner_dogandcat"
-        android:layout_width="120dp"
+        android:layout_width="180dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/dogandcat"
         android:background="@drawable/custom_spinner_background"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_breed"
+        android:entries="@array/dogandcat"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_category"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_search" />
-    <Spinner
-        android:id="@+id/spinner_breed"
-        android:layout_width="120dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="8dp"
-        android:entries="@array/dogbreed"
-        android:background="@drawable/custom_spinner_background"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_category"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spinner_dogandcat"
-        app:layout_constraintTop_toBottomOf="@+id/ti_search" />
+
     <Spinner
         android:id="@+id/spinner_category"
-        android:layout_width="120dp"
+        android:layout_width="180dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/category"
         android:background="@drawable/custom_spinner_background"
+        android:entries="@array/category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spinner_breed"
+        app:layout_constraintStart_toEndOf="@+id/spinner_dogandcat"
         app:layout_constraintTop_toBottomOf="@+id/ti_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_home"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
+        android:background="@android:color/transparent"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.775"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_breed"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_dogandcat"
         tools:listitem="@layout/item_home">
 
     </androidx.recyclerview.widget.RecyclerView>

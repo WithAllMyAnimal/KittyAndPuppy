@@ -17,6 +17,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.chip.Chip
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -69,38 +72,52 @@ class MypageBehavior : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnMypageBehaviorSave.setOnClickListener {
-            val title = binding.etvMypageBehaviorTitle.text.toString()
-            val content = binding.etvMypageBehavior.text.toString()
-            val tags = tagListBehavior.toList()
-            val review = binding.etvMypageBehaviorReview.text.toString()
             val uid = FBAuth.getUid()
-            val time = FBAuth.getTime()
+            FBRef.users.child(uid).child("profile").child("dogcat").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val dogcatValue = snapshot.getValue(String::class.java)
+                    if (dogcatValue != null) {
+                        val animalAndCategory = "${dogcatValue}이상행동"
 
-            val key = FBRef.boardRef.push().key.toString()
+                        val title = binding.etvMypageBehaviorTitle.text.toString()
+                        val content = binding.etvMypageBehavior.text.toString()
+                        val tags = tagListBehavior.toList()
+                        val review = binding.etvMypageBehaviorReview.text.toString()
+                        val time = FBAuth.getTime()
 
-            val behaviorData = Behavior(
-                review = review,
-                content = content,
-                tags = tags,
-                time = time,
-                title = title
-            )
+                        val key = FBRef.boardRef.push().key.toString()
 
-            FBRef.boardRef
-                .child(uid)
-                .child(key)
-                .setValue(behaviorData)
+                        val behaviorData = Behavior(
+                            review = review,
+                            content = content,
+                            tags = tags,
+                            time = time,
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
+                        )
 
-            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        FBRef.boardRef
+                            .child(key)
+                            .setValue(behaviorData)
 
-            if (isImageUpload) {
-                ImageUtils.imageUpload(this, binding.ivMypageBehaviorPictureLeft, key)
-            }
-            val resultIntent = Intent().putExtra("postAdded", true)
-            resultIntent.putExtra("addedPostUid", uid)
-            resultIntent.putExtra("addedPostKey", key)
-            setResult(RESULT_OK, resultIntent)
-            finish()
+                        Toast.makeText(this@MypageBehavior, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+                        if (isImageUpload) {
+                            ImageUtils.imageUpload(this@MypageBehavior, binding.ivMypageBehaviorPictureLeft, key)
+                        }
+                        val resultIntent = Intent().putExtra("postAdded", true)
+                        resultIntent.putExtra("addedPostUid", uid)
+                        resultIntent.putExtra("addedPostKey", key)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
         }
 
         binding.ivMypageBehaviorPictureLeft.setOnClickListener {

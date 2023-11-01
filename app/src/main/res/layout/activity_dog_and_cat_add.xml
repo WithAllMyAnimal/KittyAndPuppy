@@ -96,6 +96,7 @@
                 android:textSize="13sp"
                 android:layout_marginHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_nick" />
 
@@ -122,7 +123,7 @@
                 android:text="반려견/반려묘 이름"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@id/et_dog_and_cat_add_petname"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_nick" />
 
 
@@ -140,6 +141,7 @@
                 android:textSize="13sp"
                 android:layout_marginHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_dog_and_cat_add_petname" />
 
@@ -147,12 +149,13 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/maple"
                 android:text="반려견/반려묘 생일"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@id/et_dog_and_cat_add_birth"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_petname" />
 
             <EditText
@@ -175,23 +178,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
             <TextView
                 android:id="@+id/tv_dog_and_cat_add_dog_cat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/maple"
                 android:text="강아지/고양이"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@id/sp_dog_and_cat_add_dogcat"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_dog_and_cat_add_birth" />
 
             <Spinner
                 android:id="@+id/sp_dog_and_cat_add_dogcat"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="50dp"
                 android:layout_centerInParent="true"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/custom_spinner_background"
                 android:dropDownWidth="wrap_content"
@@ -206,13 +212,13 @@
                 android:id="@+id/btn_dog_and_cat_add_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="25dp"
                 android:background="@drawable/btn_signup"
                 android:fontFamily="@font/maple"
                 android:text="저장하기"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:layout_marginHorizontal="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

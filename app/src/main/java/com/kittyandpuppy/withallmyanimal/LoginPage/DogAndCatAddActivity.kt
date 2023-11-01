@@ -1,7 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,9 +31,9 @@ import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
-import java.util.Calendar
 
 class DogAndCatAddActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
     private var selectedImageUri: Uri? = null
@@ -90,69 +89,10 @@ class DogAndCatAddActivity : AppCompatActivity() {
         val dogCatAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.dogandcat,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_dropdown_item
         )
         dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDogAndCatAddDogcat.adapter = dogCatAdapter
-
-        binding.spDogAndCatAddDogcat.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isDogAndCatSpinnerInitialized) {
-                        isDogAndCatSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(this@DogAndCatAddActivity, "종류를 선택하세요", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    val selectedItem = parent?.getItemAtPosition(position).toString()
-                    val breedArray = when (selectedItem) {
-                        "전체" -> R.array.all
-                        "강아지" -> R.array.dogbreed
-                        "고양이" -> R.array.catbreed
-                        else -> return
-                    }
-                    val breedAdapter = ArrayAdapter.createFromResource(
-                        applicationContext,
-                        breedArray,
-                        android.R.layout.simple_spinner_item
-                    )
-//                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//                    binding.spDogAndCatAddPetType.adapter = breedAdapter
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-
-//        binding.spDogAndCatAddPetType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isBreedSpinnerInitialized) {
-                        isBreedSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(this@DogAndCatAddActivity, "품종을 선택하세요", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
 
         binding.btnLoginSignup.setOnClickListener {
             checkDuplicateId()
@@ -229,8 +169,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val petName = binding.etDogAndCatAddPetname.text.toString()
             val birth = binding.etDogAndCatAddBirth.text.toString()
             val dogCat = binding.spDogAndCatAddDogcat.selectedItem.toString()
-//            val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
-//            val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
@@ -250,8 +188,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "petName" to petName,
                         "birth" to birth,
                         "dogcat" to dogCat,
-//                        "breed" to breed,
-//                        "statusMessage" to statusMessage,
                         "profileImage" to imageKey
                     )
 
