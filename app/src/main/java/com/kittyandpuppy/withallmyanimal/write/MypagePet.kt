@@ -27,6 +27,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypagePetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.text.DecimalFormat
 
 class MypagePet : AppCompatActivity() {
 
@@ -43,14 +44,12 @@ class MypagePet : AppCompatActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
-            // 권한이 부여된 경우 갤러리 열기
             val intent = ImageUtils.createGalleryIntent()
             pickImageLauncher.launch(intent)
         } else {
             AlertDialog.Builder(this)
                 .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
                 .setPositiveButton("설정으로 이동") { _, _ ->
-                    // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", this.packageName, null)
                     intent.data = uri
@@ -135,6 +134,44 @@ class MypagePet : AppCompatActivity() {
         binding.btnMypagePetBack.setOnClickListener {
             finish()
         }
+
+        binding.etvMypagePetPrice.addTextChangedListener(object : TextWatcher {
+            private var current: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                current = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
+
+                if (s.toString() != current) {
+                    binding.etvMypagePetPrice.removeTextChangedListener(this)
+
+                    if (cleanString.isNotEmpty()) {
+                        val formatted = try {
+                            val number = cleanString.toLong()
+                            val formatter = DecimalFormat("#,###")
+                            val formattedNumber = formatter.format(number)
+                            val result = "$formattedNumber 원"
+                            result
+                        } catch (e: NumberFormatException) {
+                            cleanString
+                        }
+                        binding.etvMypagePetPrice.setText(formatted)
+                        binding.etvMypagePetPrice.setSelection(formatted.length - 2)
+                    } else {
+                        binding.etvMypagePetPrice.text = null
+                    }
+
+                    binding.etvMypagePetPrice.addTextChangedListener(this)
+                }
+            }
+        })
+
 
         binding.btnPetAdd.setOnClickListener {
             val chipName = binding.etvMypagePetTag.text.toString()
