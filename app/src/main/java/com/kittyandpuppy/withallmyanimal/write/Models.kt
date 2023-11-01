@@ -10,7 +10,8 @@ open class BaseModel(
     open var likesCount: Int = 0,
     open var commentsCount: Int = 0,
     open val animalAndCategory: String = "",
-    open val animal : String = ""
+    open val animal : String = "",
+    open val uidAndCategory : String = ""
 )
 
 data class Behavior(
@@ -22,7 +23,8 @@ data class Behavior(
     override val title: String = "",
     override val animalAndCategory: String = "",
     override var key: String = "",
-    override val animal : String = ""
+    override val animal : String = "",
+    override val uidAndCategory: String = ""
 ) : BaseModel(category = "이상행동")
 
 data class Daily(
@@ -33,7 +35,8 @@ data class Daily(
     override val title: String = "",
     override val animalAndCategory: String = "",
     override var key: String = "",
-    override val animal : String = ""
+    override val animal : String = "",
+    override val uidAndCategory: String = ""
 ) : BaseModel(category = "일상")
 
 data class Hospital(
@@ -48,7 +51,8 @@ data class Hospital(
     override val title: String = "",
     override val animalAndCategory: String = "",
     override var key: String = "",
-    override val animal : String = ""
+    override val animal : String = "",
+    override val uidAndCategory: String = ""
 ) : BaseModel(category = "병원")
 
 data class Pet(
@@ -63,5 +67,6 @@ data class Pet(
     override val title: String = "",
     override val animalAndCategory: String = "",
     override var key: String = "",
-    override val animal : String = ""
+    override val animal : String = "",
+    override val uidAndCategory: String = ""
 ) : BaseModel(category = "펫용품")
