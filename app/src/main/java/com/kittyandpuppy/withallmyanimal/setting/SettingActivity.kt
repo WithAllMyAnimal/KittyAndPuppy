@@ -6,6 +6,8 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
+import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.ResignationFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivitySettingBinding
 import java.util.Locale
 
@@ -38,6 +40,13 @@ class SettingActivity : AppCompatActivity() {
             val transaction = supportFragmentManager.beginTransaction()
             dialogFragment.show(transaction,"LogoutDialog")
         }
+
+        binding.tvSettingCancel.setOnClickListener {
+            // 회원탈퇴 화면인 ResignationFragment로 이동
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container_setting, ResignationFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
     }
     fun changeLocale(languageCode: String, context: Context) {
         val locale = Locale(languageCode)
@@ -48,4 +57,4 @@ class SettingActivity : AppCompatActivity() {
 
         context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
     }
-}
+}}
