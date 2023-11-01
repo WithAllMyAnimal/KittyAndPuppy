@@ -177,7 +177,7 @@ class HomeFragment : Fragment() {
             if (post != null) {
                 boardList.add(post)
 
-                val likesRef = FBRef.likesRef.child(postKey).child("likes")
+                val likesRef = FBRef.users.child(postKey).child("likedlist")
                 likesRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         post.likesCount = snapshot.childrenCount.toInt()

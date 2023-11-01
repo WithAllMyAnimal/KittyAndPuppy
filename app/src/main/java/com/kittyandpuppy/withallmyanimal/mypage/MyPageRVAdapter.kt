@@ -22,48 +22,12 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
-import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
-import com.kittyandpuppy.withallmyanimal.firebase.FBRef
-import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
 class MyPageRVAdapter(val list: MutableList<BaseModel>) :
     ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName
-
-    init {
-        loadLikedPosts()
-    }
-
-    private fun loadLikedPosts() {
-        val uid = FBAuth.getUid()
-        val likedPostsRef = FBRef.users.child(uid).child("likedlist")
-
-        likedPostsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val likedPostKeys = snapshot.children.map { it.key!! }
-
-                for (postKey in likedPostKeys) {
-                    FBRef.users.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val post = snapshot.getValue(BaseModel::class.java)
-                            post?.let { list.add(it) }
-                            notifyDataSetChanged()
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Log.w(TAG, "Post Loading Failed", error.toException())
-                        }
-                    })
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Liked Posts Loading Failed", error.toException())
-            }
-        })
-    }
 
     inner class LikesViewHolder(private val binding: ItemMypageLikeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -89,20 +53,16 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                             when (category) {
                                 "이상행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
-
                                 "일상" -> intent = Intent(
                                     binding.root.context,
                                     DetailDailyActivity::class.java
                                 )
-
                                 "병원" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
                                 )
-
                                 "펫용품" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
-
                                 else -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
                             }
@@ -114,7 +74,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.d("MyPageRvAdapter","Faild to read userID",error.toException())
+                        Log.d("MyPageRvAdapter", "Faild to read userID", error.toException())
                     }
                 })
             }
@@ -122,8 +82,8 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
 
         fun bind(model: BaseModel) {
             binding.tvMypageListTitle.text = model.title
-            binding.tvMypageListReview.text = model.content
             binding.tvMypageListDate.text = model.time
+            binding.tvMypageListReview.text = model.content
 
             val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid).child("profile")
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -132,7 +92,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     val userIdName = snapshot.child("userIdname").getValue(String::class.java)
 
                     userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages").child("${Constants.currentUserUid}.png")
+                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)

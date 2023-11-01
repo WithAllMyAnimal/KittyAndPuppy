@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -25,6 +27,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypagePetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.text.DecimalFormat
 
 class MypagePet : AppCompatActivity() {
 
@@ -69,58 +72,96 @@ class MypagePet : AppCompatActivity() {
 
         binding.btnMypagePetSave.setOnClickListener {
             val uid = FBAuth.getUid()
-            FBRef.users.child(uid).child("profile").child("dogcat").addListenerForSingleValueEvent(object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val dogcatValue = snapshot.getValue(String::class.java)
-                    if (dogcatValue != null) {
-                        val animalAndCategory = "${dogcatValue}펫용품"
-                        val time = FBAuth.getTime()
-                        val title = binding.etvMypagePetTitle.text.toString()
-                        val name = binding.etvMypagePetSupplies.text.toString()
-                        val price = binding.etvMypagePetPrice.text.toString()
-                        val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
-                        val caution = binding.etvMypagePetCaution.text.toString()
-                        val tags = tagListPet.toList()
-                        val content = binding.etvMypagePetReview.text.toString()
-                        val uidAndCategory = "${uid}펫용품"
+            FBRef.users.child(uid).child("profile").child("dogcat")
+                .addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val dogcatValue = snapshot.getValue(String::class.java)
+                        if (dogcatValue != null) {
+                            val animalAndCategory = "${dogcatValue}펫용품"
+                            val time = FBAuth.getTime()
+                            val title = binding.etvMypagePetTitle.text.toString()
+                            val name = binding.etvMypagePetSupplies.text.toString()
+                            val price = binding.etvMypagePetPrice.text.toString()
+                            val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
+                            val caution = binding.etvMypagePetCaution.text.toString()
+                            val tags = tagListPet.toList()
+                            val content = binding.etvMypagePetReview.text.toString()
+                            val uidAndCategory = "${uid}펫용품"
 
-                        val key = FBRef.boardRef.push().key.toString()
-                        val petData = Pet(
-                            caution = caution,
-                            name = name,
-                            price = price,
-                            satisfaction = satisfaction,
-                            content = content,
-                            tags = tags,
-                            time = time,
-                            title = title,
-                            animalAndCategory = animalAndCategory,
-                            uid = uid,
-                            animal = dogcatValue,
-                            uidAndCategory = uidAndCategory
-                        )
+                            val key = FBRef.boardRef.push().key.toString()
+                            val petData = Pet(
+                                caution = caution,
+                                name = name,
+                                price = price,
+                                satisfaction = satisfaction,
+                                content = content,
+                                tags = tags,
+                                time = time,
+                                title = title,
+                                animalAndCategory = animalAndCategory,
+                                uid = uid,
+                                animal = dogcatValue,
+                                uidAndCategory = uidAndCategory
+                            )
 
-                        FBRef.boardRef
-                            .child(key)
-                            .setValue(petData)
+                            FBRef.boardRef
+                                .child(key)
+                                .setValue(petData)
 
-                        Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypagePet, binding.ivMypagePetPictureLeft, key)
+                            if (isImageUpload) {
+                                ImageUtils.imageUpload(
+                                    this@MypagePet,
+                                    binding.ivMypagePetPictureLeft,
+                                    key
+                                )
+                            }
+                            val resultIntent = Intent().putExtra("postAdded", true)
+                            resultIntent.putExtra("addedPostUid", uid)
+                            resultIntent.putExtra("addedPostKey", key)
+                            setResult(RESULT_OK, resultIntent)
+                            finish()
                         }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
                     }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-            })
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
 
         }
+
+        binding.etvMypagePetPrice.addTextChangedListener(object : TextWatcher {
+            private var current: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString() != current) {
+                    binding.etvMypagePetPrice.removeTextChangedListener(this)
+
+                    val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
+                    val parsed = cleanString.toDoubleOrNull()
+                    val formatter = DecimalFormat("#,###")
+
+                    val formatted = if (parsed != null) {
+                        formatter.format(parsed)
+                    } else {
+                        ""
+                    }
+
+                    current = formatted
+                    binding.etvMypagePetPrice.setText(formatted)
+                    binding.etvMypagePetPrice.setSelection(formatted.length)
+
+                    binding.etvMypagePetPrice.addTextChangedListener(this)
+                }
+            }
+        })
+
+
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {

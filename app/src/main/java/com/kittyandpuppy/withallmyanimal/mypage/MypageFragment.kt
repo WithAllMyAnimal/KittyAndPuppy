@@ -72,6 +72,7 @@ class MypageFragment : Fragment() {
                         gridLayoutManager.spanCount = 3
                         binding.conMypageTag.visibility = View.VISIBLE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
+                        getMyData()
 
                     }
 
@@ -79,6 +80,7 @@ class MypageFragment : Fragment() {
                         gridLayoutManager.spanCount = 1
                         binding.conMypageTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
+                        getLikedPosts()
                     }
 
                     else -> {}
@@ -204,6 +206,33 @@ class MypageFragment : Fragment() {
 
             override fun onCancelled(error: DatabaseError) {
                 Log.w("MyPageFragment", "loadPost:onCancelled", error.toException())
+            }
+        })
+    }
+    private fun getLikedPosts() {
+        val currentUserId = FBAuth.getUid()
+
+        FBRef.users.child(currentUserId).child("likedlist").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val likedPostKeys = snapshot.children.map { it.key!! }
+
+                for (postKey in likedPostKeys) {
+                    FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val post = snapshot.getValue(BaseModel::class.java)
+                            post?.let { list.add(it) }
+                            rvAdapter.submitList(list.toList())
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Log.w("MyPageFragment", "loadPost:onCancelled", error.toException())
+                        }
+                    })
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         })
     }
