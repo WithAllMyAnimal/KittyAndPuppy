@@ -12,6 +12,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -29,7 +31,6 @@ import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 class MypagePet : AppCompatActivity() {
 
     private val binding : ActivityMypagePetBinding by lazy { ActivityMypagePetBinding.inflate(layoutInflater) }
-    private var tagListPet = mutableListOf<String>()
 
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -38,6 +39,7 @@ class MypagePet : AppCompatActivity() {
     }
 
     private var isImageUpload = false
+    private var tagListPet = mutableListOf<String>()
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
