@@ -44,14 +44,12 @@ class MypagePet : AppCompatActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
-            // 권한이 부여된 경우 갤러리 열기
             val intent = ImageUtils.createGalleryIntent()
             pickImageLauncher.launch(intent)
         } else {
             AlertDialog.Builder(this)
                 .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
                 .setPositiveButton("설정으로 이동") { _, _ ->
-                    // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts("package", this.packageName, null)
                     intent.data = uri
@@ -154,15 +152,20 @@ class MypagePet : AppCompatActivity() {
                     binding.etvMypagePetPrice.removeTextChangedListener(this)
 
                     if (cleanString.isNotEmpty()) {
-                        val formatter = DecimalFormat("#,###")
-                        val formatted = formatter.format(cleanString.toLong())
+                        val formatted = try {
+                            val number = cleanString.toLong()
+                            val formatter = DecimalFormat("#,###")
+                            val formattedNumber = formatter.format(number)
+                            val result = "$formattedNumber 원"
+                            result
+                        } catch (e: NumberFormatException) {
+                            cleanString
+                        }
                         binding.etvMypagePetPrice.setText(formatted)
+                        binding.etvMypagePetPrice.setSelection(formatted.length - 2)
                     } else {
                         binding.etvMypagePetPrice.text = null
                     }
-
-                    current = s.toString()
-                    binding.etvMypagePetPrice.setSelection(current.length)
 
                     binding.etvMypagePetPrice.addTextChangedListener(this)
                 }
