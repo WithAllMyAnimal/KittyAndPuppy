@@ -150,9 +150,8 @@ class MypageFragment : Fragment() {
 
     private fun getMyData() {
         val currentUserId = FBAuth.getUid()
-        val userPostsRef = FBRef.boardRef.child(currentUserId)
 
-        userPostsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        FBRef.boardRef.orderByChild("uid").equalTo(currentUserId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list.clear()
 
@@ -161,10 +160,10 @@ class MypageFragment : Fragment() {
                     val category = postSnapshot.child("category").getValue(String::class.java) ?: ""
 
                     val post: BaseModel? = when (category) {
-                        "Behavior" -> postSnapshot.getValue(Behavior::class.java)
-                        "Daily" -> postSnapshot.getValue(Daily::class.java)
-                        "Hospital" -> postSnapshot.getValue(Hospital::class.java)
-                        "Pet" -> postSnapshot.getValue(Pet::class.java)
+                        "이상행동" -> postSnapshot.getValue(Behavior::class.java)
+                        "일상" -> postSnapshot.getValue(Daily::class.java)
+                        "병원" -> postSnapshot.getValue(Hospital::class.java)
+                        "펫용품" -> postSnapshot.getValue(Pet::class.java)
                         else -> null
                     }?.apply {
                         this.uid = currentUserId

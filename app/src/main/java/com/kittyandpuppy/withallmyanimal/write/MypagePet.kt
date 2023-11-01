@@ -74,7 +74,7 @@ class MypagePet : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val dogcatValue = snapshot.getValue(String::class.java)
                     if (dogcatValue != null) {
-                        val animalAndCategory = "${dogcatValue}이상행동"
+                        val animalAndCategory = "${dogcatValue}펫용품"
                         val time = FBAuth.getTime()
                         val title = binding.etvMypagePetTitle.text.toString()
                         val name = binding.etvMypagePetSupplies.text.toString()
@@ -93,11 +93,13 @@ class MypagePet : AppCompatActivity() {
                             content = content,
                             tags = tags,
                             time = time,
-                            title = title
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
                         )
 
                         FBRef.boardRef
-                            .child(uid)
                             .child(key)
                             .setValue(petData)
 
@@ -120,11 +122,9 @@ class MypagePet : AppCompatActivity() {
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
-                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }

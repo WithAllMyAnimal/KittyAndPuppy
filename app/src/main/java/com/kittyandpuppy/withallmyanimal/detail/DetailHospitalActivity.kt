@@ -69,7 +69,7 @@ class DetailHospitalActivity : AppCompatActivity() {
             }
         }
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(uid).child(key)
+        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")

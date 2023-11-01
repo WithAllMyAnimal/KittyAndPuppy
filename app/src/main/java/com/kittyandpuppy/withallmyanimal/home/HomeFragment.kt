@@ -140,7 +140,7 @@ class HomeFragment : Fragment() {
                 Pair(QueryType.ONLY_CATEGORY, boardRef.orderByChild("category").equalTo(onlyCategory))
             }
             onlyAnimal != null -> {
-                Pair(QueryType.ONLY_ANIMAL, users.orderByChild("profile/dogcat").equalTo(onlyAnimal))
+                Pair(QueryType.ONLY_ANIMAL, boardRef.orderByChild("animal").equalTo(onlyAnimal))
             }
             else -> { Pair(QueryType.DEFAULT, boardRef) }
         }
@@ -148,30 +148,8 @@ class HomeFragment : Fragment() {
         query.second.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d(TAG, "Snapshot size: ${snapshot.childrenCount}")
-
                 boardList.clear()
-                val users: Iterable<DataSnapshot> = snapshot.children
-
-                for (userSnapshot in users) {
-                    val uid = userSnapshot.key ?: continue
-
-                    when (query.first) {
-                        QueryType.COMBINED_SPINNER -> {
-                            val boardRef = FirebaseDatabase.getInstance().getReference("board/$uid")
-                            boardRef.addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(boardSnapshot: DataSnapshot) {
-                                    handlePostsData(boardSnapshot, uid)
-                                }
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.w(TAG, "Failed to get board data", error.toException())
-                                }
-                            })
-                        }
-                        else -> {
-                            handlePostsData(userSnapshot, uid)
-                        }
-                    }
-                }
+                handlePostsData(snapshot)
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Post Failed", error.toException())
@@ -179,8 +157,7 @@ class HomeFragment : Fragment() {
         })
     }
 
-    private fun handlePostsData(snapshot: DataSnapshot, uid: String) {
-        Log.d(TAG, "handlePostsData called with UID: $uid")
+    private fun handlePostsData(snapshot: DataSnapshot) {
 
         for (postSnapshot in snapshot.children) {
             val postKey = postSnapshot.key ?: continue
@@ -188,13 +165,12 @@ class HomeFragment : Fragment() {
             val category =
                 postSnapshot.child("category").getValue(String::class.java) ?: ""
             val post: BaseModel? = when (category) {
-                "Behavior" -> postSnapshot.getValue(Behavior::class.java)
-                "Daily" -> postSnapshot.getValue(Daily::class.java)
-                "Hospital" -> postSnapshot.getValue(Hospital::class.java)
-                "Pet" -> postSnapshot.getValue(Pet::class.java)
+                "이상행동" -> postSnapshot.getValue(Behavior::class.java)
+                "일상" -> postSnapshot.getValue(Daily::class.java)
+                "병원" -> postSnapshot.getValue(Hospital::class.java)
+                "펫용품" -> postSnapshot.getValue(Pet::class.java)
                 else -> null
             }?.apply {
-                this.uid = uid
                 this.key = postKey
             }
 

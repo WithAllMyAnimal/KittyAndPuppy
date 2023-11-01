@@ -71,7 +71,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             }
         }
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(uid).child(key)
+        databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Behavior::class.java) ?: return

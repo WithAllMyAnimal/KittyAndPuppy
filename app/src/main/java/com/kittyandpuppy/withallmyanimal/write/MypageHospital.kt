@@ -100,10 +100,12 @@ class MypageHospital : AppCompatActivity() {
                             content = content,
                             tags = tags,
                             time = time,
-                            title = title
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
                         )
                         FBRef.boardRef
-                            .child(uid)
                             .child(key)
                             .setValue(hospitalData)
 
@@ -126,11 +128,9 @@ class MypageHospital : AppCompatActivity() {
         binding.ivMypageHospitalPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
-                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }

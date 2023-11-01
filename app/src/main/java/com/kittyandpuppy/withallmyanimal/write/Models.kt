@@ -9,7 +9,8 @@ open class BaseModel(
     open var uid : String = "",
     open var likesCount: Int = 0,
     open var commentsCount: Int = 0,
-    open val animalAndCategory: String = ""
+    open val animalAndCategory: String = "",
+    open val animal : String = ""
 )
 
 data class Behavior(
@@ -19,8 +20,10 @@ data class Behavior(
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = "",
-    override val animalAndCategory: String = ""
-) : BaseModel(category = "Behavior")
+    override val animalAndCategory: String = "",
+    override var key: String = "",
+    override val animal : String = ""
+) : BaseModel(category = "이상행동")
 
 data class Daily(
     override val content: String = "",
@@ -28,8 +31,10 @@ data class Daily(
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = "",
-    override val animalAndCategory: String = ""
-) : BaseModel(category = "Daily")
+    override val animalAndCategory: String = "",
+    override var key: String = "",
+    override val animal : String = ""
+) : BaseModel(category = "일상")
 
 data class Hospital(
     val date: String = "",
@@ -41,8 +46,10 @@ data class Hospital(
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = "",
-    override val animalAndCategory: String = ""
-) : BaseModel(category = "Hospital")
+    override val animalAndCategory: String = "",
+    override var key: String = "",
+    override val animal : String = ""
+) : BaseModel(category = "병원")
 
 data class Pet(
     val caution: String = "",
@@ -54,5 +61,7 @@ data class Pet(
     override val tags: List<String> = emptyList(),
     override val time: String = "",
     override val title: String = "",
-    override val animalAndCategory: String = ""
-) : BaseModel(category = "Pet")
+    override val animalAndCategory: String = "",
+    override var key: String = "",
+    override val animal : String = ""
+) : BaseModel(category = "펫용품")

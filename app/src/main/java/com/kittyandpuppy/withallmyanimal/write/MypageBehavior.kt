@@ -94,11 +94,12 @@ class MypageBehavior : AppCompatActivity() {
                             tags = tags,
                             time = time,
                             title = title,
-                            animalAndCategory = animalAndCategory
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
                         )
 
                         FBRef.boardRef
-                            .child(uid)
                             .child(key)
                             .setValue(behaviorData)
 
