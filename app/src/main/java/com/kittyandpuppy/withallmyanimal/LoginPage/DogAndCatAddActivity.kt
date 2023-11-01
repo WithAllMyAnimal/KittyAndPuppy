@@ -33,15 +33,13 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
 
 class DogAndCatAddActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
     private var selectedImageUri: Uri? = null
-
     val storage = Firebase.storage
     val storageRef = storage.reference
-
     var isDogAndCatSpinnerInitialized = false
-    var isBreedSpinnerInitialized = false
 
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -86,69 +84,10 @@ class DogAndCatAddActivity : AppCompatActivity() {
         val dogCatAdapter = ArrayAdapter.createFromResource(
             this,
             R.array.dogandcat,
-            android.R.layout.simple_spinner_item
+            android.R.layout.simple_spinner_dropdown_item
         )
         dogCatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spDogAndCatAddDogcat.adapter = dogCatAdapter
-
-        binding.spDogAndCatAddDogcat.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isDogAndCatSpinnerInitialized) {
-                        isDogAndCatSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(this@DogAndCatAddActivity, "종류를 선택하세요", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    val selectedItem = parent?.getItemAtPosition(position).toString()
-                    val breedArray = when (selectedItem) {
-                        "전체" -> R.array.all
-                        "강아지" -> R.array.dogbreed
-                        "고양이" -> R.array.catbreed
-                        else -> return
-                    }
-                    val breedAdapter = ArrayAdapter.createFromResource(
-                        applicationContext,
-                        breedArray,
-                        android.R.layout.simple_spinner_item
-                    )
-                    breedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.spDogAndCatAddPetType.adapter = breedAdapter
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
-
-        binding.spDogAndCatAddPetType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (!isBreedSpinnerInitialized) {
-                        isBreedSpinnerInitialized = true
-                        return
-                    }
-
-                    if (position == 0) {
-                        Toast.makeText(this@DogAndCatAddActivity, "품종을 선택하세요", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
-            }
 
         binding.btnLoginSignup.setOnClickListener {
             checkDuplicateId()
@@ -163,9 +102,11 @@ class DogAndCatAddActivity : AppCompatActivity() {
                     storagePermission
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
+                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }
@@ -203,7 +144,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val petName = binding.etDogAndCatAddPetname.text.toString()
             val birth = binding.etDogAndCatAddBirth.text.toString()
             val dogCat = binding.spDogAndCatAddDogcat.selectedItem.toString()
-            val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
@@ -223,7 +163,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "petName" to petName,
                         "birth" to birth,
                         "dogcat" to dogCat,
-                        "breed" to breed,
                         "profileImage" to imageKey
                     )
 

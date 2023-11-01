@@ -87,20 +87,20 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "Behavior" -> intent =
+                                "이상행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
-                                "Daily" -> intent = Intent(
+                                "일상" -> intent = Intent(
                                     binding.root.context,
                                     DetailDailyActivity::class.java
                                 )
 
-                                "Hospital" -> intent = Intent(
+                                "병원" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
                                 )
 
-                                "Pet" -> intent =
+                                "펫용품" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =
@@ -174,20 +174,20 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "Behavior" -> intent =
+                                "이상행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
-                                "Daily" -> intent = Intent(
+                                "일상" -> intent = Intent(
                                     binding.root.context,
                                     DetailDailyActivity::class.java
                                 )
 
-                                "Hospital" -> intent = Intent(
+                                "병원" -> intent = Intent(
                                     binding.root.context,
                                     DetailHospitalActivity::class.java
                                 )
 
-                                "Pet" -> intent =
+                                "펫용품" -> intent =
                                     Intent(binding.root.context, DetailPetActivity::class.java)
 
                                 else -> intent =

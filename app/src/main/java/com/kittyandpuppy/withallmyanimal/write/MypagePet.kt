@@ -17,6 +17,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.chip.Chip
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypagePetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -60,59 +63,68 @@ class MypagePet : AppCompatActivity() {
             binding.ivMypagePetPictureLeft.setImageURI(result.data?.data)
         }
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         binding.btnMypagePetSave.setOnClickListener {
-            val title = binding.etvMypagePetTitle.text.toString()
-            val name = binding.etvMypagePetSupplies.text.toString()
-            val price = binding.etvMypagePetPrice.text.toString()
-            val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
-            val caution = binding.etvMypagePetCaution.text.toString()
-            val tags = tagListPet.toList()
-            val content = binding.etvMypagePetReview.text.toString()
             val uid = FBAuth.getUid()
-            val time = FBAuth.getTime()
+            FBRef.users.child(uid).child("profile").child("dogcat").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val dogcatValue = snapshot.getValue(String::class.java)
+                    if (dogcatValue != null) {
+                        val animalAndCategory = "${dogcatValue}펫용품"
+                        val time = FBAuth.getTime()
+                        val title = binding.etvMypagePetTitle.text.toString()
+                        val name = binding.etvMypagePetSupplies.text.toString()
+                        val price = binding.etvMypagePetPrice.text.toString()
+                        val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
+                        val caution = binding.etvMypagePetCaution.text.toString()
+                        val tags = tagListPet.toList()
+                        val content = binding.etvMypagePetReview.text.toString()
 
-            val key = FBRef.boardRef.push().key.toString()
+                        val key = FBRef.boardRef.push().key.toString()
+                        val petData = Pet(
+                            caution = caution,
+                            name = name,
+                            price = price,
+                            satisfaction = satisfaction,
+                            content = content,
+                            tags = tags,
+                            time = time,
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
+                        )
 
-            val petData = Pet(
-                caution = caution,
-                name = name,
-                price = price,
-                satisfaction = satisfaction,
-                content = content,
-                tags = tags,
-                time = time,
-                title = title
-            )
+                        FBRef.boardRef
+                            .child(key)
+                            .setValue(petData)
 
-            FBRef.boardRef
-                .child(uid)
-                .child(key)
-                .setValue(petData)
+                        Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        if (isImageUpload) {
+                            ImageUtils.imageUpload(this@MypagePet, binding.ivMypagePetPictureLeft, key)
+                        }
+                        val resultIntent = Intent().putExtra("postAdded", true)
+                        resultIntent.putExtra("addedPostUid", uid)
+                        resultIntent.putExtra("addedPostKey", key)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
 
-            if (isImageUpload) {
-                ImageUtils.imageUpload(this, binding.ivMypagePetPictureLeft, key)
-            }
-            val resultIntent = Intent().putExtra("postAdded", true)
-            resultIntent.putExtra("addedPostUid", uid)
-            resultIntent.putExtra("addedPostKey", key)
-            setResult(RESULT_OK, resultIntent)
-            finish()
         }
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
-                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }
