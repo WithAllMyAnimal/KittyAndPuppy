@@ -52,14 +52,12 @@ class DogAndCatAddActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                // 권한이 부여된 경우 갤러리 열기
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
                 android.app.AlertDialog.Builder(this)
                     .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
                     .setPositiveButton("설정으로 이동") { _, _ ->
-                        // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val uri = Uri.fromParts("package", this.packageName, null)
                         intent.data = uri
@@ -165,11 +163,9 @@ class DogAndCatAddActivity : AppCompatActivity() {
                     storagePermission
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
-                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }
@@ -208,7 +204,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
             val birth = binding.etDogAndCatAddBirth.text.toString()
             val dogCat = binding.spDogAndCatAddDogcat.selectedItem.toString()
             val breed = binding.spDogAndCatAddPetType.selectedItem.toString()
-//            val statusMessage = binding.etFeel.text.toString()
 
             if (selectedImageUri != null) {
                 val imageKey = userRef.push().key
@@ -229,7 +224,6 @@ class DogAndCatAddActivity : AppCompatActivity() {
                         "birth" to birth,
                         "dogcat" to dogCat,
                         "breed" to breed,
-//                        "statusMessage" to statusMessage,
                         "profileImage" to imageKey
                     )
 

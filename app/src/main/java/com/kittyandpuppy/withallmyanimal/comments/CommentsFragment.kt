@@ -44,24 +44,23 @@ class CommentsFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         key = arguments?.getString("key").toString()
 
-        Log.d(TAG, key)
-
         val uid = FBAuth.getUid()
-        val likesRef = FBRef.likesRef.child(key).child("likes")
+        val userLikesRef = FBRef.users.child(uid).child("likedlist").child(key)
 
-        checkLikeStatus(uid, likesRef)
+        checkLikeStatus(uid, userLikesRef)
+        updateLikes(key)
 
         binding.ivUserLikes.setOnClickListener {
-            likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            userLikesRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.hasChild(uid)) {
-                        likesRef.child(uid).removeValue()
+                    if (snapshot.exists()) {
+                        userLikesRef.removeValue()
                         binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
                     } else {
-                        likesRef.child(uid).setValue(true)
+                        userLikesRef.setValue(true)
                         binding.ivUserLikes.setImageResource(R.drawable.pet_like)
                     }
-                    updateLikes(likesRef)
+                    updateLikes(key)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -78,15 +77,14 @@ class CommentsFragment : BottomSheetDialogFragment() {
         getComments(key)
     }
 
-    private fun checkLikeStatus(uid: String, likesRef: DatabaseReference) {
-        likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun checkLikeStatus(uid: String, userLikesRef: DatabaseReference) {
+        userLikesRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.hasChild(uid)) {
+                if (snapshot.exists()) {
                     binding.ivUserLikes.setImageResource(R.drawable.pet_like)
                 } else {
                     binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
                 }
-                updateLikes(likesRef)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -150,30 +148,21 @@ class CommentsFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateLikes(likesRef: DatabaseReference) {
-        likesRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val count = snapshot.childrenCount
-                if (count > 0) {
-                    val firstUserUid = snapshot.children.first().key
-                    FBRef.users.child(firstUserUid!!).child("profile").child("userIdname")
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-//                                val firstUserName = snapshot.value.toString()
-                                binding.tvUserLikeList.text = "${count}명이 좋아합니다!"
-                            }
+    private fun updateLikes(postKey: String) {
+        var count = 0
 
-                            override fun onCancelled(error: DatabaseError) {
-                                Log.w(TAG, "User Name Loading Failed", error.toException())
-                            }
-                        })
-                } else {
-                    binding.tvUserLikeList.text = ""
+        FBRef.users.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapshot in snapshot.children) {
+                    if (userSnapshot.child("likedlist").hasChild(postKey)) {
+                        count++
+                    }
                 }
+                binding.tvUserLikeList.text = if (count > 0) "${count}명이 좋아합니다!" else ""
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Like Updating Failed", error.toException())
+                Log.w(TAG, "User Name Loading Failed", error.toException())
             }
         })
     }

@@ -64,7 +64,6 @@ class DialogProfileChange : DialogFragment() {
                         val retrievedUserIdname = profileMap?.get("userIdname") as? String
                         val retrievedPetName = profileMap?.get("petName") as? String
                         val retrievedBirth = profileMap?.get("birth") as? String
-                        val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
 
                         binding.etProfilechangeNicknametext.text =
                             if (retrievedUserIdname != null) Editable.Factory.getInstance()
@@ -175,7 +174,6 @@ class DialogProfileChange : DialogFragment() {
                         existingProfileMap["userIdname"] = userIdname
                         existingProfileMap["petName"] = petName
                         existingProfileMap["birth"] = birth
-//                        existingProfileMap["statusMessage"] = statusMessage
 
                         userRef.child(userId).child("profile").setValue(existingProfileMap)
                     }
