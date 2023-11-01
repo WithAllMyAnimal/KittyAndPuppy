@@ -27,6 +27,7 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
+import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 
 
 class DetailBehaviorActivity : AppCompatActivity() {
@@ -52,6 +53,20 @@ class DetailBehaviorActivity : AppCompatActivity() {
             binding.ivDetailEdit.isVisible = true
             binding.ivDetailDelete.isVisible = true
         }
+
+        // 일지 수정하는 부분
+        binding.ivDetailEdit.setOnClickListener {
+            val editIntent = Intent(this, MypageBehavior::class.java)
+            editIntent.putExtra("editMode", true)
+            editIntent.putExtra("editPostKey", key)
+
+            editIntent.putExtra("editTitle", binding.tvDetailBehaviorTitle.text.toString())
+            editIntent.putExtra("editBehavior", binding.tvDetailBehaviorCautionContents.text.toString())
+            editIntent.putExtra("editReview", binding.tvDetailBehaviorReviewContents.text.toString())
+
+            startActivity(editIntent)
+        }
+
         binding.ivDetailDelete.setOnClickListener {
             val myDialog = LayoutInflater.from(this).inflate(R.layout.alarm_delete, null)
             val builder = AlertDialog.Builder(this)
