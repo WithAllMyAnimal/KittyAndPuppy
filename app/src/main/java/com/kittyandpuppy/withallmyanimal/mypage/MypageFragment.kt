@@ -75,13 +75,11 @@ class MypageFragment : Fragment() {
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
 
                     }
-
                     1 -> {
                         gridLayoutManager.spanCount = 1
                         binding.conMypageTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
                     }
-
                     else -> {}
                 }
             }

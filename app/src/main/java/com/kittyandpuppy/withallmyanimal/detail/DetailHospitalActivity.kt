@@ -25,6 +25,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailHospitalBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 
@@ -104,7 +105,11 @@ class DetailHospitalActivity : AppCompatActivity() {
                 crossfade(true)
             }
         }
-
+        binding.ivDetailHospitalProfile.setOnClickListener {
+            val intent = Intent(this, MypageOtherUsers::class.java)
+            intent.putExtra("uid", uid)
+            startActivity(intent)
+        }
         val storageProfileReview = Firebase.storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png")
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
