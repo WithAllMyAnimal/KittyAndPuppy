@@ -18,6 +18,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.chip.Chip
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageHospitalBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -71,52 +74,63 @@ class MypageHospital : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnMypageHospitalSave.setOnClickListener {
-            val title = binding.etvMypageHospitalTitle.text.toString()
-            val date = binding.edtMypageHospital.text.toString()
-            val price = binding.etvMypageHospitalExpense.text.toString()
-            val location = binding.spMypageHospital.text.toString()
-            val tags = tagListHospital.toList()
-            val content = binding.etvMypageHospitalReview.text.toString()
-            val disease = binding.etvMypageHospitalCheckup.text.toString()
             val uid = FBAuth.getUid()
-            val time = FBAuth.getTime()
+            FBRef.users.child(uid).child("profile").child("dogcat").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val dogcatValue = snapshot.getValue(String::class.java)
+                    if (dogcatValue != null) {
+                        val animalAndCategory = "${dogcatValue}병원"
+                        val time = FBAuth.getTime()
+                        val title = binding.etvMypageHospitalTitle.text.toString()
+                        val date = binding.edtMypageHospital.text.toString()
+                        val price = binding.etvMypageHospitalExpense.text.toString()
+                        val location = binding.spMypageHospital.text.toString()
+                        val tags = tagListHospital.toList()
+                        val content = binding.etvMypageHospitalReview.text.toString()
+                        val disease = binding.etvMypageHospitalCheckup.text.toString()
 
-            val key = FBRef.boardRef.push().key.toString()
+                        val key = FBRef.boardRef.push().key.toString()
 
-            val hospitalData = Hospital(
-                date = date,
-                disease = disease,
-                location = location,
-                price = price,
-                content = content,
-                tags = tags,
-                time = time,
-                title = title
-            )
-            FBRef.boardRef
-                .child(uid)
-                .child(key)
-                .setValue(hospitalData)
+                        val hospitalData = Hospital(
+                            date = date,
+                            disease = disease,
+                            location = location,
+                            price = price,
+                            content = content,
+                            tags = tags,
+                            time = time,
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue
+                        )
+                        FBRef.boardRef
+                            .child(key)
+                            .setValue(hospitalData)
 
-            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MypageHospital, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-            if (isImageUpload) {
-                ImageUtils.imageUpload(this, binding.ivMypageHospitalPictureLeft, key)
-            }
-            val resultIntent = Intent().putExtra("postAdded", true)
-            resultIntent.putExtra("addedPostUid", uid)
-            resultIntent.putExtra("addedPostKey", key)
-            setResult(RESULT_OK, resultIntent)
-            finish()
+                        if (isImageUpload) {
+                            ImageUtils.imageUpload(this@MypageHospital, binding.ivMypageHospitalPictureLeft, key)
+                        }
+                        val resultIntent = Intent().putExtra("postAdded", true)
+                        resultIntent.putExtra("addedPostUid", uid)
+                        resultIntent.putExtra("addedPostKey", key)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
         }
+
         binding.ivMypageHospitalPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
-                // 권한이 이미 부여되었을 경우
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
-                // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
         }
