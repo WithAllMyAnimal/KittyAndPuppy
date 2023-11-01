@@ -32,7 +32,6 @@ import java.text.DecimalFormat
 class MypagePet : AppCompatActivity() {
 
     private val binding : ActivityMypagePetBinding by lazy { ActivityMypagePetBinding.inflate(layoutInflater) }
-    private var tagListPet = mutableListOf<String>()
 
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -88,96 +87,43 @@ class MypagePet : AppCompatActivity() {
                         val tags = tagListPet.joinToString(", ")
                         val content = binding.etvMypagePetReview.text.toString()
                         val uidAndCategory = "${uid}펫용품"
-            FBRef.users.child(uid).child("profile").child("dogcat")
-                .addListenerForSingleValueEvent(object :
-                    ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val dogcatValue = snapshot.getValue(String::class.java)
-                        if (dogcatValue != null) {
-                            val animalAndCategory = "${dogcatValue}펫용품"
-                            val time = FBAuth.getTime()
-                            val title = binding.etvMypagePetTitle.text.toString()
-                            val name = binding.etvMypagePetSupplies.text.toString()
-                            val price = binding.etvMypagePetPrice.text.toString()
-                            val satisfaction = binding.ratMypagePetStar.rating.toLong().toString()
-                            val caution = binding.etvMypagePetCaution.text.toString()
-                            val tags = tagListPet.toList()
-                            val content = binding.etvMypagePetReview.text.toString()
-                            val uidAndCategory = "${uid}펫용품"
 
-                            val key = FBRef.boardRef.push().key.toString()
-                            val petData = Pet(
-                                caution = caution,
-                                name = name,
-                                price = price,
-                                satisfaction = satisfaction,
-                                content = content,
-                                tags = tags,
-                                time = time,
-                                title = title,
-                                animalAndCategory = animalAndCategory,
-                                uid = uid,
-                                animal = dogcatValue,
-                                uidAndCategory = uidAndCategory
-                            )
+                        val key = FBRef.boardRef.push().key.toString()
+                        val petData = Pet(
+                            caution = caution,
+                            name = name,
+                            price = price,
+                            satisfaction = satisfaction,
+                            content = content,
+                            tags = tags,
+                            time = time,
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory
+                        )
 
-                            FBRef.boardRef
-                                .child(key)
-                                .setValue(petData)
+                        FBRef.boardRef
+                            .child(key)
+                            .setValue(petData)
 
-                            Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-                            if (isImageUpload) {
-                                ImageUtils.imageUpload(
-                                    this@MypagePet,
-                                    binding.ivMypagePetPictureLeft,
-                                    key
-                                )
-                            }
-                            val resultIntent = Intent().putExtra("postAdded", true)
-                            resultIntent.putExtra("addedPostUid", uid)
-                            resultIntent.putExtra("addedPostKey", key)
-                            setResult(RESULT_OK, resultIntent)
-                            finish()
+                        if (isImageUpload) {
+                            ImageUtils.imageUpload(this@MypagePet, binding.ivMypagePetPictureLeft, key)
                         }
+                        val resultIntent = Intent().putExtra("postAdded", true)
+                        resultIntent.putExtra("addedPostUid", uid)
+                        resultIntent.putExtra("addedPostKey", key)
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
                     }
-
-                    override fun onCancelled(error: DatabaseError) {}
-                })
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
 
         }
-
-        binding.etvMypagePetPrice.addTextChangedListener(object : TextWatcher {
-            private var current: String = ""
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString() != current) {
-                    binding.etvMypagePetPrice.removeTextChangedListener(this)
-
-                    val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
-                    val parsed = cleanString.toDoubleOrNull()
-                    val formatter = DecimalFormat("#,###")
-
-                    val formatted = if (parsed != null) {
-                        formatter.format(parsed)
-                    } else {
-                        ""
-                    }
-
-                    current = formatted
-                    binding.etvMypagePetPrice.setText(formatted)
-                    binding.etvMypagePetPrice.setSelection(formatted.length)
-
-                    binding.etvMypagePetPrice.addTextChangedListener(this)
-                }
-            }
-        })
-
-
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
@@ -199,6 +145,39 @@ class MypagePet : AppCompatActivity() {
             }
             override fun afterTextChanged(p0: Editable?) {}
         })
+
+        binding.etvMypagePetPrice.addTextChangedListener(object : TextWatcher {
+            private var current: String = ""
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                current = s.toString()
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val cleanString = s.toString().replace("[^\\d]".toRegex(), "")
+
+                if (s.toString() != current) {
+                    binding.etvMypagePetPrice.removeTextChangedListener(this)
+
+                    if (cleanString.isNotEmpty()) {
+                        val formatter = DecimalFormat("#,###")
+                        val formatted = formatter.format(cleanString.toLong())
+                        binding.etvMypagePetPrice.setText(formatted)
+                    } else {
+                        binding.etvMypagePetPrice.text = null
+                    }
+
+                    current = s.toString()
+                    binding.etvMypagePetPrice.setSelection(current.length)
+
+                    binding.etvMypagePetPrice.addTextChangedListener(this)
+                }
+            }
+        })
+
 
         binding.btnPetAdd.setOnClickListener {
             val chipName = binding.etvMypagePetTag.text.toString()
