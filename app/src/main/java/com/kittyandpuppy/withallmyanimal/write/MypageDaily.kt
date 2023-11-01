@@ -85,6 +85,7 @@ class MypageDaily : AppCompatActivity() {
                         val title = binding.etvMypageDailyTitle.text.toString()
                         val tags = tagListDaily.toList()
                         val content = binding.etvMypageDaily.text.toString()
+                        val uidAndCategory = "${uid}일상"
 
                         val key = FBRef.boardRef.push().key.toString()
 
@@ -95,7 +96,8 @@ class MypageDaily : AppCompatActivity() {
                             title = title,
                             animalAndCategory = animalAndCategory,
                             uid = uid,
-                            animal = dogcatValue
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory
                         )
 
                         FBRef.boardRef

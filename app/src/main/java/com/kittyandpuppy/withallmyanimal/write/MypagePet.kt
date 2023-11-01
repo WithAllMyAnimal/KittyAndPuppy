@@ -83,6 +83,7 @@ class MypagePet : AppCompatActivity() {
                         val caution = binding.etvMypagePetCaution.text.toString()
                         val tags = tagListPet.toList()
                         val content = binding.etvMypagePetReview.text.toString()
+                        val uidAndCategory = "${uid}펫용품"
 
                         val key = FBRef.boardRef.push().key.toString()
                         val petData = Pet(
@@ -96,7 +97,8 @@ class MypagePet : AppCompatActivity() {
                             title = title,
                             animalAndCategory = animalAndCategory,
                             uid = uid,
-                            animal = dogcatValue
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory
                         )
 
                         FBRef.boardRef
