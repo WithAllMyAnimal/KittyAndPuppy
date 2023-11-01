@@ -1,0 +1,119 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kittyandpuppy.withallmyanimal.home.HomeFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ab_resignation_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_resignation_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ari"
+        android:text="이심\n동심"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/ab_resignation_appbar"
+        app:layout_constraintEnd_toEndOf="@id/ab_resignation_appbar"
+        app:layout_constraintStart_toStartOf="@id/ab_resignation_appbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_resignation_megaphone"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/image_megaphone"
+        app:layout_constraintEnd_toEndOf="@id/ab_resignation_appbar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_resignation_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/maple"
+        android:text="필독!"
+        android:textSize="10sp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_resignation_megaphone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_resignation_constraintlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ab_resignation_appbar">
+
+        <TextView
+            android:id="@+id/tv_resignation_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.회원탈퇴시 주의사항"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_resignation_detailwarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="모든 이용정보 및 게시글 삭제\n 회원 탈퇴와 동시에 개인정보 및 모든 이용정보가 초기화 되어 삭제 되므로 절대 복구 불가합니다."
+            app:layout_constraintStart_toStartOf="@+id/tv_resignation_warning"
+            app:layout_constraintTop_toBottomOf="@id/tv_resignation_warning" />
+
+        <CheckBox
+            android:id="@+id/cb_resignation_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="위 내용을 확인했으며 동의합니다."
+            app:layout_constraintTop_toBottomOf="@id/tv_resignation_detailwarning"
+            app:layout_constraintStart_toStartOf="@id/con_resignation_constraintlayout"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_resignation_resignbutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_login"
+            android:fontFamily="@font/cafe24"
+            android:text="탈퇴하기"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cb_resignation_checkbox"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_resignation_canclebutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_login"
+            android:fontFamily="@font/cafe24"
+            android:text="취소"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@id/btn_resignation_resignbutton"
+            app:layout_constraintTop_toBottomOf="@id/cb_resignation_checkbox"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

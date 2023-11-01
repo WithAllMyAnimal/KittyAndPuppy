@@ -24,6 +24,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 
@@ -32,7 +33,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
 
     private lateinit var databaseRef : DatabaseReference
 
-    private val binding: ActivityDetailBehaviorBinding by lazy{
+    private val binding: ActivityDetailBehaviorBinding by lazy {
         ActivityDetailBehaviorBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +99,11 @@ class DetailBehaviorActivity : AppCompatActivity() {
             binding.ivDetailBehaviorProfile.load(uri.toString()){
                 crossfade(true)
             }
+        }
+        binding.ivDetailBehaviorProfile.setOnClickListener {
+            val intent = Intent(this, MypageOtherUsers::class.java)
+            intent.putExtra("uid", uid)
+            startActivity(intent)
         }
 
         val storageProfileReview = Firebase.storage.reference.child("profileImages")

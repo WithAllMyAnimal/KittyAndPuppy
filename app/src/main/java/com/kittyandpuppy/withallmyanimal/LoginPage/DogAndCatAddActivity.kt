@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.LoginPage
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,15 +32,19 @@ import com.kittyandpuppy.withallmyanimal.MainActivity
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDogAndCatAddBinding
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import java.util.Calendar
 
 class DogAndCatAddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDogAndCatAddBinding
     private lateinit var userRef: DatabaseReference
     private var selectedImageUri: Uri? = null
+
     val storage = Firebase.storage
     val storageRef = storage.reference
+
     var isDogAndCatSpinnerInitialized = false
+    var isBreedSpinnerInitialized = false
 
     private val storagePermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         android.Manifest.permission.READ_MEDIA_IMAGES
@@ -50,12 +55,14 @@ class DogAndCatAddActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
+                // 권한이 부여된 경우 갤러리 열기
                 val intent = ImageUtils.createGalleryIntent()
                 pickImageLauncher.launch(intent)
             } else {
                 android.app.AlertDialog.Builder(this)
                     .setMessage("갤러리 접근 권한이 거부되었습니다. 설정에서 권한을 허용해주세요.")
                     .setPositiveButton("설정으로 이동") { _, _ ->
+                        // 설정 화면으로 이동하여 권한을 허용할 수 있도록 유도
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                         val uri = Uri.fromParts("package", this.packageName, null)
                         intent.data = uri
@@ -109,6 +116,26 @@ class DogAndCatAddActivity : AppCompatActivity() {
                 // 권한이 부여되지 않았을 경우 권한 요청
                 requestPermissionLauncher.launch(storagePermission)
             }
+        }
+        // 생일 DatePicker
+        binding.etDogAndCatAddBirth.setOnClickListener {
+
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDayOfMonth ->
+                    val selectedDate =   "$selectedYear/${selectedMonth + 1}/$selectedDayOfMonth"
+                    binding.etDogAndCatAddBirth.setText(selectedDate)
+                },
+                year,
+                month,
+                day
+            )
+            datePickerDialog.show()
         }
     }
 

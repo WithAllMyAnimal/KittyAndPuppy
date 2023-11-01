@@ -2,6 +2,8 @@ package com.kittyandpuppy.withallmyanimal.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -48,6 +51,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+        loadSearchText()
 
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
@@ -104,8 +108,18 @@ class HomeFragment : Fragment() {
         binding.spinnerDogandcat.setSelection(1)
         binding.spinnerCategory.setSelection(1)
         onSpinnerItemSelected()
-    }
 
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                searchTags()
+                if (p0.toString().isEmpty()) {
+                    getBoardData()
+                }
+            }
+        })
+    }
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
         binding.rvHome.apply {
@@ -114,19 +128,34 @@ class HomeFragment : Fragment() {
             adapter = rvAdapter
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
+    override fun onPause() {
+        super.onPause()
+        saveSearchText()
+    }
     enum class QueryType {
         COMBINED_SPINNER,
         ONLY_CATEGORY,
         ONLY_ANIMAL,
         DEFAULT
     }
+    private fun searchTags() {
+        val search = binding.etSearch.text.toString()
+        val query = boardRef.orderByChild("tags").startAt(search).endAt("$search\uf8ff")
+        query.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                boardList.clear()
+                handlePostsData(snapshot)
+            }
 
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Search Failed", error.toException())
+            }
+        })
+    }
     private fun getBoardData(
         combinedSpinnerValue: String? = null,
         onlyCategory: String? = null,
@@ -156,7 +185,6 @@ class HomeFragment : Fragment() {
             }
         })
     }
-
     private fun handlePostsData(snapshot: DataSnapshot) {
 
         for (postSnapshot in snapshot.children) {
@@ -208,7 +236,6 @@ class HomeFragment : Fragment() {
         }
         rvAdapter?.submitList(boardList.toList())
     }
-
     fun onSpinnerItemSelected() {
         val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()
         val spinnerCategoryValue = binding.spinnerCategory.selectedItem.toString()
@@ -228,5 +255,15 @@ class HomeFragment : Fragment() {
                 getBoardData()
             }
         }
+    }
+    private fun saveSearchText() {
+        val pref = requireActivity().getSharedPreferences("pref", 0)
+        val edit = pref.edit()
+        edit.putString("search", binding.etSearch.text.toString())
+        edit.apply()
+    }
+    private fun loadSearchText() {
+        val pref = requireActivity().getSharedPreferences("pref", 0)
+        binding.etSearch.setText(pref.getString("search",""))
     }
 }

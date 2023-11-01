@@ -190,13 +190,17 @@
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
+                android:paddingHorizontal="10dp"
                 android:text="2023년 10월 10일"
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
-                android:paddingHorizontal="10dp"
                 app:layout_constraintBottom_toTopOf="@id/tv_detail_hospital_location"
+                app:layout_constraintEnd_toStartOf="@id/tv_detail_hospital_disease_contents"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="@+id/view_detail_hospital"
-                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_date"
+                app:layout_constraintVertical_bias="0.52" />
 
             <TextView
                 android:id="@+id/tv_detail_hospital_disease"
@@ -216,6 +220,7 @@
                 android:layout_width="150dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/mypage_diary_edittext"
                 android:fontFamily="@font/cafe24"
                 android:gravity="center"
@@ -223,10 +228,9 @@
                 android:textColor="@color/textColor"
                 android:textSize="15sp"
                 android:paddingHorizontal="10dp"
-                app:layout_constraintTop_toTopOf="@id/tv_detail_hospital_date_contents"
+                app:layout_constraintStart_toEndOf="@id/tv_detail_hospital_date_contents"
                 app:layout_constraintBottom_toBottomOf="@id/tv_detail_hospital_date_contents"
                 app:layout_constraintEnd_toEndOf="@+id/view_detail_hospital"
-                app:layout_constraintStart_toStartOf="@id/tv_detail_hospital_disease"
                 app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_disease" />
 
             <TextView

@@ -203,8 +203,8 @@
 
     <ImageView
         android:id="@+id/iv_mypage_cake_left"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/cake_icon"
         android:layout_marginStart="10dp"
         android:visibility="invisible"

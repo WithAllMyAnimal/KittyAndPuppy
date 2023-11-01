@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+
+    <ImageView
+        android:id="@+id/iv_canceldialog_catsole"
+        android:layout_width="45dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="44dp"
+        android:src="@drawable/pet_like"
+        app:layout_constraintEnd_toStartOf="@id/tv_canceldialog_resigncheck"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_canceldialog_resigncheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/cafe24"
+        android:text="회원탈퇴 확인"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_canceldialog_catsole2"
+        android:layout_width="45dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="44dp"
+        android:src="@drawable/pet_like"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintStart_toEndOf="@id/tv_canceldialog_resigncheck"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/con_canceldialog_resign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_canceldialog_resigncheck">
+
+        <TextView
+            android:id="@+id/tv_canceldialog_resign_real"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="정말"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_canceldialog_resign"
+            app:layout_constraintEnd_toStartOf="@id/tv_canceldialog_resign_red"
+            app:layout_constraintStart_toStartOf="@id/con_canceldialog_resign" />
+
+        <TextView
+            android:id="@+id/tv_canceldialog_resign_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="회원탈퇴"
+            android:textColor="@color/red"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_canceldialog_resign"
+            app:layout_constraintEnd_toStartOf="@id/tv_canceldialog_resign_quetion"
+            app:layout_constraintStart_toEndOf="@id/tv_canceldialog_resign_real" />
+
+        <TextView
+            android:id="@+id/tv_canceldialog_resign_quetion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/cafe24"
+            android:text="하시겠습니까?"
+            android:textSize="22sp"
+            app:layout_constraintTop_toTopOf="@id/con_canceldialog_resign"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_canceldialog_resign_red" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_canceldialog_checkbutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_login"
+            android:fontFamily="@font/cafe24"
+            android:text="확인"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btn_canceldialog_cancelbutton"
+            app:layout_constraintStart_toStartOf="@id/con_canceldialog_resign"
+            app:layout_constraintTop_toBottomOf="@+id/tv_canceldialog_resign_real" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_canceldialog_cancelbutton"
+            android:layout_width="106dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_cancel"
+            android:fontFamily="@font/cafe24"
+            android:text="취소"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="@id/con_canceldialog_resign"
+            app:layout_constraintStart_toEndOf="@id/btn_canceldialog_checkbutton"
+            app:layout_constraintTop_toBottomOf="@id/tv_canceldialog_resign_quetion"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
