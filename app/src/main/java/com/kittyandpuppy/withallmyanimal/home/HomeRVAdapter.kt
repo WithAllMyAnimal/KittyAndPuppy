@@ -50,7 +50,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
 
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(

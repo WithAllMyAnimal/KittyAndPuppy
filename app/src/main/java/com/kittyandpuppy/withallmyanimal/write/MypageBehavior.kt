@@ -14,19 +14,25 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import kotlinx.coroutines.launch
 
 class MypageBehavior : AppCompatActivity() {
 
@@ -90,14 +96,14 @@ class MypageBehavior : AppCompatActivity() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val dogcatValue = snapshot.getValue(String::class.java)
                         if (dogcatValue != null) {
-                            val animalAndCategory = "${dogcatValue}이상행동"
+                            val animalAndCategory = "${dogcatValue}행동"
 
                             val title = binding.etvMypageBehaviorTitle.text.toString()
                             val content = binding.etvMypageBehavior.text.toString()
                             val tags = tagListBehavior.toList()
                             val review = binding.etvMypageBehaviorReview.text.toString()
                             val time = FBAuth.getTime()
-                            val uidAndCategory = "${uid}이상행동"
+                            val uidAndCategory = "${uid}행동"
 
                             val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
@@ -124,18 +130,22 @@ class MypageBehavior : AppCompatActivity() {
                                     )
                                         .show()
 
-                                    if (isImageUpload) {
-                                        ImageUtils.imageUpload(
-                                            this@MypageBehavior,
-                                            binding.ivMypageBehaviorPictureLeft,
-                                            key
-                                        )
+                                    lifecycleScope.launch {
+
+                                        if (isImageUpload) {
+                                            ImageUtils.imageUpload(
+                                                this@MypageBehavior,
+                                                binding.ivMypageBehaviorPictureLeft,
+                                                key
+                                            )
+                                        }
+                                        val resultIntent = Intent().putExtra("postAdded", true)
+                                        resultIntent.putExtra("addedPostUid", uid)
+                                        resultIntent.putExtra("addedPostKey", key)
+                                        setResult(RESULT_OK, resultIntent)
+                                        Log.d("mmm", "성공33")
+                                        finish()
                                     }
-                                    val resultIntent = Intent().putExtra("postAdded", true)
-                                    resultIntent.putExtra("addedPostUid", uid)
-                                    resultIntent.putExtra("addedPostKey", key)
-                                    setResult(RESULT_OK, resultIntent)
-                                    finish()
                                 }
                                 .addOnFailureListener {
                                     Toast.makeText(this@MypageBehavior, "저장 실패", Toast.LENGTH_SHORT).show()
@@ -225,6 +235,12 @@ class MypageBehavior : AppCompatActivity() {
                     .show()
             }
         })
+        val storageImage = Firebase.storage.reference.child("${postKey}.png")
+        storageImage.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivMypageBehaviorPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
     }
 
     private fun addChip(chipName: String) {

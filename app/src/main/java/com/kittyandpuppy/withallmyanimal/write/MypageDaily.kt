@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
@@ -30,6 +31,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageDailyBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import kotlinx.coroutines.launch
 
 class MypageDaily : AppCompatActivity() {
 
@@ -118,18 +120,20 @@ class MypageDaily : AppCompatActivity() {
                                 Toast.makeText(this@MypageDaily, "저장되었습니다.", Toast.LENGTH_SHORT)
                                     .show()
 
-                                if (isImageUpload) {
-                                    ImageUtils.imageUpload(
-                                        this@MypageDaily,
-                                        binding.ivMypageDailyPictureLeft,
-                                        key
-                                    )
+                                lifecycleScope.launch {
+                                    if (isImageUpload) {
+                                        ImageUtils.imageUpload(
+                                            this@MypageDaily,
+                                            binding.ivMypageDailyPictureLeft,
+                                            key
+                                        )
+                                    }
+                                    val resultIntent = Intent().putExtra("postAdded", true)
+                                    resultIntent.putExtra("addedPostUid", uid)
+                                    resultIntent.putExtra("addedPostKey", key)
+                                    setResult(RESULT_OK, resultIntent)
+                                    finish()
                                 }
-                                val resultIntent = Intent().putExtra("postAdded", true)
-                                resultIntent.putExtra("addedPostUid", uid)
-                                resultIntent.putExtra("addedPostKey", key)
-                                setResult(RESULT_OK, resultIntent)
-                                finish()
                             }
                             .addOnFailureListener {
                                 Toast.makeText(this@MypageDaily, "저장 실패", Toast.LENGTH_SHORT)
@@ -210,7 +214,6 @@ class MypageDaily : AppCompatActivity() {
                     .show()
             }
         })
-
         val storageImage = Firebase.storage.reference.child("${postKey}.png")
         storageImage.downloadUrl.addOnSuccessListener { uri ->
             binding.ivMypageDailyPictureLeft.load(uri.toString()){

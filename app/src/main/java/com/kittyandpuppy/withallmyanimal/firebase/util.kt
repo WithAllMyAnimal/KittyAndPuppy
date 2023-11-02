@@ -7,13 +7,17 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.ByteArrayOutputStream
+import kotlin.coroutines.resume
 
 object ImageUtils {
     fun createGalleryIntent(): Intent {
@@ -22,7 +26,8 @@ object ImageUtils {
         return intent
     }
 
-    fun imageUpload(activity: Activity, imageView: ImageView, key: String) {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    suspend fun imageUpload(activity: Activity, imageView: ImageView, key: String) = suspendCancellableCoroutine<Boolean> { con ->
         val storage = Firebase.storage
         val storageRef = storage.reference
         val animalsRef = storageRef.child("$key.png")
@@ -36,9 +41,13 @@ object ImageUtils {
         val data = baos.toByteArray()
 
         val uploadTask = animalsRef.putBytes(data)
+
         uploadTask.addOnFailureListener {
+            con.resume(false)
             Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
         }.addOnSuccessListener {
+            Log.d("mmmmmm", "성공")
+            con.resume(true)
             Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
         }
     }

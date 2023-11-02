@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +10,12 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
+import coil.request.CachePolicy
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -47,6 +51,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         val category = intent.getStringExtra("category") ?: return
         Log.d("DetailBehaviorActivity","$uid, key: $key, category: $category")
         Log.d("DetailBehaviorActivity", FBAuth.getUid())
+
 
         if (uid == FBAuth.getUid()) {
             binding.ivDetailEdit.isVisible = true
@@ -93,16 +98,12 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 Log.d("DetailBehaviorActivity","Failed to read post data",error.toException())
             }
         })
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri->
-            binding.ivDetailBehaviorPictureLeft.load(uri.toString()){
-                crossfade(true)
-            }
-        }
+
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
             binding.ivDetailBehaviorProfile.load(uri.toString()){
+
                 crossfade(true)
             }
         }
@@ -143,4 +144,15 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
+//    override fun onStart() {
+//        super.onStart()
+//        val key = intent.getStringExtra("key") ?: return
+//        val storageRef = Firebase.storage.reference.child("${key}.png")
+//        Log.d("mmmmm", "성공22")
+//        storageRef.downloadUrl.addOnSuccessListener { uri->
+//            binding.ivDetailBehaviorPictureLeft.load(uri.toString()){
+//                crossfade(true)
+//            }
+//        }
+//    }
 }

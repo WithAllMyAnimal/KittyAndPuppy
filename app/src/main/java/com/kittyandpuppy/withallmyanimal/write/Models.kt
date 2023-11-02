@@ -25,7 +25,7 @@ data class Behavior(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = ""
-) : BaseModel(category = "이상행동")
+) : BaseModel(category = "행동")
 
 data class Daily(
     override val content: String = "",

@@ -51,7 +51,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
                                 "일상" -> intent = Intent(
                                     binding.root.context,
@@ -134,7 +134,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(
