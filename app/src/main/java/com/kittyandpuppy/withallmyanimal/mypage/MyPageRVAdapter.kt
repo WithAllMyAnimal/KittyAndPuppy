@@ -22,6 +22,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
 class MyPageRVAdapter(val list: MutableList<BaseModel>) :
@@ -98,6 +99,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                                 crossfade(true)
                             }
                         }.addOnFailureListener {
+                            // Handle failure to load the image
                         }
                     }
 
@@ -202,14 +204,16 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = list[position]
+        val item = getItem(position)
         when (holder) {
-            is LikesViewHolder -> holder.bind(item)
-            is MyListViewHolder -> holder.bind(item)
+            is LikesViewHolder -> {
+                holder.bind(item)
+            }
+            is MyListViewHolder -> {
+                holder.bind(item)
+            }
         }
-        Log.d(TAG, "ON BINDVIEWHOLDER")
     }
-
     override fun getItemViewType(position: Int): Int {
         return selectedTab
     }
