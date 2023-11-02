@@ -26,6 +26,8 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
+import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
+import com.kittyandpuppy.withallmyanimal.write.MypagePet
 import com.kittyandpuppy.withallmyanimal.write.Pet
 
 class DetailPetActivity : AppCompatActivity() {
@@ -68,6 +70,11 @@ class DetailPetActivity : AppCompatActivity() {
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
                 alertDialog.dismiss()
             }
+        }
+        binding.ivDetailEdit.setOnClickListener {
+            val intent = Intent(this, MypagePet::class.java)
+            intent.putExtra("key", key)
+            startActivity(intent)
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)

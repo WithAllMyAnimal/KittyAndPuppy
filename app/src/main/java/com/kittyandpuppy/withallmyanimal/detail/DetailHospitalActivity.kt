@@ -28,6 +28,8 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Hospital
+import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
+import com.kittyandpuppy.withallmyanimal.write.MypageHospital
 
 class DetailHospitalActivity : AppCompatActivity() {
 
@@ -68,6 +70,11 @@ class DetailHospitalActivity : AppCompatActivity() {
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
                 alertDialog.dismiss()
             }
+        }
+        binding.ivDetailEdit.setOnClickListener {
+            val intent = Intent(this, MypageHospital::class.java)
+            intent.putExtra("key", key)
+            startActivity(intent)
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
