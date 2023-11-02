@@ -18,10 +18,13 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import coil.load
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageDailyBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
@@ -191,7 +194,7 @@ class MypageDaily : AppCompatActivity() {
         }
     }
     private fun loadData(postKey: String) {
-        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+        FBRef.boardRef.child(postKey).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val behaviorData = snapshot.getValue(Daily::class.java)
                 behaviorData?.let {
@@ -207,6 +210,13 @@ class MypageDaily : AppCompatActivity() {
                     .show()
             }
         })
+
+        val storageImage = Firebase.storage.reference.child("${postKey}.png")
+        storageImage.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivMypageDailyPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
     }
     private fun addChip(chipName: String) {
         var isDuplicate = false

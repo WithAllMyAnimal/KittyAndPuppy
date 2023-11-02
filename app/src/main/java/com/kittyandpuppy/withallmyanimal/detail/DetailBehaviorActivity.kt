@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
@@ -59,6 +60,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             val alertDialog = builder.show()
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
                 FBRef.boardRef.child(key).removeValue()
+                FirebaseStorage.getInstance().getReference("${key}.png").delete()
                 Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                 val resultIntent = Intent().putExtra("postDeleted", true)
                 resultIntent.putExtra("deletedPostUid", uid)
@@ -95,7 +97,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
         storageRef.downloadUrl.addOnSuccessListener { uri->
             binding.ivDetailBehaviorPictureLeft.load(uri.toString()){
                 crossfade(true)
-                allowHardware(false)
             }
         }
         val storageProfile = Firebase.storage.reference.child("profileImages")
@@ -103,7 +104,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
             binding.ivDetailBehaviorProfile.load(uri.toString()){
                 crossfade(true)
-                allowHardware(false)
             }
         }
         binding.ivDetailBehaviorProfile.setOnClickListener {
@@ -117,7 +117,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
             binding.ivCircleMy.load(uri.toString()){
                 crossfade(true)
-                allowHardware(false)
             }
         }
 

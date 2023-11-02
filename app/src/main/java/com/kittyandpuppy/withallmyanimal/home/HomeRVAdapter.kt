@@ -44,7 +44,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                reference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(datasnapshot: DataSnapshot) {
                         if (datasnapshot.exists()) {
 
@@ -96,7 +96,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 }
             }
             FBRef.users.child(homeModel.uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
