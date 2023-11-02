@@ -11,6 +11,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.MutableData
+import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -46,6 +48,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
 
         val uid = FBAuth.getUid()
         val userLikesRef = FBRef.users.child(uid).child("likedlist").child(key)
+        val postLikesCountRef = FBRef.likesCount.child(key)
 
         checkLikeStatus(uid, userLikesRef)
         updateLikes(key)
@@ -56,11 +59,43 @@ class CommentsFragment : BottomSheetDialogFragment() {
                     if (snapshot.exists()) {
                         userLikesRef.removeValue()
                         binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
+                        postLikesCountRef.runTransaction(object : Transaction.Handler {
+                            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                val currentLikesCount = currentData.getValue(Int::class.java) ?: 0
+                                currentData.value = currentLikesCount - 1
+                                return Transaction.success(currentData)
+                            }
+
+                            override fun onComplete(
+                                error: DatabaseError?,
+                                committed: Boolean,
+                                currentData: DataSnapshot?
+                            ) {
+                                Log.d(TAG, "postTransaction:onComplete:$error")
+                                updateLikes(key)
+                            }
+                        })
                     } else {
                         userLikesRef.setValue(true)
                         binding.ivUserLikes.setImageResource(R.drawable.pet_like)
+                        postLikesCountRef.runTransaction(object : Transaction.Handler {
+                            override fun doTransaction(currentData: MutableData): Transaction.Result {
+                                val currentLikesCount = currentData.getValue(Int::class.java) ?: 0
+                                currentData.value = currentLikesCount + 1
+                                return Transaction.success(currentData)
+                            }
+
+                            override fun onComplete(
+                                error: DatabaseError?,
+                                committed: Boolean,
+                                currentData: DataSnapshot?
+                            ) {
+                                // Transaction completed
+                                Log.d(TAG, "postTransaction:onComplete:$error")
+                                updateLikes(key)
+                            }
+                        })
                     }
-                    updateLikes(key)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -80,11 +115,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     private fun checkLikeStatus(uid: String, userLikesRef: DatabaseReference) {
         userLikesRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    binding.ivUserLikes.setImageResource(R.drawable.pet_like)
-                } else {
-                    binding.ivUserLikes.setImageResource(R.drawable.pet_unlike)
-                }
+                binding.ivUserLikes.setImageResource(if (snapshot.exists()) R.drawable.pet_like else R.drawable.pet_unlike)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -104,7 +135,6 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getComments(key: String) {
-
         commentsListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
