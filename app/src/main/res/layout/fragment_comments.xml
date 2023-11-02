@@ -56,7 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
             android:background="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +71,6 @@
                 android:background="@android:color/transparent"
                 app:civ_border_color="@color/black"
                 app:civ_border_overlay="true"
-                app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
                 app:layout_constraintStart_toStartOf="@id/view_detail_pink"
                 app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
