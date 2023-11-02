@@ -77,7 +77,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
+        databaseRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Behavior::class.java) ?: return
 
@@ -122,7 +122,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userid = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailBehaviorNickname.text = userid

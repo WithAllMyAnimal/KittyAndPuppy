@@ -85,7 +85,7 @@ class MypageBehavior : AppCompatActivity() {
         binding.btnMypageBehaviorSave.setOnClickListener {
             val uid = FBAuth.getUid()
             FBRef.users.child(uid).child("profile").child("dogcat")
-                .addListenerForSingleValueEvent(object :
+                .addValueEventListener(object :
                     ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val dogcatValue = snapshot.getValue(String::class.java)
@@ -99,7 +99,7 @@ class MypageBehavior : AppCompatActivity() {
                             val time = FBAuth.getTime()
                             val uidAndCategory = "${uid}이상행동"
 
-                            val key = FBRef.boardRef.push().key.toString()
+                            val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
                             val behaviorData = Behavior(
                                 review = review,
@@ -116,26 +116,32 @@ class MypageBehavior : AppCompatActivity() {
                             FBRef.boardRef
                                 .child(key)
                                 .setValue(behaviorData)
+                                .addOnCompleteListener {
+                                    Toast.makeText(
+                                        this@MypageBehavior,
+                                        "저장되었습니다.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
 
-                            Toast.makeText(this@MypageBehavior, "저장되었습니다.", Toast.LENGTH_SHORT)
-                                .show()
-
-                            if (isImageUpload) {
-                                ImageUtils.imageUpload(
-                                    this@MypageBehavior,
-                                    binding.ivMypageBehaviorPictureLeft,
-                                    key
-                                )
-                            }
-                            val resultIntent = Intent().putExtra("postAdded", true)
-                            resultIntent.putExtra("addedPostUid", uid)
-                            resultIntent.putExtra("addedPostKey", key)
-                            setResult(RESULT_OK, resultIntent)
-                            finish()
-
+                                    if (isImageUpload) {
+                                        ImageUtils.imageUpload(
+                                            this@MypageBehavior,
+                                            binding.ivMypageBehaviorPictureLeft,
+                                            key
+                                        )
+                                    }
+                                    val resultIntent = Intent().putExtra("postAdded", true)
+                                    resultIntent.putExtra("addedPostUid", uid)
+                                    resultIntent.putExtra("addedPostKey", key)
+                                    setResult(RESULT_OK, resultIntent)
+                                    finish()
+                                }
+                                .addOnFailureListener {
+                                    Toast.makeText(this@MypageBehavior, "저장 실패", Toast.LENGTH_SHORT).show()
+                                }
                         }
                     }
-
                     override fun onCancelled(error: DatabaseError) {}
                 })
         }

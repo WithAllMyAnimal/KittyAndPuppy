@@ -93,7 +93,8 @@ class MypagePet : AppCompatActivity() {
                         val content = binding.etvMypagePetReview.text.toString()
                         val uidAndCategory = "${uid}펫용품"
 
-                        val key = FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
+
                         val petData = Pet(
                             caution = caution,
                             name = name,
@@ -112,17 +113,27 @@ class MypagePet : AppCompatActivity() {
                         FBRef.boardRef
                             .child(key)
                             .setValue(petData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT)
+                                    .show()
 
-                        Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypagePet, binding.ivMypagePetPictureLeft, key)
-                        }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                                if (isImageUpload) {
+                                    ImageUtils.imageUpload(
+                                        this@MypagePet,
+                                        binding.ivMypagePetPictureLeft,
+                                        key
+                                    )
+                                }
+                                val resultIntent = Intent().putExtra("postAdded", true)
+                                resultIntent.putExtra("addedPostUid", uid)
+                                resultIntent.putExtra("addedPostKey", key)
+                                setResult(RESULT_OK, resultIntent)
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypagePet, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

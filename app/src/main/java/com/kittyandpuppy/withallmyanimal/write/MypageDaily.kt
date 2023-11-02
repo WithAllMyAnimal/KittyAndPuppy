@@ -95,7 +95,7 @@ class MypageDaily : AppCompatActivity() {
                         val content = binding.etvMypageDaily.text.toString()
                         val uidAndCategory = "${uid}일상"
 
-                        val key = FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
                         val dailyData = Daily(
                             content = content,
@@ -111,17 +111,27 @@ class MypageDaily : AppCompatActivity() {
                         FBRef.boardRef
                             .child(key)
                             .setValue(dailyData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@MypageDaily, "저장되었습니다.", Toast.LENGTH_SHORT)
+                                    .show()
 
-                        Toast.makeText(this@MypageDaily, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypageDaily, binding.ivMypageDailyPictureLeft, key)
-                        }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                                if (isImageUpload) {
+                                    ImageUtils.imageUpload(
+                                        this@MypageDaily,
+                                        binding.ivMypageDailyPictureLeft,
+                                        key
+                                    )
+                                }
+                                val resultIntent = Intent().putExtra("postAdded", true)
+                                resultIntent.putExtra("addedPostUid", uid)
+                                resultIntent.putExtra("addedPostKey", key)
+                                setResult(RESULT_OK, resultIntent)
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypageDaily, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}

@@ -78,7 +78,7 @@ class DetailPetActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseRef.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Pet::class.java) ?: return
@@ -123,7 +123,7 @@ class DetailPetActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailPetNickname.text = userId

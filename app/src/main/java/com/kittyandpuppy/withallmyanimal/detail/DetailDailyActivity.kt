@@ -81,7 +81,7 @@ class DetailDailyActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
+        databaseRef.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")
                 val post = snapshot.getValue(Daily::class.java) ?: return
@@ -124,7 +124,7 @@ class DetailDailyActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addListenerForSingleValueEvent(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailDailyNickname.text = userId

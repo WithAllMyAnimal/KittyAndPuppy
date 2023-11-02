@@ -100,7 +100,7 @@ class MypageHospital : AppCompatActivity() {
                         val disease = binding.etvMypageHospitalCheckup.text.toString()
                         val uidAndCategory = "${uid}병원"
 
-                        val key = FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
                         val hospitalData = Hospital(
                             date = date,
@@ -119,17 +119,27 @@ class MypageHospital : AppCompatActivity() {
                         FBRef.boardRef
                             .child(key)
                             .setValue(hospitalData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@MypageHospital, "저장되었습니다.", Toast.LENGTH_SHORT)
+                                    .show()
 
-                        Toast.makeText(this@MypageHospital, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypageHospital, binding.ivMypageHospitalPictureLeft, key)
-                        }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                                if (isImageUpload) {
+                                    ImageUtils.imageUpload(
+                                        this@MypageHospital,
+                                        binding.ivMypageHospitalPictureLeft,
+                                        key
+                                    )
+                                }
+                                val resultIntent = Intent().putExtra("postAdded", true)
+                                resultIntent.putExtra("addedPostUid", uid)
+                                resultIntent.putExtra("addedPostKey", key)
+                                setResult(RESULT_OK, resultIntent)
+                                finish()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypageHospital, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
