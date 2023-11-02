@@ -208,10 +208,11 @@ class HomeFragment : Fragment() {
             if (post != null) {
                 boardList.add(post)
 
-                val likesRef = FBRef.users.child(postKey).child("likedlist")
-                likesRef.addValueEventListener(object : ValueEventListener {
+                val likesCountRef = FBRef.likesCount.child(postKey)
+                likesCountRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        post.likesCount = snapshot.childrenCount.toInt()
+                        val likesCount = snapshot.getValue(Int::class.java) ?: 0
+                        post.likesCount = likesCount
                         rvAdapter?.notifyDataSetChanged()
                     }
 
