@@ -64,24 +64,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.회원탈퇴시 주의사항"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/tb_resignation_howtoresignation"
+            app:layout_constraintTop_toBottomOf="@id/tb_resignation_howtoresignation"/>
 
         <TextView
             android:id="@+id/tv_resignation_detailwarning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="모든 이용정보 및 게시글 삭제\n 회원 탈퇴와 동시에 개인정보 및 모든 이용정보가 초기화 되어 삭제 되므로 절대 복구 불가합니다."
+            android:text="모든 이용정보 및 게시글 삭제\n 계정을 삭제하면 프로필, 사진, 댓글, 좋아요가 영구적으로 삭제됩니다.\n회원 탈퇴와 동시에 개인정보 및 모든 이용정보가 초기화 되어 삭제 되므로 절대 복구 불가합니다."
             app:layout_constraintStart_toStartOf="@+id/tv_resignation_warning"
             app:layout_constraintTop_toBottomOf="@id/tv_resignation_warning" />
+
+        <TextView
+            android:id="@+id/tb_resignation_howtoresignation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="이심동심 계정을 영구 삭제하려면 다음 단계를 따르세요.\n
+회원 탈퇴시 주의사항을 모두 읽고 하단에 있는 체크박스를 클릭합니다.\n
+탈퇴하시려면 탈퇴하기 버튼을 누르세요, 체크박스를 확인하지 않으면 버튼이 눌리지 않습니다.\n
+"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:padding="5dp"
+            />
 
         <CheckBox
             android:id="@+id/cb_resignation_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="위 내용을 확인했으며 동의합니다."
+            android:text="유의사항을 모두 확인하였으며, 회원탈퇴에 동의합니다."
             app:layout_constraintTop_toBottomOf="@id/tv_resignation_detailwarning"
             app:layout_constraintStart_toStartOf="@id/con_resignation_constraintlayout"/>
 
@@ -89,14 +105,15 @@
             android:id="@+id/btn_resignation_resignbutton"
             android:layout_width="106dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_login"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/btn_disable_background"
             android:fontFamily="@font/cafe24"
+            android:layout_marginStart="60dp"
             android:text="탈퇴하기"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cb_resignation_checkbox"
-            />
+            app:layout_constraintTop_toBottomOf="@id/cb_resignation_checkbox" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_resignation_canclebutton"
@@ -107,9 +124,9 @@
             android:text="취소"
             android:textColor="@color/black"
             android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_resignation_resignbutton"
-            app:layout_constraintTop_toBottomOf="@id/cb_resignation_checkbox"
-            />
+            app:layout_constraintTop_toTopOf="@+id/btn_resignation_resignbutton" />
 
 
 
