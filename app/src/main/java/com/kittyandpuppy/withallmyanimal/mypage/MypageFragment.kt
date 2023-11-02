@@ -211,6 +211,8 @@ class MypageFragment : Fragment() {
     private fun getLikedPosts() {
         val currentUserId = FBAuth.getUid()
 
+        list.clear()
+
         FBRef.users.child(currentUserId).child("likedlist").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val likedPostKeys = snapshot.children.map { it.key!! }
