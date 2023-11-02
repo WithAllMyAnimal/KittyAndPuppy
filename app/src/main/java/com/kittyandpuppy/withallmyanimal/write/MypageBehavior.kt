@@ -201,7 +201,6 @@ class MypageBehavior : AppCompatActivity() {
             }
         }
     }
-
     private fun loadData(postKey: String) {
         FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -215,7 +214,6 @@ class MypageBehavior : AppCompatActivity() {
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@MypageBehavior, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
                     .show()

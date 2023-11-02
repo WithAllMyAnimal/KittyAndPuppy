@@ -70,9 +70,15 @@ class MypageDaily : AppCompatActivity() {
         }
     }
 
+    private var currentPostKey: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        currentPostKey = intent.getStringExtra("key")
+        if (currentPostKey != null) {
+            loadData(currentPostKey!!)
+        }
 
         binding.btnMypageDailySave.setOnClickListener {
             val uid = FBAuth.getUid()
@@ -172,6 +178,52 @@ class MypageDaily : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+    private fun loadData(postKey: String) {
+        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val behaviorData = snapshot.getValue(Daily::class.java)
+                behaviorData?.let {
+                    binding.etvMypageDailyTitle.setText(it.title)
+                    binding.etvMypageDaily.setText(it.content)
+                    it.tags.forEach { tag ->
+                        addChip(tag)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MypageDaily, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+    private fun addChip(chipName: String) {
+        var isDuplicate = false
+        for (i in 0 until binding.chipGroup.childCount) {
+            val chip = binding.chipGroup.getChildAt(i) as Chip
+            if (chip.text.toString() == chipName) {
+                isDuplicate = true
+                break
+            }
+        }
+
+        if (!isDuplicate) {
+            binding.chipGroup.addView(Chip(this).apply {
+                text = chipName
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    binding.chipGroup.removeView(this)
+                    tagListDaily.remove(chipName)
+                }
+                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                val typeface: Typeface? =
+                    ResourcesCompat.getFont(this@MypageDaily, R.font.cafe24)
+                this.typeface = typeface
+            })
+            tagListDaily.add(chipName)
+        } else {
+            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

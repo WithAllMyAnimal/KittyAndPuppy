@@ -72,9 +72,15 @@ class MypageHospital : AppCompatActivity() {
         }
     }
 
+    private var currentPostKey: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        currentPostKey = intent.getStringExtra("key")
+        if (currentPostKey != null) {
+            loadData(currentPostKey!!)
+        }
 
         binding.btnMypageHospitalSave.setOnClickListener {
             val uid = FBAuth.getUid()
@@ -218,6 +224,57 @@ class MypageHospital : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+    private fun loadData(postKey: String) {
+        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val behaviorData = snapshot.getValue(Hospital::class.java)
+                behaviorData?.let {
+                    binding.etvMypageHospitalTitle.setText(it.title)
+                    binding.etvMypageHospitalReview.setText(it.content)
+                    binding.etvMypageHospitalExpense.setText(it.price)
+                    binding.etvMypageHospitalCheckup.setText(it.date)
+                    binding.spMypageHospital.setText(it.location)
+                    binding.edtMypageHospital.setText(it.date)
+                    it.tags.forEach { tag ->
+                        addChip(tag)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MypageHospital, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+    }
+    private fun addChip(chipName: String) {
+        var isDuplicate = false
+        for (i in 0 until binding.chipGroup.childCount) {
+            val chip = binding.chipGroup.getChildAt(i) as Chip
+            if (chip.text.toString() == chipName) {
+                isDuplicate = true
+                break
+            }
+        }
+
+        if (!isDuplicate) {
+            binding.chipGroup.addView(Chip(this).apply {
+                text = chipName
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    binding.chipGroup.removeView(this)
+                    tagListHospital.remove(chipName)
+                }
+                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                val typeface: Typeface? =
+                    ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
+                this.typeface = typeface
+            })
+            tagListHospital.add(chipName)
+        } else {
+            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }
