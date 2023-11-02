@@ -318,4 +318,15 @@
         app:layout_constraintTop_toTopOf="@+id/iv_detail_delete"
         app:srcCompat="@drawable/image_edit" />
 
+    <ImageView
+        android:id="@+id/iv_detail_save"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="10dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_detail_delete"
+        app:layout_constraintEnd_toStartOf="@+id/iv_detail_edit"
+        app:layout_constraintTop_toTopOf="@+id/iv_detail_delete"
+        app:srcCompat="@drawable/image_savebtn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
