@@ -77,7 +77,7 @@ class DetailPetActivity : AppCompatActivity() {
                 val post = snapshot.getValue(Pet::class.java) ?: return
 
                 binding.tvDetailPetTitle.text = post.title
-//                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = FBAuth.getTime()
                 binding.tvDetailPetNameContents.text = post.name
                 binding.tvDetailPetPriceContents.text = post.price
                 binding.ratDetailPetStar.rating = post.satisfaction.toFloat()
