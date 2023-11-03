@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import coil.load
 import com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity
 import com.kittyandpuppy.withallmyanimal.databinding.ActivitySplashBinding
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivitySplashBinding.inflate(layoutInflater) }

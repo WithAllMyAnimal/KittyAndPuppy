@@ -48,12 +48,15 @@ class HomeFragment : Fragment() {
     private val TAG = HomeFragment::class.java.simpleName
     var isDogAndCatSpinnerInitialized = false
     var isCategorySpinnerInitialized = false
+    private lateinit var key : String
+    private lateinit var imageUrl : String
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                //
+                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.updateImage(key, imageUrl)
             }
         }
 
@@ -291,10 +294,10 @@ class HomeFragment : Fragment() {
         rvAdapter?.submitList(boardList.toList())
     }
 
-    override fun onResume() {
-        super.onResume()
-        rvAdapter?.submitList(boardList.toList())
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        rvAdapter?.submitList(boardList.toList())
+//    }
 
     fun onSpinnerItemSelected() {
         val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()

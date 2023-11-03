@@ -117,8 +117,11 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.tvRvTag.text = homeModel.tags.toString()
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
-            homeModel.imageUrl?.let { url ->
-                binding.ivRvImage.load(url) {
+
+            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                binding.ivRvImage.load(imageUrl) {
                     crossfade(true)
                 }
             }
@@ -144,13 +147,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
 
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
         holder.bind(currentList[position])
-
-        val storageRef = Firebase.storage.reference.child("${currentList[position].key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            holder.setImage(uri.toString())
-        }.addOnFailureListener {
-            holder.setImage("default_image_url")
-        }
     }
 
     companion object {
