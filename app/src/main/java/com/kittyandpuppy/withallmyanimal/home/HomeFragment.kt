@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.google.firebase.database.DataSnapshot
@@ -43,6 +44,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
+    private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     var isDogAndCatSpinnerInitialized = false
     var isCategorySpinnerInitialized = false
@@ -51,7 +53,7 @@ class HomeFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                rvAdapter?.updateImage(key)
+                //
             }
         }
 
@@ -65,6 +67,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         setUpRecyclerView()
         loadSearchText()
 
@@ -140,7 +145,14 @@ class HomeFragment : Fragment() {
         rvAdapter = HomeRVAdapter(boardList) { intent ->
             startForResult.launch(intent)
         }
-
+        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+            list.forEach { homeModel ->
+                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
+                }
+            }
+            rvAdapter!!.submitList(list)
+        }
         binding.rvHome.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)

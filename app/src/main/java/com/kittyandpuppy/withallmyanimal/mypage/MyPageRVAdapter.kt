@@ -129,7 +129,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "key: $key")
                 Log.d("MyPageRVAdapter", "category: $category")
 
-
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 

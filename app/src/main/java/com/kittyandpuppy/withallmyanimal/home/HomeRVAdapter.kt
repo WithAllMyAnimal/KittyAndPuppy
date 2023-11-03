@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
+import com.kittyandpuppy.withallmyanimal.comments.CommentsRVAdapter.Companion.diffUtil
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
@@ -86,21 +87,21 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
         }
         fun bind(homeModel: BaseModel) {
 
-            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-            storageRef.metadata.addOnSuccessListener { metadata ->
-                val lastUpdated = metadata.getCustomMetadata("updated")
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    binding.ivRvImage.load(uri.toString()) {
-                        crossfade(true)
-                    }
-                }.addOnFailureListener {
-                    binding.ivRvImage.load(R.drawable.add_image) {
-                        crossfade(true)
-                    }
-                }
-            }.addOnFailureListener {
-                Log.e("HomeRVAdapter", "Failed to get metadata", it)
-            }
+//            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
+//            storageRef.metadata.addOnSuccessListener { metadata ->
+//                val lastUpdated = metadata.getCustomMetadata("updated")
+//                storageRef.downloadUrl.addOnSuccessListener { uri ->
+//                    binding.ivRvImage.load(uri.toString()) {
+//                        crossfade(true)
+//                    }
+//                }.addOnFailureListener {
+//                    binding.ivRvImage.load(R.drawable.add_image) {
+//                        crossfade(true)
+//                    }
+//                }
+//            }.addOnFailureListener {
+//                Log.e("HomeRVAdapter", "Failed to get metadata", it)
+//            }
 
             FBRef.users.child(homeModel.uid)
                 .addValueEventListener(object : ValueEventListener {
@@ -116,15 +117,21 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.tvRvTag.text = homeModel.tags.toString()
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
+            homeModel.imageUrl?.let { url ->
+                binding.ivRvImage.load(url) {
+                    crossfade(true)
+                }
+            }
         }
     }
-    fun updateImage(key: String) {
-        val updatedIndex = boardList.indexOfFirst { it.key == key }
-        if(updatedIndex != -1) {
-            notifyItemChanged(updatedIndex)
+    fun updateImage(key: String, imageUrl: String) {
+        val index = boardList.indexOfFirst { it.key == key }
+        if (index != -1) {
+            boardList[index].imageUrl = imageUrl
+            notifyItemChanged(index)
         }
-        Log.d("HomeRV", "updateImage : $key")
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(
@@ -137,6 +144,13 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
 
     override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
         holder.bind(currentList[position])
+
+        val storageRef = Firebase.storage.reference.child("${currentList[position].key}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            holder.setImage(uri.toString())
+        }.addOnFailureListener {
+            holder.setImage("default_image_url")
+        }
     }
 
     companion object {
