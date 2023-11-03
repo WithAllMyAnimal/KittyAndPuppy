@@ -64,7 +64,7 @@
         android:fontFamily="@font/cafe24"
         android:text="설기"
         android:textColor="@color/textColor"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/iv_detail_pet_profile"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_pet_profile"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:text="2023.11.02"
                     android:textColor="@color/textColor"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:layout_marginBottom="-5dp"
                     android:fontFamily="@font/cafe24"
                     app:layout_constraintTop_toBottomOf="@id/tv_detail_pet_title"
@@ -170,14 +170,14 @@
 
                 <TextView
                     android:id="@+id/tv_detail_pet_name_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="통통 튀는 낚시대"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toTopOf="@id/tv_detail_pet_satisfaction"
                     app:layout_constraintEnd_toStartOf="@id/tv_detail_pet_price_contents"
                     app:layout_constraintStart_toStartOf="@+id/tv_detail_pet_name"
@@ -197,14 +197,16 @@
 
                 <TextView
                     android:id="@+id/tv_detail_pet_price_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="15,000원"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_pet_name_contents"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_detail_pet_price"
                     app:layout_constraintTop_toTopOf="@id/tv_detail_pet_name_contents" />
 
@@ -255,7 +257,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="낚시대 미끼 부분에 방울이 달려있음!\n냥이들이 혹시라도 먹지 않게 조심!"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
@@ -286,7 +288,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:gravity="left"
+                    android:gravity="start"
                     android:text="설기가 너무 잘 가지고 놀아서 대만족!.\n미끼에 방울이 달려있어서 4점..."
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
@@ -327,23 +329,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/maple"
-        android:hint="댓글을 입력하세요."
+        android:text="댓글을 입력하세요."
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
         app:layout_constraintStart_toEndOf="@id/iv_circle_my"
-        app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
-
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="60dp"
-        android:layout_height="70dp"
-        android:backgroundTint="#F8B9BE"
-        android:fontFamily="@font/maple"
-        android:text="확인"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-        app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
         app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
     <ImageView

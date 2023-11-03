@@ -63,7 +63,7 @@
         android:fontFamily="@font/cafe24"
         android:text="설기"
         android:textColor="@color/textColor"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/iv_detail_hospital_profile"
         app:layout_constraintStart_toEndOf="@+id/iv_detail_hospital_profile"
@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:text="2023.11.02"
                     android:textColor="@color/textColor"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:layout_marginBottom="-5dp"
                     android:fontFamily="@font/cafe24"
                     app:layout_constraintTop_toBottomOf="@id/tv_detail_hospital_title"
@@ -137,6 +137,7 @@
                     android:layout_height="200dp"
                     android:padding="10dp"
                     android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/add_image"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -170,13 +171,14 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hospital_date_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="2023년 10월 10일"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintBottom_toTopOf="@id/tv_detail_hospital_location"
                     app:layout_constraintEnd_toStartOf="@id/tv_detail_hospital_price_contents"
@@ -197,14 +199,16 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hospital_disease_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="배탈"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_hospital_date_contents"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_detail_hospital_disease"
                     app:layout_constraintTop_toTopOf="@id/tv_detail_hospital_date_contents" />
 
@@ -223,14 +227,14 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hospital_location_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="서울 송파구"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toStartOf="@id/tv_detail_hospital_price_contents"
                     app:layout_constraintStart_toStartOf="@+id/tv_detail_hospital_location"
                     app:layout_constraintTop_toBottomOf="@+id/tv_detail_hospital_location" />
@@ -249,17 +253,19 @@
 
                 <TextView
                     android:id="@+id/tv_detail_hospital_price_contents"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="start"
                     android:paddingVertical="10dp"
                     android:text="55,000원"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
-                    app:layout_constraintTop_toTopOf="@id/tv_detail_hospital_location_contents"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_hospital_location_contents"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_detail_hospital_price"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hospital_price" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_hospital_price"
+                    app:layout_constraintTop_toTopOf="@id/tv_detail_hospital_location_contents" />
 
                 <TextView
                     android:id="@+id/tv_detail_hospital_review"
@@ -282,8 +288,8 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:gravity="left"
-                    android:text="설기가 너무 잘 가지고 놀아서 대만족!.\n미끼에 방울이 달려있어서 4점..."
+                    android:gravity="start"
+                    android:text="설기가 돌멩이를 씹어먹더니 입에 병이 나서 병원에 다녀왔다...병원 원장님 너무 친절하셔서 굿굿 병원은 여기로 정착해야겠다!! 우리 설기... 앞으로 돌멩이 먹지 말고 약 꼬박꼬박 잘 챙겨먹고 얼른 낫자 ~ ♥"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -323,23 +329,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/maple"
-        android:hint="댓글을 입력하세요."
+        android:text="댓글을 입력하세요."
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
         app:layout_constraintStart_toEndOf="@id/iv_circle_my"
-        app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
-
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="60dp"
-        android:layout_height="70dp"
-        android:backgroundTint="#F8B9BE"
-        android:fontFamily="@font/maple"
-        android:text="확인"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-        app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
         app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
     <ImageView
