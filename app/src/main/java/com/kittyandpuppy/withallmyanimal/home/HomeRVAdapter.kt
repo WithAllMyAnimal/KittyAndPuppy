@@ -38,6 +38,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
 
                 Log.d("uid값", "uid:$uid")
                 Log.d("Key값", "key: $key")
+                Log.d("clickedItem값", "clickedItem: $clickedItem")
                 Log.d("category값", "category:$category")
 
                 val database = FirebaseDatabase.getInstance()
