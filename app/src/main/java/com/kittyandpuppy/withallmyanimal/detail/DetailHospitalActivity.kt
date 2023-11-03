@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
-import androidx.lifecycle.ReportFragment.Companion.reportFragment
 import coil.load
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,7 +30,6 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Hospital
-import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 import com.kittyandpuppy.withallmyanimal.write.MypageHospital
 
 class DetailHospitalActivity : AppCompatActivity() {

@@ -47,6 +47,14 @@ class HomeFragment : Fragment() {
     var isDogAndCatSpinnerInitialized = false
     var isCategorySpinnerInitialized = false
 
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                rvAdapter?.updateImage(key)
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -129,7 +137,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        rvAdapter = HomeRVAdapter(boardList)
+        rvAdapter = HomeRVAdapter(boardList) { intent ->
+            startForResult.launch(intent)
+        }
 
         binding.rvHome.apply {
             setHasFixedSize(true)
@@ -266,6 +276,11 @@ class HomeFragment : Fragment() {
                 })
             }
         }
+        rvAdapter?.submitList(boardList.toList())
+    }
+
+    override fun onResume() {
+        super.onResume()
         rvAdapter?.submitList(boardList.toList())
     }
 

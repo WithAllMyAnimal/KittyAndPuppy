@@ -1,21 +1,17 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
-import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
 import coil.load
 import com.google.firebase.database.DataSnapshot
@@ -34,7 +30,6 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Daily
-import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 import com.kittyandpuppy.withallmyanimal.write.MypageDaily
 
 class DetailDailyActivity : AppCompatActivity() {

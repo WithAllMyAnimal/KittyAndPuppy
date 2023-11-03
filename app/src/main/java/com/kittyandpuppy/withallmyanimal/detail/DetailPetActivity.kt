@@ -29,7 +29,6 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
-import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 import com.kittyandpuppy.withallmyanimal.write.MypagePet
 import com.kittyandpuppy.withallmyanimal.write.Pet
 

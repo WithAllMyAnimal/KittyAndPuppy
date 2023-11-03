@@ -10,12 +10,10 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
-import coil.request.CachePolicy
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -29,6 +27,7 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.home.HomeFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -172,5 +171,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }.addOnFailureListener {
             Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
         }
+
+        Log.d("Behavior", "loadUpdatedImage")
     }
 }
