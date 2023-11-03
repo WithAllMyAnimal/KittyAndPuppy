@@ -80,7 +80,9 @@ class DetailPetActivity : AppCompatActivity() {
                 binding.tvDetailDate.text = FBAuth.getTime()
                 binding.tvDetailPetNameContents.text = post.name
                 binding.tvDetailPetPriceContents.text = post.price
-                binding.ratDetailPetStar.rating = post.satisfaction.toFloat()
+                if (post.satisfaction.isNotBlank()) {
+                    binding.ratDetailPetStar.rating = post.satisfaction.toFloat()
+                }
                 binding.tvDetailPetCautionContents.text = post.caution
                 binding.tvDetailPetReviewContents.text = post.content
             }

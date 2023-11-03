@@ -52,7 +52,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
                                 "일상" -> intent = Intent(
                                     binding.root.context,
@@ -70,7 +70,9 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             binding.root.context.startActivity(intent)
+                            Log.d("jjjjjjj", "myrvadapter")
                         }
                     }
 
@@ -99,7 +101,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                                 crossfade(true)
                             }
                         }.addOnFailureListener {
-                            // Handle failure to load the image
                         }
                     }
 
@@ -136,7 +137,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(
