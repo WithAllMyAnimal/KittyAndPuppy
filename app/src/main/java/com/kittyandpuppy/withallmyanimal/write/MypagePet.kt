@@ -18,15 +18,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypagePetBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class MypagePet : AppCompatActivity() {
@@ -64,9 +69,16 @@ class MypagePet : AppCompatActivity() {
             binding.ivMypagePetPictureLeft.setImageURI(result.data?.data)
         }
     }
+
+    private var currentPostKey: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        currentPostKey = intent.getStringExtra("key")
+        if (currentPostKey != null) {
+            loadData(currentPostKey!!)
+        }
 
         binding.btnMypagePetSave.setOnClickListener {
             val uid = FBAuth.getUid()
@@ -86,7 +98,8 @@ class MypagePet : AppCompatActivity() {
                         val content = binding.etvMypagePetReview.text.toString()
                         val uidAndCategory = "${uid}펫용품"
 
-                        val key = FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
+
                         val petData = Pet(
                             caution = caution,
                             name = name,
@@ -105,17 +118,29 @@ class MypagePet : AppCompatActivity() {
                         FBRef.boardRef
                             .child(key)
                             .setValue(petData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT)
+                                    .show()
 
-                        Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypagePet, binding.ivMypagePetPictureLeft, key)
-                        }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                                lifecycleScope.launch {
+                                    if (isImageUpload) {
+                                        ImageUtils.imageUpload(
+                                            this@MypagePet,
+                                            binding.ivMypagePetPictureLeft,
+                                            key
+                                        )
+                                    }
+                                    val resultIntent = Intent().putExtra("postAdded", true)
+                                    resultIntent.putExtra("addedPostUid", uid)
+                                    resultIntent.putExtra("addedPostKey", key)
+                                    setResult(Activity.RESULT_OK, resultIntent)
+                                    finish()
+                                }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypagePet, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -211,6 +236,63 @@ class MypagePet : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+    private fun loadData(postKey: String) {
+        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val behaviorData = snapshot.getValue(Pet::class.java)
+                behaviorData?.let {
+                    binding.etvMypagePetTitle.setText(it.title)
+                    binding.etvMypagePetReview.setText(it.content)
+                    binding.etvMypagePetCaution.setText(it.caution)
+                    binding.etvMypagePetPrice.setText(it.price)
+                    binding.etvMypagePetSupplies.setText(it.name)
+                    binding.ratMypagePetStar.rating = it.satisfaction.toFloat()
+                    it.tags.forEach { tag ->
+                        addChip(tag)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MypagePet, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+        val storageImage = Firebase.storage.reference.child("${postKey}.png")
+        storageImage.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivMypagePetPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+    }
+    private fun addChip(chipName: String) {
+        var isDuplicate = false
+        for (i in 0 until binding.chipGroup.childCount) {
+            val chip = binding.chipGroup.getChildAt(i) as Chip
+            if (chip.text.toString() == chipName) {
+                isDuplicate = true
+                break
+            }
+        }
+
+        if (!isDuplicate) {
+            binding.chipGroup.addView(Chip(this).apply {
+                text = chipName
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    binding.chipGroup.removeView(this)
+                    tagListPet.remove(chipName)
+                }
+                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                val typeface: Typeface? =
+                    ResourcesCompat.getFont(this@MypagePet, R.font.cafe24)
+                this.typeface = typeface
+            })
+            tagListPet.add(chipName)
+        } else {
+            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

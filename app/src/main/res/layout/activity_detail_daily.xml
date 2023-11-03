@@ -243,5 +243,4 @@
         app:layout_constraintTop_toTopOf="@+id/iv_detail_delete"
         app:srcCompat="@drawable/image_edit" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

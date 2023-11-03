@@ -123,7 +123,7 @@ class MypageFragment : Fragment() {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
             if (it.isSelected){
-                getMyData("이상행동")
+                getMyData("행동")
             } else {
                 getMyData()
             }
@@ -186,7 +186,7 @@ class MypageFragment : Fragment() {
                     val category = postSnapshot.child("category").getValue(String::class.java) ?: ""
 
                     val post: BaseModel? = when (category) {
-                        "이상행동" -> postSnapshot.getValue(Behavior::class.java)
+                        "행동" -> postSnapshot.getValue(Behavior::class.java)
                         "일상" -> postSnapshot.getValue(Daily::class.java)
                         "병원" -> postSnapshot.getValue(Hospital::class.java)
                         "펫용품" -> postSnapshot.getValue(Pet::class.java)
@@ -210,6 +210,8 @@ class MypageFragment : Fragment() {
     }
     private fun getLikedPosts() {
         val currentUserId = FBAuth.getUid()
+
+        list.clear()
 
         FBRef.users.child(currentUserId).child("likedlist").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

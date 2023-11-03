@@ -57,6 +57,16 @@
             app:layout_constraintStart_toEndOf="@+id/circle_iv_my"
             app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
 
+        <ImageView
+            android:id="@+id/iv_comments_delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/image_delete"
+            app:layout_constraintBottom_toBottomOf="@+id/circle_iv_my"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/circle_iv_my" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

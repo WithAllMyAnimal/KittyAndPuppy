@@ -184,7 +184,7 @@
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="이상행동"
+            android:text="행동"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
