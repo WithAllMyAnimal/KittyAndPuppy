@@ -125,7 +125,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setUpRV() {
-        rvAdapter = CommentsRVAdapter(commentDataList)
+        rvAdapter = CommentsRVAdapter(commentDataList,key)
         binding.rvComments.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 1)
@@ -138,7 +138,9 @@ class CommentsFragment : BottomSheetDialogFragment() {
         commentsListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
+                Log.d("snapshot.children","snapshot.children,${snapshot}")
                 for (dataModel in snapshot.children) {
+                    Log.d("dataModel","datamodel,${dataModel.key}")
                     val item = dataModel.getValue(CommentsModel::class.java)
                     if (item != null) {
                         commentDataList.add(item)
@@ -156,15 +158,19 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun insertComments(key: String) {
-        FBRef.commentRef
-            .child(key)
-            .push()
-            .setValue(
-                CommentsModel(
-                    binding.etReview.text.toString(),
-                    FBAuth.getUid()
+        val commentkey = FBRef.commentRef.child(key).push().key
+        if (commentkey != null) {
+            FBRef.commentRef
+                .child(key)
+                .child(commentkey)
+                .setValue(
+                    CommentsModel(
+                        binding.etReview.text.toString(),
+                        FBAuth.getUid(),
+                        commentkey
+                    )
                 )
-            )
+        }
         binding.etReview.setText("")
     }
 
