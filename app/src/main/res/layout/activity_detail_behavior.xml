@@ -48,7 +48,7 @@
         android:background="@drawable/diary_detail_tag"
         android:fontFamily="@font/cafe24"
         android:gravity="center"
-        android:text="이상 행동"
+        android:text="행동"
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/tb_detail_behavior"

@@ -16,7 +16,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
-import com.kittyandpuppy.withallmyanimal.comments.CommentsRVAdapter.Companion.diffUtil
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
@@ -25,7 +24,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
+class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
     ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
     inner class HomeItemViewHolder(private val binding: ItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -45,13 +44,13 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                reference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(datasnapshot: DataSnapshot) {
                         if (datasnapshot.exists()) {
 
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(
@@ -73,6 +72,8 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startForResult(intent)
                             binding.root.context.startActivity(intent)
                         }
                     }
@@ -83,21 +84,26 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
-
         fun bind(homeModel: BaseModel) {
 
             val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-            storageRef.downloadUrl.addOnSuccessListener { uri ->
-                binding.ivRvImage.load(uri.toString()) {
-                    crossfade(true)
+            storageRef.metadata.addOnSuccessListener { metadata ->
+                val lastUpdated = metadata.getCustomMetadata("updated")
+                storageRef.downloadUrl.addOnSuccessListener { uri ->
+                    binding.ivRvImage.load(uri.toString()) {
+                        crossfade(true)
+                    }
+                }.addOnFailureListener {
+                    binding.ivRvImage.load(R.drawable.add_image) {
+                        crossfade(true)
+                    }
                 }
             }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.add_image) {
-                    crossfade(true)
-                }
+                Log.e("HomeRVAdapter", "Failed to get metadata", it)
             }
+
             FBRef.users.child(homeModel.uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
+                .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
@@ -112,7 +118,13 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
             binding.tvRvChat.text = homeModel.commentsCount.toString()
         }
     }
-
+    fun updateImage(key: String) {
+        val updatedIndex = boardList.indexOfFirst { it.key == key }
+        if(updatedIndex != -1) {
+            notifyItemChanged(updatedIndex)
+        }
+        Log.d("HomeRV", "updateImage : $key")
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(

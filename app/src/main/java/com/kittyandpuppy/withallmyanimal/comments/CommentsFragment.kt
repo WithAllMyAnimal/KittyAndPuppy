@@ -125,7 +125,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setUpRV() {
-        rvAdapter = CommentsRVAdapter(commentDataList,key)
+        rvAdapter = CommentsRVAdapter(commentDataList)
         binding.rvComments.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 1)
