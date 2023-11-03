@@ -73,11 +73,13 @@ class MypageHospital : AppCompatActivity() {
     }
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            imageUri = result.data?.data
             binding.ivMypageHospitalPictureLeft.setImageURI(result.data?.data)
         }
     }
 
     private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -129,10 +131,10 @@ class MypageHospital : AppCompatActivity() {
                                     .show()
 
                                 lifecycleScope.launch {
-                                    if (isImageUpload) {
+                                    if (isImageUpload && imageUri != null) {
                                         ImageUtils.imageUpload(
                                             this@MypageHospital,
-                                            binding.ivMypageHospitalPictureLeft,
+                                            imageUri ?: Uri.EMPTY,
                                             key
                                         )
                                     }

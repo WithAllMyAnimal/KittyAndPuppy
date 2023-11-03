@@ -10,7 +10,7 @@
         android:layout_height="120dp"
         android:clipToOutline="true"
         android:cropToPadding="true"
-        android:scaleType="center"
+        android:scaleType="fitXY"
         android:layout_margin="5dp"
         android:background="@drawable/mypage_diary_background"
         app:layout_constraintBottom_toBottomOf="parent"

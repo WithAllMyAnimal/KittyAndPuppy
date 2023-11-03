@@ -178,6 +178,7 @@
             app:layout_constraintTop_toTopOf="@id/con_notice_vaccin" />
 
         <TextView
+            android:id="@+id/tv_notice_third_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="예방접종 시기"
@@ -190,18 +191,6 @@
             app:layout_constraintTop_toTopOf="@id/con_notice_vaccin"
             app:layout_constraintBottom_toTopOf="@id/tv_notice_third_detail"
             />
-
-        <TextView
-            android:id="@+id/tv_notice_third_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/maple"
-            android:text="사진 클릭 시 확대해서 보실 수 있습니다."
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/con_notice_vaccin"
-            app:layout_constraintTop_toBottomOf="@id/tv_notice_third" />
 
         <ImageView
             android:id="@+id/img_notice_vaccin"
