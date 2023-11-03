@@ -44,6 +44,8 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
+                Log.d("jjjjjjj", "clicklistener")
+
                 reference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(datasnapshot: DataSnapshot) {
                         if (datasnapshot.exists()) {
@@ -72,7 +74,9 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             binding.root.context.startActivity(intent)
+                            Log.d("jjjjjjj", "homervadapter")
                         }
                     }
 

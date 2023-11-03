@@ -70,7 +70,9 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             binding.root.context.startActivity(intent)
+                            Log.d("jjjjjjj", "myrvadapter")
                         }
                     }
 

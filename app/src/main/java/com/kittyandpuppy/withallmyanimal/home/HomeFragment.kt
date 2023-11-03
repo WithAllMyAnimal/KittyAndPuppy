@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,15 +12,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.load
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
+import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.boardRef
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.users
@@ -120,28 +127,34 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList)
+
         binding.rvHome.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = rvAdapter
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onPause() {
         super.onPause()
         saveSearchText()
     }
+
     enum class QueryType {
         COMBINED_SPINNER,
         ONLY_CATEGORY,
         ONLY_ANIMAL,
         DEFAULT
     }
+
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
         val positions = listOf("tags/0", "tags/1", "tags/2")
@@ -153,12 +166,14 @@ class HomeFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     handlePostsData(snapshot)
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.w(TAG, "Search Failed", error.toException())
                 }
             })
         }
     }
+
     private fun getBoardData(
         combinedSpinnerValue: String? = null,
         onlyCategory: String? = null,
@@ -166,15 +181,26 @@ class HomeFragment : Fragment() {
     ) {
         val query: Pair<QueryType, Query> = when {
             combinedSpinnerValue != null -> {
-                Pair(QueryType.COMBINED_SPINNER, boardRef.orderByChild("animalAndCategory").equalTo(combinedSpinnerValue))
+                Pair(
+                    QueryType.COMBINED_SPINNER,
+                    boardRef.orderByChild("animalAndCategory").equalTo(combinedSpinnerValue)
+                )
             }
+
             onlyCategory != null -> {
-                Pair(QueryType.ONLY_CATEGORY, boardRef.orderByChild("category").equalTo(onlyCategory))
+                Pair(
+                    QueryType.ONLY_CATEGORY,
+                    boardRef.orderByChild("category").equalTo(onlyCategory)
+                )
             }
+
             onlyAnimal != null -> {
                 Pair(QueryType.ONLY_ANIMAL, boardRef.orderByChild("animal").equalTo(onlyAnimal))
             }
-            else -> { Pair(QueryType.DEFAULT, boardRef) }
+
+            else -> {
+                Pair(QueryType.DEFAULT, boardRef)
+            }
         }
 
         query.second.addValueEventListener(object : ValueEventListener {
@@ -183,11 +209,13 @@ class HomeFragment : Fragment() {
                 boardList.clear()
                 handlePostsData(snapshot)
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         })
     }
+
     private fun handlePostsData(snapshot: DataSnapshot) {
 
         for (postSnapshot in snapshot.children) {
@@ -240,6 +268,7 @@ class HomeFragment : Fragment() {
         }
         rvAdapter?.submitList(boardList.toList())
     }
+
     fun onSpinnerItemSelected() {
         val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()
         val spinnerCategoryValue = binding.spinnerCategory.selectedItem.toString()
@@ -248,26 +277,32 @@ class HomeFragment : Fragment() {
             spinnerDogCatValue == "전체" && spinnerCategoryValue != "전체" -> {
                 getBoardData(onlyCategory = spinnerCategoryValue)
             }
+
             spinnerDogCatValue != "전체" && spinnerCategoryValue == "전체" -> {
                 getBoardData(onlyAnimal = spinnerDogCatValue)
             }
+
             spinnerDogCatValue != "전체" && spinnerCategoryValue != "전체" -> {
                 val combinedKey = "$spinnerDogCatValue$spinnerCategoryValue"
                 getBoardData(combinedSpinnerValue = combinedKey)
             }
+
             else -> {
                 getBoardData()
             }
         }
     }
+
     private fun saveSearchText() {
         val pref = requireActivity().getSharedPreferences("pref", 0)
         val edit = pref.edit()
         edit.putString("search", binding.etSearch.text.toString())
         edit.apply()
     }
+
     private fun loadSearchText() {
         val pref = requireActivity().getSharedPreferences("pref", 0)
-        binding.etSearch.setText(pref.getString("search",""))
+        binding.etSearch.setText(pref.getString("search", ""))
     }
+
 }

@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.isVisible
@@ -37,11 +39,20 @@ import com.kittyandpuppy.withallmyanimal.write.MypageDaily
 
 class DetailDailyActivity : AppCompatActivity() {
 
-    private lateinit var databaseRef : DatabaseReference
+    private lateinit var databaseRef: DatabaseReference
 
-    private val binding : ActivityDetailDailyBinding by lazy {
+    private val binding: ActivityDetailDailyBinding by lazy {
         ActivityDetailDailyBinding.inflate(layoutInflater)
     }
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
+                loadUpdatedImage(key)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
@@ -62,28 +73,30 @@ class DetailDailyActivity : AppCompatActivity() {
                 .setView(myDialog)
 
             val alertDialog = builder.show()
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
-                FBRef.boardRef.child(key).removeValue()
-                FirebaseStorage.getInstance().getReference("${key}.png").delete()
-                Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
-                val resultIntent = Intent().putExtra("postDeleted", true)
-                resultIntent.putExtra("deletedPostUid", uid)
-                resultIntent.putExtra("deletedPostKey", key)
-                setResult(RESULT_OK, resultIntent)
-                finish()
-            }
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
-                alertDialog.dismiss()
-            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
+                ?.setOnClickListener {
+                    FBRef.boardRef.child(key).removeValue()
+                    FirebaseStorage.getInstance().getReference("${key}.png").delete()
+                    Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                    val resultIntent = Intent().putExtra("postDeleted", true)
+                    resultIntent.putExtra("deletedPostUid", uid)
+                    resultIntent.putExtra("deletedPostKey", key)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)
+                ?.setOnClickListener {
+                    alertDialog.dismiss()
+                }
         }
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypageDaily::class.java)
             intent.putExtra("key", key)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addValueEventListener(object : ValueEventListener{
+        databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")
                 val post = snapshot.getValue(Daily::class.java) ?: return
@@ -95,19 +108,19 @@ class DetailDailyActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("DetailDailyActivity", "failed to read post data",error.toException())
+                Log.d("DetailDailyActivity", "failed to read post data", error.toException())
             }
         })
         val storageRef = Firebase.storage.reference.child("${key}.png")
         storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailDailyPictureLeft.load(uri.toString()){
+            binding.ivDetailDailyPictureLeft.load(uri.toString()) {
                 crossfade(true)
             }
         }
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailDailyProfile.load(uri.toString()){
+            binding.ivDetailDailyProfile.load(uri.toString()) {
                 crossfade(true)
             }
         }
@@ -120,13 +133,13 @@ class DetailDailyActivity : AppCompatActivity() {
         val storageProfileReview = Firebase.storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png")
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()){
+            binding.ivCircleMy.load(uri.toString()) {
                 crossfade(true)
             }
         }
 
         FBRef.users.child(uid)
-            .addValueEventListener(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailDailyNickname.text = userId
@@ -145,8 +158,18 @@ class DetailDailyActivity : AppCompatActivity() {
             commentsFragment.arguments = bundle
             commentsFragment.show(supportFragmentManager, "comments")
         }
-        binding.btnDetailDailyBack.setOnClickListener{
+        binding.btnDetailDailyBack.setOnClickListener {
             finish()
+        }
+    }
+    private fun loadUpdatedImage(key: String) {
+        val storageRef = Firebase.storage.reference.child("${key}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailDailyPictureLeft.load(uri.toString()) {
+                crossfade(true)
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
         }
     }
 }

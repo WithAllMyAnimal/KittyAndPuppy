@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
@@ -38,6 +40,13 @@ class DetailPetActivity : AppCompatActivity() {
     private val binding: ActivityDetailPetBinding by lazy {
         ActivityDetailPetBinding.inflate(layoutInflater)
     }
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
+                loadUpdatedImage(key)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,24 +68,26 @@ class DetailPetActivity : AppCompatActivity() {
                 .setView(myDialog)
 
             val alertDialog = builder.show()
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
-                FBRef.boardRef.child(key).removeValue()
-                FirebaseStorage.getInstance().getReference("${key}.png").delete()
-                Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
-                val resultIntent = Intent().putExtra("postDeleted", true)
-                resultIntent.putExtra("deletedPostUid", uid)
-                resultIntent.putExtra("deletedPostKey", key)
-                setResult(RESULT_OK, resultIntent)
-                finish()
-            }
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
-                alertDialog.dismiss()
-            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
+                ?.setOnClickListener {
+                    FBRef.boardRef.child(key).removeValue()
+                    FirebaseStorage.getInstance().getReference("${key}.png").delete()
+                    Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                    val resultIntent = Intent().putExtra("postDeleted", true)
+                    resultIntent.putExtra("deletedPostUid", uid)
+                    resultIntent.putExtra("deletedPostKey", key)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)
+                ?.setOnClickListener {
+                    alertDialog.dismiss()
+                }
         }
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypagePet::class.java)
             intent.putExtra("key", key)
-            startActivity(intent)
+            startForResult.launch(intent)
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
@@ -107,7 +118,7 @@ class DetailPetActivity : AppCompatActivity() {
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailPetProfile.load(uri.toString()){
+            binding.ivDetailPetProfile.load(uri.toString()) {
                 crossfade(true)
             }
         }
@@ -119,7 +130,7 @@ class DetailPetActivity : AppCompatActivity() {
         val storageProfileReview = Firebase.storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png")
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()){
+            binding.ivCircleMy.load(uri.toString()) {
                 crossfade(true)
             }
         }
@@ -145,6 +156,17 @@ class DetailPetActivity : AppCompatActivity() {
         }
         binding.btnDetailPetBack.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun loadUpdatedImage(key: String) {
+        val storageRef = Firebase.storage.reference.child("${key}.png")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivDetailPetPictureLeft.load(uri.toString()) {
+                crossfade(true)
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
         }
     }
 }

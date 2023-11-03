@@ -162,7 +162,8 @@ class CommentsFragment : BottomSheetDialogFragment() {
             .setValue(
                 CommentsModel(
                     binding.etReview.text.toString(),
-                    FBAuth.getUid()
+                    FBAuth.getUid(),
+
                 )
             )
         binding.etReview.setText("")
