@@ -66,11 +66,13 @@ class MypagePet : AppCompatActivity() {
     }
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            imageUri = result.data?.data
             binding.ivMypagePetPictureLeft.setImageURI(result.data?.data)
         }
     }
 
     private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -123,10 +125,10 @@ class MypagePet : AppCompatActivity() {
                                     .show()
 
                                 lifecycleScope.launch {
-                                    if (isImageUpload) {
+                                    if (isImageUpload && imageUri != null) {
                                         ImageUtils.imageUpload(
                                             this@MypagePet,
-                                            binding.ivMypagePetPictureLeft,
+                                            imageUri ?: Uri.EMPTY,
                                             key
                                         )
                                     }
