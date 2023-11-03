@@ -28,17 +28,18 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appbar_mywrite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/con_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,13 +105,12 @@
                 style="?android:borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="260dp"
                 android:fontFamily="@font/maple"
                 android:text="아이디\n중복확인"
                 android:textColor="@color/realblue"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/et_dog_and_cat_add_nick"
-                app:layout_constraintStart_toStartOf="@+id/et_dog_and_cat_add_nick"
+                app:layout_constraintEnd_toEndOf="@+id/et_dog_and_cat_add_nick"
                 app:layout_constraintTop_toTopOf="@+id/et_dog_and_cat_add_nick" />
 
             <TextView

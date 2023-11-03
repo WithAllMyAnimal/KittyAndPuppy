@@ -29,10 +29,9 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/image_no_images_found"
+                android:src="#B3B3B3"
                 app:civ_border_color="@color/black"
                 app:civ_border_overlay="true"
-                app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
