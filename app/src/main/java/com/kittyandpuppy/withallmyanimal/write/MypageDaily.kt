@@ -71,11 +71,13 @@ class MypageDaily : AppCompatActivity() {
     }
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            imageUri = result.data?.data
             binding.ivMypageDailyPictureLeft.setImageURI(result.data?.data)
         }
     }
 
     private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -121,10 +123,10 @@ class MypageDaily : AppCompatActivity() {
                                     .show()
 
                                 lifecycleScope.launch {
-                                    if (isImageUpload) {
+                                    if (isImageUpload && imageUri != null) {
                                         ImageUtils.imageUpload(
                                             this@MypageDaily,
-                                            binding.ivMypageDailyPictureLeft,
+                                            imageUri ?: Uri.EMPTY,
                                             key
                                         )
                                     }

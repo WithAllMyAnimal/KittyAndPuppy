@@ -152,14 +152,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_hospital"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
+            android:paddingHorizontal="10dp"
             android:text="병원"
             android:textColor="@color/black"
             android:textSize="14sp" />

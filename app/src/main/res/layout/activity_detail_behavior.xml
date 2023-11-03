@@ -136,11 +136,10 @@
                     android:id="@+id/iv_detail_behavior_picture_left"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginVertical="10dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/add_image"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/con_detail_behavior"
                     app:layout_constraintStart_toStartOf="@id/con_detail_behavior"
                     app:layout_constraintTop_toBottomOf="@id/view_detail_behavior_line_top" />
 
