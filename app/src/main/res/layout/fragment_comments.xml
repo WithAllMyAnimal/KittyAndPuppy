@@ -8,7 +8,7 @@
     tools:context="com.kittyandpuppy.withallmyanimal.comments.CommentsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
             android:background="@color/pink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,19 +71,19 @@
                 android:background="@android:color/transparent"
                 app:civ_border_color="@color/black"
                 app:civ_border_overlay="true"
-                app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
                 app:layout_constraintStart_toStartOf="@id/view_detail_pink"
                 app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
             <EditText
                 android:id="@+id/et_review"
-                android:layout_width="280dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginHorizontal="70dp"
                 android:fontFamily="@font/maple"
                 android:hint="댓글을 입력하세요."
                 android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@id/btn_ok"
                 app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
                 app:layout_constraintStart_toEndOf="@id/iv_circle_my"
                 app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
@@ -92,15 +91,14 @@
             <Button
                 android:id="@+id/btn_ok"
                 android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                android:layout_height="80dp"
+                android:backgroundTint="#F8B9BE"
                 android:fontFamily="@font/maple"
                 android:text="확인"
                 android:textColor="@color/black"
                 android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/view_detail_pink"
-                app:layout_constraintEnd_toEndOf="@id/view_detail_pink"
-                app:layout_constraintStart_toEndOf="@id/et_review"
                 app:layout_constraintTop_toTopOf="@id/view_detail_pink" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

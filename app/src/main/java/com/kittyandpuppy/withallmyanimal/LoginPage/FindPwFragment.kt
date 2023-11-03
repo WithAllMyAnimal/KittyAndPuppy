@@ -44,8 +44,8 @@ class FindPwFragment : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         val deviceHeight = size.y
-        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.45).toInt()
+        params?.width = (deviceWidth * 1.0).toInt()
+        params?.height = (deviceHeight * 0.35).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 

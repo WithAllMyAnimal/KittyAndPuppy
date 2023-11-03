@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_mypage"
@@ -80,8 +81,8 @@
 
     <ImageView
         android:id="@+id/img_mypage_profile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/mypage_profile_shape"
@@ -140,7 +141,7 @@
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_mypage_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -152,54 +153,78 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_hospital"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
+            android:paddingHorizontal="25dp"
             android:text="병원"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_pet"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_pet"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="펫용품"
+            android:paddingHorizontal="20dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_hospital"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_behavior"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_behavior"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="행동"
+            android:paddingHorizontal="25dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_daily"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_pet"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_daily"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="일상"
+            android:paddingHorizontal="25dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_behavior"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/iv_mypage_cake_left"

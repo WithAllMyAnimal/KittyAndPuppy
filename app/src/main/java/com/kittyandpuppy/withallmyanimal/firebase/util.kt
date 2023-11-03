@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
@@ -29,23 +30,51 @@ object ImageUtils {
         return intent
     }
 
+//    @OptIn(ExperimentalCoroutinesApi::class)
+//    suspend fun imageUpload(activity: Activity, imageView: ImageView, key: String) = suspendCancellableCoroutine<Boolean> { con ->
+//        val storageRef = Firebase.storage.reference.child("$key.png")
+//        val metadata = storageMetadata {
+//            contentType = "image/jpeg"
+//            setCustomMetadata("updated", System.currentTimeMillis().toString())
+//        }
+//
+//        val bitmap = Bitmap.createBitmap(imageView.width, imageView.height, Bitmap.Config.ARGB_8888)
+//        val canvas = Canvas(bitmap)
+//        imageView.draw(canvas)
+//
+//        val baos = ByteArrayOutputStream()
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+//        val data = baos.toByteArray()
+//
+//        val uploadTask = storageRef.putBytes(data, metadata)
+//
+//        uploadTask.addOnFailureListener {
+//            con.resumeWith(Result.failure(it))
+//            Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+//        }.addOnSuccessListener {
+//            val imageUpdateRef = FirebaseDatabase.getInstance().getReference("imageUpdates/$key")
+//            imageUpdateRef.setValue(System.currentTimeMillis())
+//                .addOnSuccessListener {
+//                    Log.d("ImageUpload", "Image update time recorded in Realtime Database.")
+//                    con.resumeWith(Result.success(true))
+//                }
+//                .addOnFailureListener { databaseError ->
+//                    Log.w("ImageUpload", "Failed to record image update time in Realtime Database.", databaseError)
+//                    con.resumeWith(Result.failure(databaseError))
+//                }
+//            Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun imageUpload(activity: Activity, imageView: ImageView, key: String) = suspendCancellableCoroutine<Boolean> { con ->
+    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) = suspendCancellableCoroutine<Boolean> { con ->
         val storageRef = Firebase.storage.reference.child("$key.png")
         val metadata = storageMetadata {
             contentType = "image/jpeg"
             setCustomMetadata("updated", System.currentTimeMillis().toString())
         }
 
-        val bitmap = Bitmap.createBitmap(imageView.width, imageView.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        imageView.draw(canvas)
-
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-
-        val uploadTask = storageRef.putBytes(data, metadata)
+        val uploadTask = storageRef.putFile(uri, metadata)
 
         uploadTask.addOnFailureListener {
             con.resumeWith(Result.failure(it))

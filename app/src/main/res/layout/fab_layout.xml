@@ -7,11 +7,18 @@
     android:layout_marginBottom="80dp"
     android:background="@android:color/transparent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="35dp"
+        app:layout_constraintGuide_percent="0.1" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_hospital"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="35dp"
         android:backgroundTint="@color/pink"
         android:fontFamily="@font/cafe24"
         android:text="병원"
@@ -22,12 +29,21 @@
         app:icon="@drawable/main_hospital"
         app:iconSize="30dp"
         app:rippleColor="@color/pink"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@id/guideline1"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="35dp"
+        app:layout_constraintGuide_percent="0.35" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_pet"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="70dp"
         android:layout_marginEnd="5dp"
@@ -47,7 +63,7 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_behavior"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="70dp"
@@ -65,11 +81,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fab_pet" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_daily"
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginEnd="35dp"
         android:backgroundTint="@color/pink"
         android:fontFamily="@font/cafe24"
         android:text="일상"
@@ -79,7 +102,16 @@
         app:borderWidth="0dp"
         app:icon="@drawable/daily_icon"
         app:iconSize="40dp"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/guideline4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

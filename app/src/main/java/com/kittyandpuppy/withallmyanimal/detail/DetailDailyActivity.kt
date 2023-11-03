@@ -98,7 +98,7 @@ class DetailDailyActivity : AppCompatActivity() {
 
                 binding.tvDetailDailyTitle.text = post.title
                 binding.tvDetailDate.text = FBAuth.getTime()
-                binding.tvDetailDailyCautionContents.text = post.content
+                binding.tvDetailDailyReviewContents.text = post.content
 
             }
 

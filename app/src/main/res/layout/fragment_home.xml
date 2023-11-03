@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.kittyandpuppy.withallmyanimal.home.HomeFragment">
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appbar_home"
@@ -52,7 +52,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ti_search"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="검색어를 입력하세요."
@@ -60,7 +60,6 @@
         android:textColor="@color/black"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_home">
 
@@ -75,25 +74,25 @@
 
     <Spinner
         android:id="@+id/spinner_dogandcat"
-        android:layout_width="180dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/custom_spinner_background"
         android:entries="@array/dogandcat"
+        android:layout_marginStart="15dp"
         app:layout_constraintEnd_toStartOf="@+id/spinner_category"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ti_search" />
 
     <Spinner
         android:id="@+id/spinner_category"
-        android:layout_width="180dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/custom_spinner_background"
         android:entries="@array/category"
+        android:layout_marginHorizontal="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/spinner_dogandcat"
         app:layout_constraintTop_toBottomOf="@+id/ti_search" />
 

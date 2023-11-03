@@ -72,11 +72,13 @@ class MypageBehavior : AppCompatActivity() {
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                imageUri = result.data?.data
                 binding.ivMypageBehaviorPictureLeft.setImageURI(result.data?.data)
             }
         }
 
     private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -130,10 +132,10 @@ class MypageBehavior : AppCompatActivity() {
 
                                     lifecycleScope.launch {
 
-                                        if (isImageUpload) {
+                                        if (isImageUpload && imageUri != null) {
                                             ImageUtils.imageUpload(
                                                 this@MypageBehavior,
-                                                binding.ivMypageBehaviorPictureLeft,
+                                                imageUri ?: Uri.EMPTY,
                                                 key
                                             )
                                         }
@@ -235,6 +237,7 @@ class MypageBehavior : AppCompatActivity() {
         })
         val storageImage = Firebase.storage.reference.child("${postKey}.png")
         storageImage.downloadUrl.addOnSuccessListener { uri ->
+            Log.d("JINA", "loadUpdatedImage: ${uri.toString()}")
             binding.ivMypageBehaviorPictureLeft.load(uri.toString()){
                 crossfade(true)
             }
