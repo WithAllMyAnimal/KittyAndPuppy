@@ -80,17 +80,29 @@
         app:layout_constraintBottom_toBottomOf="@id/img_mypage_profile" />
 
     <ImageView
+        android:id="@+id/iv_mypage_birthday_background"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:visibility="invisible"
+        android:src="@drawable/iv_mypage_birthday"
+        app:layout_constraintTop_toTopOf="@id/img_mypage_profile"
+        app:layout_constraintBottom_toBottomOf="@id/img_mypage_profile"
+        app:layout_constraintStart_toStartOf="@id/img_mypage_profile"
+        app:layout_constraintEnd_toEndOf="@id/img_mypage_profile"
+        />
+
+    <ImageView
         android:id="@+id/img_mypage_profile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/mypage_profile_shape"
         android:clipToOutline="true"
         android:src="@drawable/image_sample"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"/>
 
     <ImageButton
         android:id="@+id/btn_mypage_change"
@@ -227,17 +239,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/iv_mypage_cake_left"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/cake_icon"
-        android:layout_marginStart="10dp"
+        android:id="@+id/iv_mypage_birthday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/mypage_birthday_crown"
         android:visibility="invisible"
         android:scaleType="fitCenter"
+        android:layout_marginTop="-20dp"
+        android:rotation="331"
         app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"
-        app:layout_constraintStart_toEndOf="@id/tv_mypage_birth"
-        app:layout_constraintTop_toTopOf="@id/tv_mypage_birth"
-        app:layout_constraintBottom_toBottomOf="@id/tv_mypage_birth"
+        app:layout_constraintStart_toStartOf="@id/iv_mypage_birthday_background"
         />
 
 
