@@ -37,6 +37,7 @@ import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
+import kotlin.properties.Delegates
 
 class HomeFragment : Fragment() {
 
@@ -46,8 +47,6 @@ class HomeFragment : Fragment() {
     private val boardList = mutableListOf<BaseModel>()
     private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
-    var isDogAndCatSpinnerInitialized = false
-    var isCategorySpinnerInitialized = false
     private lateinit var key : String
     private lateinit var imageUrl : String
 
@@ -58,6 +57,7 @@ class HomeFragment : Fragment() {
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 rvAdapter?.updateImage(key, imageUrl)
             }
+            Log.d(TAG, "startForResult")
         }
 
     override fun onCreateView(
@@ -71,10 +71,19 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        Log.d(TAG, "viewCreated 불리니")
+
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         setUpRecyclerView()
-        loadSearchText()
+
+        binding.spinnerDogandcat.setSelection(1)
+        binding.spinnerCategory.setSelection(1)
+
+        var isDogAndCatSpinnerInitialized = false
+        var isCategorySpinnerInitialized = false
+
+        onSpinnerItemSelected()
 
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
@@ -128,9 +137,6 @@ class HomeFragment : Fragment() {
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
-        binding.spinnerDogandcat.setSelection(1)
-        binding.spinnerCategory.setSelection(1)
-        onSpinnerItemSelected()
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -168,10 +174,10 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        saveSearchText()
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        saveSearchText()
+//    }
 
     enum class QueryType {
         COMBINED_SPINNER,
@@ -260,6 +266,7 @@ class HomeFragment : Fragment() {
 
             if (post != null) {
                 boardList.add(post)
+                Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
                 likesCountRef.addValueEventListener(object : ValueEventListener {
@@ -293,12 +300,6 @@ class HomeFragment : Fragment() {
         }
         rvAdapter?.submitList(boardList.toList())
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        rvAdapter?.submitList(boardList.toList())
-//    }
-
     fun onSpinnerItemSelected() {
         val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()
         val spinnerCategoryValue = binding.spinnerCategory.selectedItem.toString()
@@ -319,20 +320,18 @@ class HomeFragment : Fragment() {
 
             else -> {
                 getBoardData()
+                Log.d(TAG, "너가 불려야 하는데")
             }
         }
     }
-
     private fun saveSearchText() {
         val pref = requireActivity().getSharedPreferences("pref", 0)
         val edit = pref.edit()
         edit.putString("search", binding.etSearch.text.toString())
         edit.apply()
     }
-
     private fun loadSearchText() {
         val pref = requireActivity().getSharedPreferences("pref", 0)
         binding.etSearch.setText(pref.getString("search", ""))
     }
-
 }
