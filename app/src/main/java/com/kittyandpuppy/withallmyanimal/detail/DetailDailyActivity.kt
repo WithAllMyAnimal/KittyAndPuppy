@@ -97,7 +97,7 @@ class DetailDailyActivity : AppCompatActivity() {
                 val post = snapshot.getValue(Daily::class.java) ?: return
 
                 binding.tvDetailDailyTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailDailyReviewContents.text = post.content
 
             }

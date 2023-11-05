@@ -100,7 +100,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 val post = snapshot.getValue(Behavior::class.java) ?: return
 
                 binding.tvDetailBehaviorTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailBehaviorCautionContents.text = post.content
                 binding.tvDetailBehaviorReviewContents.text = post.review
             }

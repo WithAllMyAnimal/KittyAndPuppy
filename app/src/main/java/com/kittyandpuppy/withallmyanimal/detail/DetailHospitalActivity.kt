@@ -97,7 +97,7 @@ class DetailHospitalActivity : AppCompatActivity() {
                 Log.d("DetailHospitalActivity", "snapshot")
 
                 binding.tvDetailHospitalTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailHospitalDateContents.text = post.date
                 binding.tvDetailHospitalDiseaseContents.text = post.disease
                 binding.tvDetailHospitalLocationContents.text = post.location
