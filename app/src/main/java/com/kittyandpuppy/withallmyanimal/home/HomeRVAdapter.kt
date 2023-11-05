@@ -43,22 +43,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
         RecyclerView.ViewHolder(binding.root) {
         fun bind(homeModel: BaseModel) {
 
-//            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-//            storageRef.metadata.addOnSuccessListener { metadata ->
-//                val lastUpdated = metadata.getCustomMetadata("updated")
-//                storageRef.downloadUrl.addOnSuccessListener { uri ->
-//                    binding.ivRvImage.load(uri.toString()) {
-//                        crossfade(true)
-//                    }
-//                }.addOnFailureListener {
-//                    binding.ivRvImage.load(R.drawable.add_image) {
-//                        crossfade(true)
-//                    }
-//                }
-//            }.addOnFailureListener {
-//                Log.e("HomeRVAdapter", "Failed to get metadata", it)
-//            }
-
             FBRef.users.child(homeModel.uid)
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {

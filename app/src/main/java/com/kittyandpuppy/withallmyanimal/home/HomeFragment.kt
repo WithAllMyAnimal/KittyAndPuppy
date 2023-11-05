@@ -3,6 +3,8 @@ package com.kittyandpuppy.withallmyanimal.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -49,6 +51,7 @@ class HomeFragment : Fragment() {
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
     private lateinit var imageUrl : String
+    private var boardValueEventListener: ValueEventListener? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -66,29 +69,21 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         Log.d(TAG, "viewCreated 불리니")
-
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
         setUpRecyclerView()
-
-        binding.spinnerDogandcat.setSelection(1)
-        binding.spinnerCategory.setSelection(1)
-
-        var isDogAndCatSpinnerInitialized = false
-        var isCategorySpinnerInitialized = false
-
-        onSpinnerItemSelected()
-
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
         }
+
+        var isDogAndCatSpinnerInitialized = false
+        var isCategorySpinnerInitialized = false
 
         val dogCatAdapter = ArrayAdapter.createFromResource(
             requireContext(),
@@ -112,7 +107,6 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
@@ -133,10 +127,8 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
-
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -149,10 +141,14 @@ class HomeFragment : Fragment() {
             }
         })
     }
-
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList) { intent ->
             startForResult.launch(intent)
+        }
+        binding.rvHome.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = rvAdapter
         }
         homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
             list.forEach { homeModel ->
@@ -162,23 +158,26 @@ class HomeFragment : Fragment() {
             }
             rvAdapter!!.submitList(list)
         }
-        binding.rvHome.apply {
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = rvAdapter
-        }
     }
-
+    override fun onStart() {
+        super.onStart()
+        binding.spinnerDogandcat.setSelection(1)
+        binding.spinnerCategory.setSelection(1)
+        binding.etSearch.setText("")
+        onSpinnerItemSelected()
+        Log.d(TAG, "start")
+    }
+    override fun onStop() {
+        super.onStop()
+        boardValueEventListener?.let {
+            boardRef.removeEventListener(it)
+        }
+        Log.d(TAG, "stop")
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-//    override fun onStop() {
-//        super.onStop()
-//        saveSearchText()
-//    }
-
     enum class QueryType {
         COMBINED_SPINNER,
         ONLY_CATEGORY,
@@ -189,6 +188,7 @@ class HomeFragment : Fragment() {
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
         val positions = listOf("tags/0", "tags/1", "tags/2")
+
         boardList.clear()
 
         positions.forEach { position ->
@@ -204,12 +204,15 @@ class HomeFragment : Fragment() {
             })
         }
     }
-
     private fun getBoardData(
         combinedSpinnerValue: String? = null,
         onlyCategory: String? = null,
         onlyAnimal: String? = null
     ) {
+        boardValueEventListener?.let {
+            boardRef.removeEventListener(it)
+        }
+
         val query: Pair<QueryType, Query> = when {
             combinedSpinnerValue != null -> {
                 Pair(
@@ -234,7 +237,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        query.second.addValueEventListener(object : ValueEventListener {
+        boardValueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d(TAG, "Snapshot size: ${snapshot.childrenCount}")
                 boardList.clear()
@@ -244,9 +247,9 @@ class HomeFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Post Failed", error.toException())
             }
-        })
+        }
+        query.second.addValueEventListener(boardValueEventListener!!)
     }
-
     private fun handlePostsData(snapshot: DataSnapshot) {
 
         for (postSnapshot in snapshot.children) {
