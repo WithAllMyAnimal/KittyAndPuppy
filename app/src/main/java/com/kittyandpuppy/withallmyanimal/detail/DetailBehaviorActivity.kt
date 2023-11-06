@@ -3,6 +3,7 @@ package com.kittyandpuppy.withallmyanimal.detail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Paint
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -99,7 +100,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 val post = snapshot.getValue(Behavior::class.java) ?: return
 
                 binding.tvDetailBehaviorTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailBehaviorCautionContents.text = post.content
                 binding.tvDetailBehaviorReviewContents.text = post.review
             }
@@ -161,17 +162,21 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
-
     private fun loadUpdatedImage(key: String) {
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailBehaviorPictureLeft.load(uri.toString()) {
-                crossfade(true)
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                imageUrl?.let { url ->
+                    binding.ivDetailBehaviorPictureLeft.load(url) {
+                        crossfade(true)
+                    }
+                }
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-        }
-
-        Log.d("Behavior", "loadUpdatedImage")
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
+            }
+        })
     }
+
 }

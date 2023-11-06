@@ -95,7 +95,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     val userIdName = snapshot.child("userIdname").getValue(String::class.java)
 
                     userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
+                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.key}.png")
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)
@@ -127,7 +127,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "uid:$uid")
                 Log.d("MyPageRVAdapter", "key: $key")
                 Log.d("MyPageRVAdapter", "category: $category")
-
 
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")

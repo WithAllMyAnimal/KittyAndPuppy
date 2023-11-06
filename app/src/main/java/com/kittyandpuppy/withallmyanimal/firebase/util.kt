@@ -31,22 +31,14 @@ object ImageUtils {
     }
 
 //    @OptIn(ExperimentalCoroutinesApi::class)
-//    suspend fun imageUpload(activity: Activity, imageView: ImageView, key: String) = suspendCancellableCoroutine<Boolean> { con ->
+//    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) = suspendCancellableCoroutine<Boolean> { con ->
 //        val storageRef = Firebase.storage.reference.child("$key.png")
 //        val metadata = storageMetadata {
 //            contentType = "image/jpeg"
 //            setCustomMetadata("updated", System.currentTimeMillis().toString())
 //        }
 //
-//        val bitmap = Bitmap.createBitmap(imageView.width, imageView.height, Bitmap.Config.ARGB_8888)
-//        val canvas = Canvas(bitmap)
-//        imageView.draw(canvas)
-//
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val data = baos.toByteArray()
-//
-//        val uploadTask = storageRef.putBytes(data, metadata)
+//        val uploadTask = storageRef.putFile(uri, metadata)
 //
 //        uploadTask.addOnFailureListener {
 //            con.resumeWith(Result.failure(it))
@@ -66,31 +58,38 @@ object ImageUtils {
 //        }
 //    }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) = suspendCancellableCoroutine<Boolean> { con ->
-        val storageRef = Firebase.storage.reference.child("$key.png")
-        val metadata = storageMetadata {
-            contentType = "image/jpeg"
-            setCustomMetadata("updated", System.currentTimeMillis().toString())
+    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) =
+        suspendCancellableCoroutine<Boolean> { con ->
+            val storage = Firebase.storage
+            val storageRef = storage.reference
+            val animalsRef = storageRef.child("$key.png")
+
+            val uploadTask = animalsRef.putFile(uri)
+
+            uploadTask.addOnFailureListener {
+                con.resume(false)
+                Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }.addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
+                    val imageUrl = downloadUri.toString()
+                    saveImageUrlToDatabase(imageUrl, key)
+                    con.resume(true)
+                    Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
+                }?.addOnFailureListener {
+                    con.resume(false)
+                }
+            }
         }
 
-        val uploadTask = storageRef.putFile(uri, metadata)
+    private fun saveImageUrlToDatabase(imageUrl: String, key: String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.child("imageUrl").setValue(imageUrl)
+            .addOnSuccessListener {
+                Log.d("ImageUpload", "Image URL saved to database successfully.")
+            }
+            .addOnFailureListener {
 
-        uploadTask.addOnFailureListener {
-            con.resumeWith(Result.failure(it))
-            Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener {
-            val imageUpdateRef = FirebaseDatabase.getInstance().getReference("imageUpdates/$key")
-            imageUpdateRef.setValue(System.currentTimeMillis())
-                .addOnSuccessListener {
-                    Log.d("ImageUpload", "Image update time recorded in Realtime Database.")
-                    con.resumeWith(Result.success(true))
-                }
-                .addOnFailureListener { databaseError ->
-                    Log.w("ImageUpload", "Failed to record image update time in Realtime Database.", databaseError)
-                    con.resumeWith(Result.failure(databaseError))
-                }
-            Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
-        }
+                Log.d("ImageUpload", "Failed to save image URL to database.")
+            }
     }
 }

@@ -97,7 +97,7 @@ class DetailHospitalActivity : AppCompatActivity() {
                 Log.d("DetailHospitalActivity", "snapshot")
 
                 binding.tvDetailHospitalTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailHospitalDateContents.text = post.date
                 binding.tvDetailHospitalDiseaseContents.text = post.disease
                 binding.tvDetailHospitalLocationContents.text = post.location
@@ -160,15 +160,21 @@ class DetailHospitalActivity : AppCompatActivity() {
             finish()
         }
     }
-
     private fun loadUpdatedImage(key: String) {
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailHospitalPictureLeft.load(uri.toString()) {
-                crossfade(true)
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                imageUrl?.let { url ->
+                    binding.ivDetailHospitalPictureLeft.load(url) {
+                        crossfade(true)
+                    }
+                }
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-        }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
+            }
+        })
     }
+
 }

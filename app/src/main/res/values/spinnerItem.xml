@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dogandcat">
-        <item>동물</item>
         <item>전체</item>
         <item>강아지</item>
         <item>고양이</item>
     </string-array>
 
     <string-array name="category">
-        <item>일지 카테고리</item>
         <item>전체</item>
         <item>병원</item>
         <item>펫용품</item>
