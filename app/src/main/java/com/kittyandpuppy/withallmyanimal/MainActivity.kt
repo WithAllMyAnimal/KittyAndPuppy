@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     }
     private lateinit var fabBinding: FabLayoutBinding
     private lateinit var fragmentManager: FragmentManager
+    private val homeFragment = HomeFragment()
+    private val mypageFragment = MypageFragment()
     private val auth = Firebase.auth
     private val storage = Firebase.storage
 
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         fragmentManager = supportFragmentManager
         if (savedInstanceState == null) {
-            switchFragment(HomeFragment())
+            switchFragment(homeFragment)
         }
 
         setupBottomNavigation()
@@ -68,12 +70,12 @@ class MainActivity : AppCompatActivity() {
         binding.bnMain.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.main_bn_you -> {
-                    switchFragment(HomeFragment())
+                    switchFragment(homeFragment)
                     true
                 }
 
                 R.id.main_bn_home -> {
-                    switchFragment(MypageFragment())
+                    switchFragment(mypageFragment)
                     true
                 }
 

@@ -48,6 +48,8 @@ class MypageBehavior : AppCompatActivity() {
 
     private var isImageUpload = false
     private var tagListBehavior = mutableListOf<String>()
+    private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -77,8 +79,6 @@ class MypageBehavior : AppCompatActivity() {
             }
         }
 
-    private var currentPostKey: String? = null
-    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -116,7 +116,8 @@ class MypageBehavior : AppCompatActivity() {
                                 animalAndCategory = animalAndCategory,
                                 uid = uid,
                                 animal = dogcatValue,
-                                uidAndCategory = uidAndCategory
+                                uidAndCategory = uidAndCategory,
+                                imageUrl = imageUri.toString()
                             )
 
                             FBRef.boardRef
@@ -142,6 +143,7 @@ class MypageBehavior : AppCompatActivity() {
                                         val resultIntent = Intent().putExtra("postAdded", true)
                                         resultIntent.putExtra("addedPostUid", uid)
                                         resultIntent.putExtra("addedPostKey", key)
+                                        resultIntent.putExtra("imageUri", imageUri)
                                         setResult(Activity.RESULT_OK, resultIntent)
                                         Log.d("mmm", "성공33")
                                         finish()

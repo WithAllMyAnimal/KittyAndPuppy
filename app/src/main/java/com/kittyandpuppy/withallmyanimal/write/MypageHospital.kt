@@ -121,7 +121,8 @@ class MypageHospital : AppCompatActivity() {
                             animalAndCategory = animalAndCategory,
                             uid = uid,
                             animal = dogcatValue,
-                            uidAndCategory = uidAndCategory
+                            uidAndCategory = uidAndCategory,
+                            imageUrl = imageUri.toString()
                         )
                         FBRef.boardRef
                             .child(key)
@@ -141,6 +142,7 @@ class MypageHospital : AppCompatActivity() {
                                     val resultIntent = Intent().putExtra("postAdded", true)
                                     resultIntent.putExtra("addedPostUid", uid)
                                     resultIntent.putExtra("addedPostKey", key)
+                                    resultIntent.putExtra("imageUri", imageUri)
                                     setResult(Activity.RESULT_OK, resultIntent)
                                     finish()
                                 }

@@ -97,7 +97,7 @@ class DetailDailyActivity : AppCompatActivity() {
                 val post = snapshot.getValue(Daily::class.java) ?: return
 
                 binding.tvDetailDailyTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailDailyReviewContents.text = post.content
 
             }
@@ -158,13 +158,19 @@ class DetailDailyActivity : AppCompatActivity() {
         }
     }
     private fun loadUpdatedImage(key: String) {
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailDailyPictureLeft.load(uri.toString()) {
-                crossfade(true)
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                imageUrl?.let { url ->
+                    binding.ivDetailDailyPictureLeft.load(url) {
+                        crossfade(true)
+                    }
+                }
             }
-        }.addOnFailureListener {
-            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-        }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
+            }
+        })
     }
 }
