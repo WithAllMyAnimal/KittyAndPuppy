@@ -3,8 +3,6 @@ package com.kittyandpuppy.withallmyanimal.home
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -14,32 +12,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import coil.load
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
-import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.boardRef
-import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.users
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
-import kotlin.properties.Delegates
 
 class HomeFragment : Fragment() {
 
@@ -77,6 +66,7 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "viewCreated 불리니")
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpRecyclerView()
+        onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
@@ -159,21 +149,6 @@ class HomeFragment : Fragment() {
             rvAdapter!!.submitList(list)
         }
     }
-    override fun onStart() {
-        super.onStart()
-        binding.spinnerDogandcat.setSelection(1)
-        binding.spinnerCategory.setSelection(1)
-        binding.etSearch.setText("")
-        onSpinnerItemSelected()
-        Log.d(TAG, "start")
-    }
-    override fun onStop() {
-        super.onStop()
-        boardValueEventListener?.let {
-            boardRef.removeEventListener(it)
-        }
-        Log.d(TAG, "stop")
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -193,7 +168,7 @@ class HomeFragment : Fragment() {
 
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
-            query.addValueEventListener(object : ValueEventListener {
+            query.addValueEventListener (object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     handlePostsData(snapshot)
                 }
@@ -209,9 +184,6 @@ class HomeFragment : Fragment() {
         onlyCategory: String? = null,
         onlyAnimal: String? = null
     ) {
-        boardValueEventListener?.let {
-            boardRef.removeEventListener(it)
-        }
 
         val query: Pair<QueryType, Query> = when {
             combinedSpinnerValue != null -> {
@@ -248,7 +220,7 @@ class HomeFragment : Fragment() {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         }
-        query.second.addValueEventListener(boardValueEventListener!!)
+        query.second.addValueEventListener (boardValueEventListener!!)
     }
     private fun handlePostsData(snapshot: DataSnapshot) {
 
@@ -272,7 +244,7 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
-                likesCountRef.addValueEventListener(object : ValueEventListener {
+                likesCountRef.addValueEventListener (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val likesCount = snapshot.getValue(Int::class.java) ?: 0
                         post.likesCount = likesCount
@@ -285,7 +257,7 @@ class HomeFragment : Fragment() {
                 })
 
                 val commentsRef = FBRef.commentRef.child(postKey)
-                commentsRef.addValueEventListener(object : ValueEventListener {
+                commentsRef.addValueEventListener (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         post.commentsCount = snapshot.childrenCount.toInt()
                         rvAdapter?.notifyDataSetChanged()

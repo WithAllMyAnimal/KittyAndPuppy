@@ -14,25 +14,6 @@ class HomeViewModel : ViewModel() {
     private val _boardList = MutableLiveData<List<BaseModel>>()
     val boardList: LiveData<List<BaseModel>> = _boardList
 
-    init {
-        loadBoardList()
-    }
-
-    private fun loadBoardList() {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("boards")
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val items = snapshot.children.map { child ->
-                    child.getValue(BaseModel::class.java)!!
-                }
-                _boardList.value = items
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-    }
-
     fun getImageUrl(key: String): LiveData<String> {
         val imageUrlLiveData = MutableLiveData<String>()
         val imageRef = FirebaseDatabase.getInstance().getReference("${key}.png")
@@ -46,3 +27,23 @@ class HomeViewModel : ViewModel() {
         return imageUrlLiveData
     }
 }
+
+
+//    init {
+//        loadBoardList()
+//    }
+//
+//    private fun loadBoardList() {
+//        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+//        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val items = snapshot.children.map { child ->
+//                    child.getValue(BaseModel::class.java)!!
+//                }
+//                _boardList.value = items
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//            }
+//        })
+//    }
