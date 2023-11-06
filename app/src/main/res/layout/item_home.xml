@@ -91,6 +91,7 @@
                 android:layout_height="15dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_rv_likes"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,8 +105,8 @@
                 android:fontFamily="@font/cafe24"
                 android:text="10"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_rv_paws"
                 app:layout_constraintEnd_toStartOf="@+id/iv_rv_chat"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/iv_rv_paws"
                 app:layout_constraintTop_toTopOf="@+id/iv_rv_paws" />
 
@@ -114,9 +115,9 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 app:layout_constraintEnd_toStartOf="@+id/tv_rv_chat"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tv_rv_likes"
                 app:layout_constraintTop_toTopOf="@+id/tv_rv_likes"
+                app:layout_constraintBottom_toBottomOf="@id/tv_rv_likes"
                 app:srcCompat="@drawable/image_chat" />
 
             <TextView
@@ -127,8 +128,8 @@
                 android:fontFamily="@font/cafe24"
                 android:text="10"
                 android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_rv_chat"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/iv_rv_chat"
                 app:layout_constraintTop_toTopOf="@+id/iv_rv_chat" />
 
