@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,8 +23,10 @@ class HomeViewModel : ViewModel() {
                 val url = snapshot.getValue(String::class.java)
                 imageUrlLiveData.value = url ?: ""
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
+        Log.d("VIEW MODEL", "$imageUrlLiveData")
         return imageUrlLiveData
     }
 }
