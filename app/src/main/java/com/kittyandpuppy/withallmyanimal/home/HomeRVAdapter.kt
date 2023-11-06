@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.firebase.database.DataSnapshot
@@ -15,8 +14,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.R
-import com.kittyandpuppy.withallmyanimal.comments.CommentsRVAdapter.Companion.diffUtil
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
@@ -26,7 +23,7 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
 class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
-    ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
+    androidx.recyclerview.widget.ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
         return HomeItemViewHolder(
             ItemHomeBinding.inflate(
@@ -126,6 +123,18 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
         if (index != -1) {
             boardList[index].imageUrl = imageUrl
             notifyItemChanged(index)
+        }
+    }
+    fun deletePost(key : String) {
+        val iterator = boardList.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (item.key == key) {
+                val index = boardList.indexOf(item)
+                iterator.remove()
+                notifyItemChanged(index)
+                break
+            }
         }
     }
 

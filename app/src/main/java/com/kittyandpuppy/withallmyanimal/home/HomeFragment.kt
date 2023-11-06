@@ -39,14 +39,17 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
+    private lateinit var deletedKey : String
     private lateinit var imageUrl : String
     private var boardValueEventListener: ValueEventListener? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
                 key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.deletePost(deletedKey)
                 rvAdapter?.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
