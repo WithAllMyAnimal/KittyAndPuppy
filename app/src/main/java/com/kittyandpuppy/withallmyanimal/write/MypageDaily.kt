@@ -187,7 +187,10 @@ class MypageDaily : AppCompatActivity() {
                     binding.chipGroup.addView(Chip(this).apply {
                         text = chipName
                         isCloseIconVisible = true
-                        setOnCloseIconClickListener { binding.chipGroup.removeView(this) }
+                        setOnCloseIconClickListener { binding.chipGroup.removeView(this)
+                            // 이 부분이 없어서 오류가 났었다.
+                            tagListDaily.remove(chipName)
+                        }
                         chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
                         val typeface: Typeface? = ResourcesCompat.getFont(this@MypageDaily, R.font.cafe24)
                         this.typeface = typeface
