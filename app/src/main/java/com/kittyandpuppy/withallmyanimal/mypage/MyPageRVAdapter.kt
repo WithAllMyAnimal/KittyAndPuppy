@@ -101,7 +101,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                                 crossfade(true)
                             }
                         }.addOnFailureListener {
-                            // Handle failure to load the image
                         }
                     }
 

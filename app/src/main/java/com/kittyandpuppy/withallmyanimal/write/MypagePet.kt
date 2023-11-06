@@ -115,7 +115,8 @@ class MypagePet : AppCompatActivity() {
                             uid = uid,
                             animal = dogcatValue,
                             uidAndCategory = uidAndCategory,
-                            imageUrl = imageUri.toString()
+                            imageUrl = imageUri.toString(),
+                            key = key
                         )
 
                         FBRef.boardRef

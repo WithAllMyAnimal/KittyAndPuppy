@@ -170,6 +170,7 @@ class MypageFragment : Fragment() {
 
     private fun getMyData(filter : String? = null) {
         val currentUserId = FBAuth.getUid()
+        val myPostKeys = mutableListOf<String>()
 
         val query = if (filter != null) {
             FBRef.boardRef.orderByChild("uidAndCategory").equalTo("${currentUserId}$filter")
@@ -208,6 +209,7 @@ class MypageFragment : Fragment() {
             }
         })
     }
+
     private fun getLikedPosts() {
         val currentUserId = FBAuth.getUid()
 
