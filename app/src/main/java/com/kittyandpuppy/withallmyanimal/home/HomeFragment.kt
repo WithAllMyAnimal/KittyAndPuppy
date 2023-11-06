@@ -39,14 +39,17 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
+    private lateinit var deletedKey : String
     private lateinit var imageUrl : String
     private var boardValueEventListener: ValueEventListener? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
                 key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.deletePost(deletedKey)
                 rvAdapter?.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
@@ -159,13 +162,23 @@ class HomeFragment : Fragment() {
         ONLY_ANIMAL,
         DEFAULT
     }
+    override fun onResume() {
+        super.onResume()
+        loadSearchText()
+        binding.etSearch.setText("")
+        binding.spinnerCategory.setSelection(0)
+        binding.spinnerDogandcat.setSelection(0)
+    }
+    override fun onPause() {
+        super.onPause()
+        saveSearchText()
+    }
 
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
         val positions = listOf("tags/0", "tags/1", "tags/2")
 
         boardList.clear()
-
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
             query.addValueEventListener (object : ValueEventListener {
