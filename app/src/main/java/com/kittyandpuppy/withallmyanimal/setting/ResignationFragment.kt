@@ -1,4 +1,4 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.setting
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

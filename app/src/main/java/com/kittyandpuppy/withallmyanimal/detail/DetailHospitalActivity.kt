@@ -14,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -67,23 +69,34 @@ class DetailHospitalActivity : AppCompatActivity() {
                 .setView(myDialog)
 
             val alertDialog = builder.show()
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
-                ?.setOnClickListener {
-                    FBRef.boardRef.child(key).removeValue()
-                    FBRef.commentRef.child(key).removeValue()
-                    FBRef.likesCount.child(key).removeValue()
-                    FirebaseStorage.getInstance().getReference("${key}.png").delete()
-                    Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
-                    val resultIntent = Intent().putExtra("postDeleted", true)
-                    resultIntent.putExtra("deletedPostUid", uid)
-                    resultIntent.putExtra("deletedPostKey", key)
-                    setResult(RESULT_OK, resultIntent)
-                    finish()
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
+                val tasks = arrayListOf<Task<Void>>()
+
+                tasks.add(FBRef.boardRef.child(key).removeValue())
+                tasks.add(FBRef.commentRef.child(key).removeValue())
+                tasks.add(FBRef.likesCount.child(key).removeValue())
+                tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
+
+                Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                        val resultIntent = Intent().apply {
+                            putExtra("postDeleted", true)
+                            putExtra("deletedPostUid", uid)
+                            putExtra("deletedPostKey", key)
+                        }
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
+                    } else {
+                        task.exception?.let {
+                            Toast.makeText(this, "삭제 실패: ${it.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)
-                ?.setOnClickListener {
-                    alertDialog.dismiss()
-                }
+            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
+                alertDialog.dismiss()
+            }
         }
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypageHospital::class.java)

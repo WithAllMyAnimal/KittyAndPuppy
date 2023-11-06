@@ -29,6 +29,7 @@ object ImageUtils {
         intent.type = "image/*"
         return intent
     }
+
     suspend fun imageUpload(activity: Activity, uri: Uri, key: String) =
         suspendCancellableCoroutine<Boolean> { con ->
             val storage = Firebase.storage
@@ -36,7 +37,6 @@ object ImageUtils {
             val animalsRef = storageRef.child("$key.png")
 
             val uploadTask = animalsRef.putFile(uri)
-
             uploadTask.addOnFailureListener {
                 con.resume(false)
                 Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()

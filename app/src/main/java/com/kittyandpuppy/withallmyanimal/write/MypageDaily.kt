@@ -113,7 +113,6 @@ class MypageDaily : AppCompatActivity() {
                             uid = uid,
                             animal = dogcatValue,
                             uidAndCategory = uidAndCategory,
-                            imageUrl = imageUri.toString(),
                             key = key
                         )
 
