@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.DatePicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechangeBinding
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import java.util.Calendar
@@ -84,6 +87,7 @@ class DialogProfileChange : DialogFragment() {
 
                             val datePickerDialog = DatePickerDialog(
                                 requireContext(),
+                                R.style.MySpinnerDatePickerStyle,
                                 { view, selectedYear, selectedMonthOfYear, selectedDayOfMonth ->
                                     val selectedDate = String.format(
                                         "%d/%02d/%02d",
@@ -97,10 +101,13 @@ class DialogProfileChange : DialogFragment() {
                                 month,
                                 day
                             )
+                            val textColor = ContextCompat.getColor(
+                                requireActivity(), R.color.textColor)
                             datePickerDialog.show()
-//                        binding.etProfilechangeOnelinefeeling.text =
-//                            if (retrievedStatusMessage != null) Editable.Factory.getInstance()
-//                                .newEditable(retrievedStatusMessage) else null
+                            datePickerDialog.getButton(
+                                DatePickerDialog.BUTTON_POSITIVE).setTextColor(textColor)
+                            datePickerDialog.getButton(
+                                DatePickerDialog.BUTTON_NEGATIVE).setTextColor(textColor)
                         }
                     }
                     override fun onCancelled(databaseError: DatabaseError) {
