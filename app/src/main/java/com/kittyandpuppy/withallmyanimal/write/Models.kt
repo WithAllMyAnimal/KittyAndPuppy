@@ -26,7 +26,6 @@ data class Behavior(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
-    override var imageUrl: String = ""
 ) : BaseModel(category = "행동")
 
 data class Daily(
@@ -39,7 +38,6 @@ data class Daily(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
-    override var imageUrl: String = ""
 ) : BaseModel(category = "일상")
 
 data class Hospital(
@@ -56,7 +54,6 @@ data class Hospital(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
-    override var imageUrl: String = ""
 ) : BaseModel(category = "병원")
 
 data class Pet(
@@ -73,5 +70,4 @@ data class Pet(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
-    override var imageUrl: String = ""
 ) : BaseModel(category = "펫용품")
