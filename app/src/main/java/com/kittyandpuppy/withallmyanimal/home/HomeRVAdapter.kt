@@ -54,14 +54,15 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.tvRvTag.text = homeModel.tags.toString()
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
+            binding.ivRvImage.load(homeModel.imageUrl)
 
-            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-            storageRef.downloadUrl.addOnSuccessListener { uri ->
-                val imageUrl = uri.toString()
-                binding.ivRvImage.load(imageUrl) {
-                    crossfade(true)
-                }
-            }
+//            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
+//            storageRef.downloadUrl.addOnSuccessListener { uri ->
+//                val imageUrl = uri.toString()
+//                binding.ivRvImage.load(imageUrl) {
+//                    crossfade(true)
+//                }
+//            }
 
             binding.root.setOnClickListener {
                 val clickedItem = boardList[adapterPosition]

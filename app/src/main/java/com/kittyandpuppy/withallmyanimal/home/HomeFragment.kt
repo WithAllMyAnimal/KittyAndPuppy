@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
-    private lateinit var homeViewModel : HomeViewModel
+//    private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
     private lateinit var deletedKey : String
@@ -67,7 +67,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "viewCreated 불리니")
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+//        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpRecyclerView()
         onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
@@ -143,14 +143,14 @@ class HomeFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = rvAdapter
         }
-        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
-            list.forEach { homeModel ->
-                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
-                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
-                }
-            }
-            rvAdapter!!.submitList(list)
-        }
+//        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+//            list.forEach { homeModel ->
+//                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+//                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
+//                }
+//            }
+//            rvAdapter!!.submitList(list)
+//        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
@@ -161,17 +161,6 @@ class HomeFragment : Fragment() {
         ONLY_CATEGORY,
         ONLY_ANIMAL,
         DEFAULT
-    }
-    override fun onResume() {
-        super.onResume()
-        loadSearchText()
-        binding.etSearch.setText("")
-        binding.spinnerCategory.setSelection(0)
-        binding.spinnerDogandcat.setSelection(0)
-    }
-    override fun onPause() {
-        super.onPause()
-        saveSearchText()
     }
 
     private fun searchTags() {
@@ -311,15 +300,5 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "너가 불려야 하는데")
             }
         }
-    }
-    private fun saveSearchText() {
-        val pref = requireActivity().getSharedPreferences("pref", 0)
-        val edit = pref.edit()
-        edit.putString("search", binding.etSearch.text.toString())
-        edit.apply()
-    }
-    private fun loadSearchText() {
-        val pref = requireActivity().getSharedPreferences("pref", 0)
-        binding.etSearch.setText(pref.getString("search", ""))
     }
 }

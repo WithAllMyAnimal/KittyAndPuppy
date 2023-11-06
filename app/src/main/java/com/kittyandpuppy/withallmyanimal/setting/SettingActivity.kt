@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import com.kittyandpuppy.withallmyanimal.R
-import com.kittyandpuppy.withallmyanimal.ResignationFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivitySettingBinding
 import java.util.Locale
 

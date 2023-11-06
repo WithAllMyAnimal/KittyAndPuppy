@@ -1,10 +1,9 @@
-package com.kittyandpuppy.withallmyanimal
+package com.kittyandpuppy.withallmyanimal.setting
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentResignDialogBinding
-import com.kittyandpuppy.withallmyanimal.databinding.FragmentResignationBinding
 
 
 class ResignDialogFragment : DialogFragment() {
