@@ -41,26 +41,28 @@
 
     <TextView
         android:id="@+id/tv_mypage_nickname"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
         android:fontFamily="@font/cafe24"
         android:text="아이디"
         android:textColor="@color/lightblack"
         android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_mypage"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
         app:layout_constraintTop_toTopOf="@id/img_mypage_profile" />
 
     <TextView
         android:id="@+id/tv_mypage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
         android:text="반려동물 이름"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_mypage_birth"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage_nickname"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
@@ -68,13 +70,14 @@
 
     <TextView
         android:id="@+id/tv_mypage_birth"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
         android:text="2022.10.13"
         android:textColor="@color/lightblack"
         android:textSize="13sp"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
         app:layout_constraintBottom_toBottomOf="@id/img_mypage_profile" />
