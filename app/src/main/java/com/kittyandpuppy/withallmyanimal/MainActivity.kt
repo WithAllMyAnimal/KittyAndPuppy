@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         fragmentManager = supportFragmentManager
         if (savedInstanceState == null) {
             switchFragment(homeFragment)
+            switchFragment(mypageFragment)
         }
 
         setupBottomNavigation()

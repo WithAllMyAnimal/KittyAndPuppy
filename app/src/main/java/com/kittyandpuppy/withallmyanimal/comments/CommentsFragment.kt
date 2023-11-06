@@ -49,7 +49,6 @@ class CommentsFragment : BottomSheetDialogFragment() {
         val uid = FBAuth.getUid()
         val userLikesRef = FBRef.users.child(uid).child("likedlist").child(key)
         val postLikesCountRef = FBRef.likesCount.child(key)
-
         checkLikeStatus(uid, userLikesRef)
         updateLikes(key)
 
