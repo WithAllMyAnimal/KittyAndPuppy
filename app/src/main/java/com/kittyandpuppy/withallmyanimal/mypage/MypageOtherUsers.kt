@@ -194,9 +194,11 @@ class MypageOtherUsers : AppCompatActivity() {
                 binding.tvOtherUserPageBirth.text = birth
 
                 if (birth != null && todayBirthday(birth)) {
-                    binding.ivMypageCakeLeft.visibility = View.VISIBLE
+                    binding.ivMypageBirthday.visibility = View.VISIBLE
+                    binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
                 } else {
-                    binding.ivMypageCakeLeft.visibility = View.INVISIBLE
+                    binding.ivMypageBirthday.visibility = View.INVISIBLE
+                    binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
                 }
             }
             override fun onCancelled(error: DatabaseError) {
