@@ -22,6 +22,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
+import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
 class MyPageRVAdapter(val list: MutableList<BaseModel>) :
@@ -51,7 +52,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
                                 "일상" -> intent = Intent(
                                     binding.root.context,
@@ -69,7 +70,9 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             binding.root.context.startActivity(intent)
+                            Log.d("jjjjjjj", "myrvadapter")
                         }
                     }
 
@@ -92,7 +95,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                     val userIdName = snapshot.child("userIdname").getValue(String::class.java)
 
                     userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
+                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.key}.png")
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)
@@ -125,7 +128,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "key: $key")
                 Log.d("MyPageRVAdapter", "category: $category")
 
-
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
@@ -134,7 +136,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         if (datasnapshot.exists()) {
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(
@@ -202,14 +204,16 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = list[position]
+        val item = getItem(position)
         when (holder) {
-            is LikesViewHolder -> holder.bind(item)
-            is MyListViewHolder -> holder.bind(item)
+            is LikesViewHolder -> {
+                holder.bind(item)
+            }
+            is MyListViewHolder -> {
+                holder.bind(item)
+            }
         }
-        Log.d(TAG, "ON BINDVIEWHOLDER")
     }
-
     override fun getItemViewType(position: Int): Int {
         return selectedTab
     }

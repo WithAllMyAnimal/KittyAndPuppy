@@ -19,15 +19,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.google.android.material.chip.Chip
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageHospitalBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.ImageUtils
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 class MypageHospital : AppCompatActivity() {
@@ -68,13 +73,21 @@ class MypageHospital : AppCompatActivity() {
     }
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            imageUri = result.data?.data
             binding.ivMypageHospitalPictureLeft.setImageURI(result.data?.data)
         }
     }
 
+    private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        currentPostKey = intent.getStringExtra("key")
+        if (currentPostKey != null) {
+            loadData(currentPostKey!!)
+        }
 
         binding.btnMypageHospitalSave.setOnClickListener {
             val uid = FBAuth.getUid()
@@ -94,7 +107,7 @@ class MypageHospital : AppCompatActivity() {
                         val disease = binding.etvMypageHospitalCheckup.text.toString()
                         val uidAndCategory = "${uid}병원"
 
-                        val key = FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
                         val hospitalData = Hospital(
                             date = date,
@@ -108,22 +121,37 @@ class MypageHospital : AppCompatActivity() {
                             animalAndCategory = animalAndCategory,
                             uid = uid,
                             animal = dogcatValue,
-                            uidAndCategory = uidAndCategory
+                            uidAndCategory = uidAndCategory,
+                            imageUrl = imageUri.toString(),
+                            key = key
                         )
                         FBRef.boardRef
                             .child(key)
                             .setValue(hospitalData)
+                            .addOnSuccessListener {
+                                Toast.makeText(this@MypageHospital, "저장되었습니다.", Toast.LENGTH_SHORT)
+                                    .show()
 
-                        Toast.makeText(this@MypageHospital, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-                        if (isImageUpload) {
-                            ImageUtils.imageUpload(this@MypageHospital, binding.ivMypageHospitalPictureLeft, key)
-                        }
-                        val resultIntent = Intent().putExtra("postAdded", true)
-                        resultIntent.putExtra("addedPostUid", uid)
-                        resultIntent.putExtra("addedPostKey", key)
-                        setResult(RESULT_OK, resultIntent)
-                        finish()
+                                lifecycleScope.launch {
+                                    if (isImageUpload && imageUri != null) {
+                                        ImageUtils.imageUpload(
+                                            this@MypageHospital,
+                                            imageUri ?: Uri.EMPTY,
+                                            key
+                                        )
+                                    }
+                                    val resultIntent = Intent().putExtra("postAdded", true)
+                                    resultIntent.putExtra("addedPostUid", uid)
+                                    resultIntent.putExtra("addedPostKey", key)
+                                    resultIntent.putExtra("imageUri", imageUri)
+                                    setResult(Activity.RESULT_OK, resultIntent)
+                                    finish()
+                                }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypageHospital, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {}
@@ -218,6 +246,63 @@ class MypageHospital : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+    private fun loadData(postKey: String) {
+        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val behaviorData = snapshot.getValue(Hospital::class.java)
+                behaviorData?.let {
+                    binding.etvMypageHospitalTitle.setText(it.title)
+                    binding.etvMypageHospitalReview.setText(it.content)
+                    binding.etvMypageHospitalExpense.setText(it.price)
+                    binding.etvMypageHospitalCheckup.setText(it.date)
+                    binding.spMypageHospital.setText(it.location)
+                    binding.edtMypageHospital.setText(it.date)
+                    it.tags.forEach { tag ->
+                        addChip(tag)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MypageHospital, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+        val storageImage = Firebase.storage.reference.child("${postKey}.png")
+        storageImage.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivMypageHospitalPictureLeft.load(uri.toString()){
+                crossfade(true)
+            }
+        }
+    }
+    private fun addChip(chipName: String) {
+        var isDuplicate = false
+        for (i in 0 until binding.chipGroup.childCount) {
+            val chip = binding.chipGroup.getChildAt(i) as Chip
+            if (chip.text.toString() == chipName) {
+                isDuplicate = true
+                break
+            }
+        }
+
+        if (!isDuplicate) {
+            binding.chipGroup.addView(Chip(this).apply {
+                text = chipName
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    binding.chipGroup.removeView(this)
+                    tagListHospital.remove(chipName)
+                }
+                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+                val typeface: Typeface? =
+                    ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
+                this.typeface = typeface
+            })
+            tagListHospital.add(chipName)
+        } else {
+            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 }

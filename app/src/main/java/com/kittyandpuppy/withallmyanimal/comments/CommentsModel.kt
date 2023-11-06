@@ -3,5 +3,5 @@ package com.kittyandpuppy.withallmyanimal.comments
 data class CommentsModel(
     val contents : String = "",
     val uid : String = "",
-    val key : String = ""
+    val key : String? = null
 )

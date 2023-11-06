@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.detail
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
@@ -26,6 +29,7 @@ import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
+import com.kittyandpuppy.withallmyanimal.write.MypagePet
 import com.kittyandpuppy.withallmyanimal.write.Pet
 
 class DetailPetActivity : AppCompatActivity() {
@@ -35,6 +39,13 @@ class DetailPetActivity : AppCompatActivity() {
     private val binding: ActivityDetailPetBinding by lazy {
         ActivityDetailPetBinding.inflate(layoutInflater)
     }
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
+                loadUpdatedImage(key)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,31 +67,41 @@ class DetailPetActivity : AppCompatActivity() {
                 .setView(myDialog)
 
             val alertDialog = builder.show()
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
-                FBRef.boardRef.child(key).removeValue()
-                Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
-                val resultIntent = Intent().putExtra("postDeleted", true)
-                resultIntent.putExtra("deletedPostUid", uid)
-                resultIntent.putExtra("deletedPostKey", key)
-                setResult(RESULT_OK, resultIntent)
-                finish()
-            }
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
-                alertDialog.dismiss()
-            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
+                ?.setOnClickListener {
+                    FBRef.boardRef.child(key).removeValue()
+                    FirebaseStorage.getInstance().getReference("${key}.png").delete()
+                    Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                    val resultIntent = Intent().putExtra("postDeleted", true)
+                    resultIntent.putExtra("deletedPostUid", uid)
+                    resultIntent.putExtra("deletedPostKey", key)
+                    setResult(RESULT_OK, resultIntent)
+                    finish()
+                }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)
+                ?.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+        }
+        binding.ivDetailEdit.setOnClickListener {
+            val intent = Intent(this, MypagePet::class.java)
+            intent.putExtra("key", key)
+            startForResult.launch(intent)
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        databaseRef.addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Pet::class.java) ?: return
 
                 binding.tvDetailPetTitle.text = post.title
-                binding.tvDetailDate.text = FBAuth.getTime()
+                binding.tvDetailDate.text = post.time
                 binding.tvDetailPetNameContents.text = post.name
                 binding.tvDetailPetPriceContents.text = post.price
-                binding.ratDetailPetStar.rating = post.satisfaction.toFloat()
+                if (post.satisfaction.isNotBlank()) {
+                    binding.ratDetailPetStar.rating = post.satisfaction.toFloat()
+                }
                 binding.tvDetailPetCautionContents.text = post.caution
                 binding.tvDetailPetReviewContents.text = post.content
             }
@@ -98,7 +119,7 @@ class DetailPetActivity : AppCompatActivity() {
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailPetProfile.load(uri.toString()){
+            binding.ivDetailPetProfile.load(uri.toString()) {
                 crossfade(true)
             }
         }
@@ -110,13 +131,13 @@ class DetailPetActivity : AppCompatActivity() {
         val storageProfileReview = Firebase.storage.reference.child("profileImages")
             .child("${Constants.currentUserUid}.png")
         storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()){
+            binding.ivCircleMy.load(uri.toString()) {
                 crossfade(true)
             }
         }
 
         FBRef.users.child(uid)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailPetNickname.text = userId
@@ -138,4 +159,31 @@ class DetailPetActivity : AppCompatActivity() {
             finish()
         }
     }
+    private fun loadUpdatedImage(key: String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
+                imageUrl?.let { url ->
+                    binding.ivDetailPetPictureLeft.load(url) {
+                        crossfade(true)
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+//    private fun loadUpdatedImage(key: String) {
+//        val storageRef = Firebase.storage.reference.child("${key}.png")
+//        storageRef.downloadUrl.addOnSuccessListener { uri ->
+//            binding.ivDetailPetPictureLeft.load(uri.toString()) {
+//                crossfade(true)
+//            }
+//        }.addOnFailureListener {
+//            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 }

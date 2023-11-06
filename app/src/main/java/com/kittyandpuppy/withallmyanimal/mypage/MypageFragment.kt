@@ -123,7 +123,7 @@ class MypageFragment : Fragment() {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
             if (it.isSelected){
-                getMyData("이상행동")
+                getMyData("행동")
             } else {
                 getMyData()
             }
@@ -170,6 +170,7 @@ class MypageFragment : Fragment() {
 
     private fun getMyData(filter : String? = null) {
         val currentUserId = FBAuth.getUid()
+        val myPostKeys = mutableListOf<String>()
 
         val query = if (filter != null) {
             FBRef.boardRef.orderByChild("uidAndCategory").equalTo("${currentUserId}$filter")
@@ -186,7 +187,7 @@ class MypageFragment : Fragment() {
                     val category = postSnapshot.child("category").getValue(String::class.java) ?: ""
 
                     val post: BaseModel? = when (category) {
-                        "이상행동" -> postSnapshot.getValue(Behavior::class.java)
+                        "행동" -> postSnapshot.getValue(Behavior::class.java)
                         "일상" -> postSnapshot.getValue(Daily::class.java)
                         "병원" -> postSnapshot.getValue(Hospital::class.java)
                         "펫용품" -> postSnapshot.getValue(Pet::class.java)
@@ -208,8 +209,11 @@ class MypageFragment : Fragment() {
             }
         })
     }
+
     private fun getLikedPosts() {
         val currentUserId = FBAuth.getUid()
+
+        list.clear()
 
         FBRef.users.child(currentUserId).child("likedlist").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -255,9 +259,11 @@ class MypageFragment : Fragment() {
                         binding.tvMypageBirth.text = birth
 
                         if (birth != null && todayBirthday(birth)) {
-                            binding.ivMypageCakeLeft.visibility = View.VISIBLE
+                            binding.ivMypageBirthday.visibility = View.VISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
                         } else {
-                            binding.ivMypageCakeLeft.visibility = View.INVISIBLE
+                            binding.ivMypageBirthday.visibility = View.INVISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
                         }
                     }
                 }

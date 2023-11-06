@@ -78,13 +78,38 @@
         app:layout_constraintTop_toBottomOf="@id/tv_other_user_page_name"
         app:layout_constraintStart_toEndOf="@id/img_other_user_profile"
         app:layout_constraintBottom_toBottomOf="@id/img_other_user_profile" />
+        />
+
+    <ImageView
+        android:id="@+id/iv_mypage_birthday_background"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:visibility="visible"
+        android:background="@drawable/iv_mypage_birthday"
+        app:layout_constraintTop_toTopOf="@id/img_other_user_profile"
+        app:layout_constraintBottom_toBottomOf="@id/img_other_user_profile"
+        app:layout_constraintStart_toStartOf="@id/img_other_user_profile"
+        app:layout_constraintEnd_toEndOf="@id/img_other_user_profile"
+        />
+
+    <ImageView
+        android:id="@+id/iv_mypage_birthday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/mypage_birthday_crown"
+        android:visibility="visible"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="-20dp"
+        android:rotation="331"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"
+        app:layout_constraintStart_toStartOf="@id/iv_mypage_birthday_background"/>
 
     <ImageView
         android:id="@+id/img_other_user_profile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
         android:background="@drawable/mypage_profile_shape"
         android:clipToOutline="true"
         android:src="@drawable/image_sample"
@@ -171,7 +196,7 @@
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="이상행동"
+            android:text="행동"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -187,21 +212,6 @@
             android:textColor="@color/black"
             android:textSize="14sp" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/iv_mypage_cake_left"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/cake_icon"
-        android:layout_marginStart="10dp"
-        android:visibility="invisible"
-        android:scaleType="fitCenter"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"
-        app:layout_constraintStart_toEndOf="@id/tv_other_user_page_birth"
-        app:layout_constraintTop_toTopOf="@id/tv_other_user_page_birth"
-        app:layout_constraintBottom_toBottomOf="@id/tv_other_user_page_birth"
-        />
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_mypage_list"

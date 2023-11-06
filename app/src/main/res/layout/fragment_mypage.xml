@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_mypage"
@@ -40,26 +41,28 @@
 
     <TextView
         android:id="@+id/tv_mypage_nickname"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
         android:fontFamily="@font/cafe24"
         android:text="아이디"
         android:textColor="@color/lightblack"
         android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_mypage"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
         app:layout_constraintTop_toTopOf="@id/img_mypage_profile" />
 
     <TextView
         android:id="@+id/tv_mypage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
         android:text="반려동물 이름"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_mypage_birth"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage_nickname"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
@@ -67,29 +70,42 @@
 
     <TextView
         android:id="@+id/tv_mypage_birth"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cafe24"
         android:text="2022.10.13"
         android:textColor="@color/lightblack"
         android:textSize="13sp"
-        android:layout_marginStart="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mypage"
         app:layout_constraintStart_toEndOf="@id/img_mypage_profile"
         app:layout_constraintBottom_toBottomOf="@id/img_mypage_profile" />
 
     <ImageView
-        android:id="@+id/img_mypage_profile"
+        android:id="@+id/iv_mypage_birthday_background"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="10dp"
+        android:visibility="invisible"
+        android:src="@drawable/iv_mypage_birthday"
+        app:layout_constraintTop_toTopOf="@id/img_mypage_profile"
+        app:layout_constraintBottom_toBottomOf="@id/img_mypage_profile"
+        app:layout_constraintStart_toStartOf="@id/img_mypage_profile"
+        app:layout_constraintEnd_toEndOf="@id/img_mypage_profile"
+        />
+
+    <ImageView
+        android:id="@+id/img_mypage_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/mypage_profile_shape"
         android:clipToOutline="true"
         android:src="@drawable/image_sample"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"/>
 
     <ImageButton
         android:id="@+id/btn_mypage_change"
@@ -140,7 +156,7 @@
         </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/con_mypage_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -152,67 +168,90 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_hospital"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
+            android:paddingHorizontal="25dp"
             android:text="병원"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_pet"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_pet"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="펫용품"
+            android:paddingHorizontal="20dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_hospital"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_behavior"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_behavior"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="이상행동"
+            android:text="행동"
+            android:paddingHorizontal="25dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_daily"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_pet"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_mypage_tag_daily"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
             android:text="일상"
+            android:paddingHorizontal="25dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_behavior"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/iv_mypage_cake_left"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/cake_icon"
-        android:layout_marginStart="10dp"
+        android:id="@+id/iv_mypage_birthday"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/mypage_birthday_crown"
         android:visibility="invisible"
         android:scaleType="fitCenter"
+        android:layout_marginTop="-20dp"
+        android:rotation="331"
         app:layout_constraintTop_toBottomOf="@id/toolbar_mypage"
-        app:layout_constraintStart_toEndOf="@id/tv_mypage_birth"
-        app:layout_constraintTop_toTopOf="@id/tv_mypage_birth"
-        app:layout_constraintBottom_toBottomOf="@id/tv_mypage_birth"
+        app:layout_constraintStart_toStartOf="@id/iv_mypage_birthday_background"
         />
 
 

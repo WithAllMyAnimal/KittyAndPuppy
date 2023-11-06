@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -11,18 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.widget.addTextChangedListener
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentHomeBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.boardRef
-import com.kittyandpuppy.withallmyanimal.firebase.FBRef.Companion.users
 import com.kittyandpuppy.withallmyanimal.setting.NoticeActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -36,9 +36,21 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
+    private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
-    var isDogAndCatSpinnerInitialized = false
-    var isCategorySpinnerInitialized = false
+    private lateinit var key : String
+    private lateinit var imageUrl : String
+    private var boardValueEventListener: ValueEventListener? = null
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.updateImage(key, imageUrl)
+            }
+            Log.d(TAG, "startForResult")
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,17 +58,22 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "viewCreated 불리니")
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpRecyclerView()
-        loadSearchText()
-
+        onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
         }
+
+        var isDogAndCatSpinnerInitialized = false
+        var isCategorySpinnerInitialized = false
 
         val dogCatAdapter = ArrayAdapter.createFromResource(
             requireContext(),
@@ -80,7 +97,6 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
@@ -101,13 +117,8 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
-
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
-        binding.spinnerDogandcat.setSelection(1)
-        binding.spinnerCategory.setSelection(1)
-        onSpinnerItemSelected()
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -121,20 +132,26 @@ class HomeFragment : Fragment() {
         })
     }
     private fun setUpRecyclerView() {
-        rvAdapter = HomeRVAdapter(boardList)
+        rvAdapter = HomeRVAdapter(boardList) { intent ->
+            startForResult.launch(intent)
+        }
         binding.rvHome.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = rvAdapter
         }
+        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+            list.forEach { homeModel ->
+                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
+                }
+            }
+            rvAdapter!!.submitList(list)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    override fun onPause() {
-        super.onPause()
-        saveSearchText()
     }
     enum class QueryType {
         COMBINED_SPINNER,
@@ -142,17 +159,20 @@ class HomeFragment : Fragment() {
         ONLY_ANIMAL,
         DEFAULT
     }
+
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
         val positions = listOf("tags/0", "tags/1", "tags/2")
+
         boardList.clear()
 
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
-            query.addValueEventListener(object : ValueEventListener {
+            query.addValueEventListener (object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     handlePostsData(snapshot)
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.w(TAG, "Search Failed", error.toException())
                 }
@@ -164,29 +184,43 @@ class HomeFragment : Fragment() {
         onlyCategory: String? = null,
         onlyAnimal: String? = null
     ) {
+
         val query: Pair<QueryType, Query> = when {
             combinedSpinnerValue != null -> {
-                Pair(QueryType.COMBINED_SPINNER, boardRef.orderByChild("animalAndCategory").equalTo(combinedSpinnerValue))
+                Pair(
+                    QueryType.COMBINED_SPINNER,
+                    boardRef.orderByChild("animalAndCategory").equalTo(combinedSpinnerValue)
+                )
             }
+
             onlyCategory != null -> {
-                Pair(QueryType.ONLY_CATEGORY, boardRef.orderByChild("category").equalTo(onlyCategory))
+                Pair(
+                    QueryType.ONLY_CATEGORY,
+                    boardRef.orderByChild("category").equalTo(onlyCategory)
+                )
             }
+
             onlyAnimal != null -> {
                 Pair(QueryType.ONLY_ANIMAL, boardRef.orderByChild("animal").equalTo(onlyAnimal))
             }
-            else -> { Pair(QueryType.DEFAULT, boardRef) }
+
+            else -> {
+                Pair(QueryType.DEFAULT, boardRef)
+            }
         }
 
-        query.second.addValueEventListener(object : ValueEventListener {
+        boardValueEventListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d(TAG, "Snapshot size: ${snapshot.childrenCount}")
                 boardList.clear()
                 handlePostsData(snapshot)
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Log.w(TAG, "Post Failed", error.toException())
             }
-        })
+        }
+        query.second.addValueEventListener (boardValueEventListener!!)
     }
     private fun handlePostsData(snapshot: DataSnapshot) {
 
@@ -196,7 +230,7 @@ class HomeFragment : Fragment() {
             val category =
                 postSnapshot.child("category").getValue(String::class.java) ?: ""
             val post: BaseModel? = when (category) {
-                "이상행동" -> postSnapshot.getValue(Behavior::class.java)
+                "행동" -> postSnapshot.getValue(Behavior::class.java)
                 "일상" -> postSnapshot.getValue(Daily::class.java)
                 "병원" -> postSnapshot.getValue(Hospital::class.java)
                 "펫용품" -> postSnapshot.getValue(Pet::class.java)
@@ -207,11 +241,13 @@ class HomeFragment : Fragment() {
 
             if (post != null) {
                 boardList.add(post)
+                Log.d(TAG, "boardList size : ${boardList.size}")
 
-                val likesRef = FBRef.users.child(postKey).child("likedlist")
-                likesRef.addValueEventListener(object : ValueEventListener {
+                val likesCountRef = FBRef.likesCount.child(postKey)
+                likesCountRef.addValueEventListener (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        post.likesCount = snapshot.childrenCount.toInt()
+                        val likesCount = snapshot.getValue(Int::class.java) ?: 0
+                        post.likesCount = likesCount
                         rvAdapter?.notifyDataSetChanged()
                     }
 
@@ -221,7 +257,7 @@ class HomeFragment : Fragment() {
                 })
 
                 val commentsRef = FBRef.commentRef.child(postKey)
-                commentsRef.addValueEventListener(object : ValueEventListener {
+                commentsRef.addValueEventListener (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         post.commentsCount = snapshot.childrenCount.toInt()
                         rvAdapter?.notifyDataSetChanged()
@@ -247,15 +283,19 @@ class HomeFragment : Fragment() {
             spinnerDogCatValue == "전체" && spinnerCategoryValue != "전체" -> {
                 getBoardData(onlyCategory = spinnerCategoryValue)
             }
+
             spinnerDogCatValue != "전체" && spinnerCategoryValue == "전체" -> {
                 getBoardData(onlyAnimal = spinnerDogCatValue)
             }
+
             spinnerDogCatValue != "전체" && spinnerCategoryValue != "전체" -> {
                 val combinedKey = "$spinnerDogCatValue$spinnerCategoryValue"
                 getBoardData(combinedSpinnerValue = combinedKey)
             }
+
             else -> {
                 getBoardData()
+                Log.d(TAG, "너가 불려야 하는데")
             }
         }
     }
@@ -267,6 +307,6 @@ class HomeFragment : Fragment() {
     }
     private fun loadSearchText() {
         val pref = requireActivity().getSharedPreferences("pref", 0)
-        binding.etSearch.setText(pref.getString("search",""))
+        binding.etSearch.setText(pref.getString("search", ""))
     }
 }

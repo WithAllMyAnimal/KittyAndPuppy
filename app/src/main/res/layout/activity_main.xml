@@ -65,7 +65,7 @@
             android:src="@drawable/pencil_icon"
             app:backgroundTint="@color/grey"
             app:borderWidth="0dp"
-            app:fabCustomSize="80dp"
+            app:fabCustomSize="60dp"
             app:layout_anchor="@id/main_app_bar"
             app:maxImageSize="60dp"
             app:rippleColor="#6AA6FB"

@@ -25,12 +25,47 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
+class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
     ListAdapter<BaseModel, HomeRVAdapter.HomeItemViewHolder>(diffUtil) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
+        return HomeItemViewHolder(
+            ItemHomeBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+    }
+    override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
+        holder.bind(currentList[position])
+    }
     inner class HomeItemViewHolder(private val binding: ItemHomeBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(homeModel: BaseModel) {
 
-        init {
+            FBRef.users.child(homeModel.uid)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userId = snapshot.child("profile").child("userIdname").value.toString()
+                        binding.tvRvId.text = userId
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
+                    }
+                })
+            binding.tvRvTag.text = homeModel.tags.toString()
+            binding.tvRvLikes.text = homeModel.likesCount.toString()
+            binding.tvRvChat.text = homeModel.commentsCount.toString()
+
+            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
+            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                val imageUrl = uri.toString()
+                binding.ivRvImage.load(imageUrl) {
+                    crossfade(true)
+                }
+            }
+
             binding.root.setOnClickListener {
                 val clickedItem = boardList[adapterPosition]
                 val uid = clickedItem.uid
@@ -39,18 +74,19 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
 
                 Log.d("uid값", "uid:$uid")
                 Log.d("Key값", "key: $key")
+                Log.d("clickedItem값", "clickedItem: $clickedItem")
                 Log.d("category값", "category:$category")
 
                 val database = FirebaseDatabase.getInstance()
                 val reference = database.getReference("board")
 
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                reference.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(datasnapshot: DataSnapshot) {
                         if (datasnapshot.exists()) {
 
                             val intent: Intent
                             when (category) {
-                                "이상행동" -> intent =
+                                "행동" -> intent =
                                     Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
                                 "일상" -> intent = Intent(
@@ -72,6 +108,8 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                             intent.putExtra("uid", uid)
                             intent.putExtra("key", key)
                             intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//                            startForResult(intent)
                             binding.root.context.startActivity(intent)
                         }
                     }
@@ -82,48 +120,13 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>) :
                 })
             }
         }
-
-        fun bind(homeModel: BaseModel) {
-
-            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-            storageRef.downloadUrl.addOnSuccessListener { uri ->
-                binding.ivRvImage.load(uri.toString()) {
-                    crossfade(true)
-                }
-            }.addOnFailureListener {
-                binding.ivRvImage.load(R.drawable.add_image) {
-                    crossfade(true)
-                }
-            }
-            FBRef.users.child(homeModel.uid)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val userId = snapshot.child("profile").child("userIdname").value.toString()
-                        binding.tvRvId.text = userId
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
-                    }
-                })
-            binding.tvRvTag.text = homeModel.tags.toString()
-            binding.tvRvLikes.text = homeModel.likesCount.toString()
-            binding.tvRvChat.text = homeModel.commentsCount.toString()
+    }
+    fun updateImage(key: String, imageUrl: String) {
+        val index = boardList.indexOfFirst { it.key == key }
+        if (index != -1) {
+            boardList[index].imageUrl = imageUrl
+            notifyItemChanged(index)
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemViewHolder {
-        return HomeItemViewHolder(
-            ItemHomeBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: HomeItemViewHolder, position: Int) {
-        holder.bind(currentList[position])
     }
 
     companion object {
