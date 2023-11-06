@@ -29,6 +29,40 @@ object ImageUtils {
         intent.type = "image/*"
         return intent
     }
+    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) =
+        suspendCancellableCoroutine<Boolean> { con ->
+            val storage = Firebase.storage
+            val storageRef = storage.reference
+            val animalsRef = storageRef.child("$key.png")
+
+            val uploadTask = animalsRef.putFile(uri)
+
+            uploadTask.addOnFailureListener {
+                con.resume(false)
+                Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+            }.addOnSuccessListener { taskSnapshot ->
+                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
+                    val imageUrl = downloadUri.toString()
+                    saveImageUrlToDatabase(imageUrl, key)
+                    con.resume(true)
+                    Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
+                }?.addOnFailureListener {
+                    con.resume(false)
+                }
+            }
+        }
+
+    private fun saveImageUrlToDatabase(imageUrl: String, key: String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+        databaseRef.child(key).child("imageUrl").setValue(imageUrl)
+            .addOnSuccessListener {
+                Log.d("ImageUpload", "Image URL saved to database successfully.")
+            }
+            .addOnFailureListener {
+                Log.d("ImageUpload", "Failed to save image URL to database.")
+            }
+    }
+}
 
 //    @OptIn(ExperimentalCoroutinesApi::class)
 //    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) = suspendCancellableCoroutine<Boolean> { con ->
@@ -57,39 +91,3 @@ object ImageUtils {
 //            Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
 //        }
 //    }
-
-    suspend fun imageUpload(activity: Activity, uri: Uri, key: String) =
-        suspendCancellableCoroutine<Boolean> { con ->
-            val storage = Firebase.storage
-            val storageRef = storage.reference
-            val animalsRef = storageRef.child("$key.png")
-
-            val uploadTask = animalsRef.putFile(uri)
-
-            uploadTask.addOnFailureListener {
-                con.resume(false)
-                Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-            }.addOnSuccessListener { taskSnapshot ->
-                taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
-                    val imageUrl = downloadUri.toString()
-                    saveImageUrlToDatabase(imageUrl, key)
-                    con.resume(true)
-                    Toast.makeText(activity, "이미지 업로드에 성공하였습니다!", Toast.LENGTH_SHORT).show()
-                }?.addOnFailureListener {
-                    con.resume(false)
-                }
-            }
-        }
-
-    private fun saveImageUrlToDatabase(imageUrl: String, key: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
-        databaseRef.child("imageUrl").setValue(imageUrl)
-            .addOnSuccessListener {
-                Log.d("ImageUpload", "Image URL saved to database successfully.")
-            }
-            .addOnFailureListener {
-
-                Log.d("ImageUpload", "Failed to save image URL to database.")
-            }
-    }
-}
