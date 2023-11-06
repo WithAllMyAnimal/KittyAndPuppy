@@ -162,13 +162,23 @@ class HomeFragment : Fragment() {
         ONLY_ANIMAL,
         DEFAULT
     }
+    override fun onResume() {
+        super.onResume()
+        loadSearchText()
+        binding.etSearch.setText("")
+        binding.spinnerCategory.setSelection(0)
+        binding.spinnerDogandcat.setSelection(0)
+    }
+    override fun onPause() {
+        super.onPause()
+        saveSearchText()
+    }
 
     private fun searchTags() {
         val search = binding.etSearch.text.toString()
         val positions = listOf("tags/0", "tags/1", "tags/2")
 
         boardList.clear()
-
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
             query.addValueEventListener (object : ValueEventListener {

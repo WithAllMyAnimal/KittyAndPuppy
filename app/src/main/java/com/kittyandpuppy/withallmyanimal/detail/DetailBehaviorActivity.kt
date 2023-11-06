@@ -75,6 +75,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
                 ?.setOnClickListener {
                     FBRef.boardRef.child(key).removeValue()
+                    FBRef.commentRef.child(key).removeValue()
+                    FBRef.likesCount.child(key).removeValue()
                     FirebaseStorage.getInstance().getReference("${key}.png").delete()
                     Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                     val resultIntent = Intent().putExtra("postDeleted", true)
