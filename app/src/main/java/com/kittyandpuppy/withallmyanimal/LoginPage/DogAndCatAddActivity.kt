@@ -127,14 +127,21 @@ class DogAndCatAddActivity : AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(
                 this,
+                R.style.MySpinnerDatePickerStyle,
                 { _, selectedYear, selectedMonth, selectedDayOfMonth ->
-                    val selectedDate =   "$selectedYear/${selectedMonth + 1}/$selectedDayOfMonth"
+                    val selectedDate = "$selectedYear/${selectedMonth + 1}/$selectedDayOfMonth"
                     binding.etDogAndCatAddBirth.setText(selectedDate)
                 },
                 year,
                 month,
                 day
             )
+            datePickerDialog.setOnShowListener {
+                val textColor = ContextCompat.getColor(this, R.color.textColor)
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(textColor)
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(textColor)
+            }
+
             datePickerDialog.show()
         }
     }
