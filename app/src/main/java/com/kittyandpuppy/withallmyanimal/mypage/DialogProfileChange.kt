@@ -50,10 +50,23 @@ class DialogProfileChange : DialogFragment() {
         val storageRef = storage.reference
 
         if (userId != null) {
-            val imageRef = storageRef.child("$userId.png")
-            imageRef.downloadUrl.addOnSuccessListener { uri ->
-                binding.ivCircleMy.load(uri)
-            }
+            userRef.child(userId).child("profile")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val profileMap = dataSnapshot.getValue() as? Map<String, Any>
+                        val profileImageKey = profileMap?.get("profileImage") as? String
+
+                        if (profileImageKey != null) {
+                            val imageRef = storageRef.child("profileImages").child("$userId.png")
+                            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                                binding.ivCircleMy.load(uri)
+                            }.addOnFailureListener {
+                            }
+                        }
+                    }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                    }
+                })
 
             binding.ivCircleMy.setOnClickListener {
                 val intent = Intent(Intent.ACTION_PICK)
@@ -69,7 +82,6 @@ class DialogProfileChange : DialogFragment() {
                         val retrievedUserIdname = profileMap?.get("userIdname") as? String
                         val retrievedPetName = profileMap?.get("petName") as? String
                         val retrievedBirth = profileMap?.get("birth") as? String
-//                        val retrievedStatusMessage = profileMap?.get("statusMessage") as? String
 
                         binding.etProfilechangeNicknametext.text =
                             if (retrievedUserIdname != null) Editable.Factory.getInstance()
@@ -77,6 +89,9 @@ class DialogProfileChange : DialogFragment() {
                         binding.etProfilechangePetname.text =
                             if (retrievedPetName != null) Editable.Factory.getInstance()
                                 .newEditable(retrievedPetName) else null
+                        binding.etProfilechangePetbirthday.text =
+                            if (retrievedBirth != null) Editable.Factory.getInstance()
+                                .newEditable(retrievedBirth) else null
                         // 생일 DatePicker
                         binding.etProfilechangePetbirthday.setOnClickListener {
                             val c = Calendar.getInstance()
@@ -102,14 +117,18 @@ class DialogProfileChange : DialogFragment() {
                                 day
                             )
                             val textColor = ContextCompat.getColor(
-                                requireActivity(), R.color.textColor)
+                                requireActivity(), R.color.textColor
+                            )
                             datePickerDialog.show()
                             datePickerDialog.getButton(
-                                DatePickerDialog.BUTTON_POSITIVE).setTextColor(textColor)
+                                DatePickerDialog.BUTTON_POSITIVE
+                            ).setTextColor(textColor)
                             datePickerDialog.getButton(
-                                DatePickerDialog.BUTTON_NEGATIVE).setTextColor(textColor)
+                                DatePickerDialog.BUTTON_NEGATIVE
+                            ).setTextColor(textColor)
                         }
                     }
+
                     override fun onCancelled(databaseError: DatabaseError) {
                     }
                 })
@@ -192,7 +211,6 @@ class DialogProfileChange : DialogFragment() {
             val userIdname = binding.etProfilechangeNicknametext.text.toString()
             val petName = binding.etProfilechangePetname.text.toString()
             val birth = binding.etProfilechangePetbirthday.text.toString()
-//            val statusMessage = binding.etProfilechangeOnelinefeeling.text.toString()
 
             userRef.child(userId).child("profile")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -205,8 +223,6 @@ class DialogProfileChange : DialogFragment() {
                         existingProfileMap["userIdname"] = userIdname
                         existingProfileMap["petName"] = petName
                         existingProfileMap["birth"] = birth
-//                        existingProfileMap["statusMessage"] = statusMessage
-
                         userRef.child(userId).child("profile").setValue(existingProfileMap)
                     }
 
