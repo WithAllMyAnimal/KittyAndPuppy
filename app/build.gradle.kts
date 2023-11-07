@@ -65,4 +65,6 @@ dependencies {
 
     // coil
     implementation("io.coil-kt:coil:2.4.0")
+    // 새로고침
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
