@@ -43,7 +43,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
         fun bind(homeModel: BaseModel) {
 
             FBRef.users.child(homeModel.uid)
-                .addValueEventListener(object : ValueEventListener {
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
