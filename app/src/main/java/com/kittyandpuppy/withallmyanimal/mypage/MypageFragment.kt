@@ -1,5 +1,6 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
@@ -23,6 +25,7 @@ import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.home.HomeRVAdapter
 import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
@@ -42,9 +45,25 @@ class MypageFragment : Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
     private val TAG = MypageFragment::class.java.simpleName
+    private lateinit var key : String
+    private lateinit var deletedKey : String
+    private lateinit var imageUrl : String
 
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
+                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.deletePost(deletedKey)
+                rvAdapter?.updateImage(key, imageUrl)
+            }
+            Log.d("shin", "startForResult,${imageUrl}")
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -150,9 +169,9 @@ class MypageFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-
-        rvAdapter = MyPageRVAdapter(list)
-
+        rvAdapter = MyPageRVAdapter(list) { intent ->
+            startForResult.launch(intent)
+        }
         gridLayoutManager = GridLayoutManager(requireContext(), 3)
 
         binding.recyclerviewMypageList.apply {
