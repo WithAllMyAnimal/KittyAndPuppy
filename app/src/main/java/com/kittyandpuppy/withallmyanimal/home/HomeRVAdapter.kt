@@ -2,6 +2,7 @@ package com.kittyandpuppy.withallmyanimal.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.kittyandpuppy.withallmyanimal.comments.CommentsRVAdapter.Companion.diffUtil
 import com.kittyandpuppy.withallmyanimal.databinding.ItemHomeBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
@@ -55,6 +57,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
             binding.ivRvImage.load(homeModel.imageUrl)
+            Log.d("behavior2222", "홈피드 : ${homeModel.imageUrl}")
 
 //            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
 //            storageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -76,55 +79,50 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
                 Log.d("category값", "category:$category")
 
                 val database = FirebaseDatabase.getInstance()
-                val reference = database.getReference("board")
+                val reference = database.getReference("board").get()
+                reference.addOnSuccessListener {
+                    if (it.exists()) {
+                        Log.d("ABCD", "abcdef")
 
-                reference.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
-                        if (datasnapshot.exists()) {
+                        val intent: Intent
+                        when (category) {
+                            "행동" -> intent =
+                                Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
-                            val intent: Intent
-                            when (category) {
-                                "행동" -> intent =
-                                    Intent(binding.root.context, DetailBehaviorActivity::class.java)
+                            "일상" -> intent = Intent(
+                                binding.root.context,
+                                DetailDailyActivity::class.java
+                            )
 
-                                "일상" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailDailyActivity::class.java
-                                )
+                            "병원" -> intent = Intent(
+                                binding.root.context,
+                                DetailHospitalActivity::class.java
+                            )
 
-                                "병원" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailHospitalActivity::class.java
-                                )
+                            "펫용품" -> intent =
+                                Intent(binding.root.context, DetailPetActivity::class.java)
 
-                                "펫용품" -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-
-                                else -> intent =
-                                    Intent(binding.root.context, DetailHospitalActivity::class.java)
-                            }
-                            intent.putExtra("uid", uid)
-                            intent.putExtra("key", key)
-                            intent.putExtra("category", category)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//                            startForResult(intent)
-                            binding.root.context.startActivity(intent)
+                            else -> intent =
+                                Intent(binding.root.context, DetailHospitalActivity::class.java)
                         }
+                        intent.putExtra("uid", uid)
+                        intent.putExtra("key", key)
+                        intent.putExtra("category", category)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startForResult(intent)
                     }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
-                    }
-                })
+                }
             }
         }
     }
-    fun updateImage(key: String, imageUrl: String) {
+    fun updateImage(key: String, imageUrl: Uri) {
         val index = boardList.indexOfFirst { it.key == key }
         if (index != -1) {
-            boardList[index].imageUrl = imageUrl
+            boardList[index].imageUrl = imageUrl.toString()
             notifyItemChanged(index)
+            Log.d("Debug22", "Received Image URI: $imageUrl")
         }
+
     }
     fun deletePost(key : String) {
         val iterator = boardList.iterator()

@@ -35,11 +35,12 @@ object ImageUtils {
             val storage = Firebase.storage
             val storageRef = storage.reference
             val animalsRef = storageRef.child("$key.png")
-
+            activity.grantUriPermission( activity.packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION )
             val uploadTask = animalsRef.putFile(uri)
-            uploadTask.addOnFailureListener {
+            uploadTask.addOnFailureListener {exception ->
                 con.resume(false)
                 Toast.makeText(activity, "이미지 업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                Log.e("ImageUploadError", "업로드 실패: ${exception.message}", exception)
             }.addOnSuccessListener { taskSnapshot ->
                 taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { downloadUri ->
                     val imageUrl = downloadUri.toString()
@@ -61,6 +62,7 @@ object ImageUtils {
             .addOnFailureListener {
                 Log.d("ImageUpload", "Failed to save image URL to database.")
             }
+        Log.d("saveImageUrlToDatabase", imageUrl)
     }
 }
 

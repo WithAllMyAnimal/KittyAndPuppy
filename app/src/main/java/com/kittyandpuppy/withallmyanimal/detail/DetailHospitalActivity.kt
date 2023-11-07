@@ -44,8 +44,13 @@ class DetailHospitalActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
-                loadUpdatedImage(key)
+                val key = result.data?.getStringExtra("key")
+                val imageUri = result.data?.getStringExtra("imageUri")
+                if (key != null) {
+                    if (imageUri != null) {
+                        loadUpdatedImage(key, imageUri)
+                    }
+                }
             }
         }
 
@@ -67,7 +72,6 @@ class DetailHospitalActivity : AppCompatActivity() {
             val myDialog = LayoutInflater.from(this).inflate(R.layout.alarm_delete, null)
             val builder = AlertDialog.Builder(this)
                 .setView(myDialog)
-
             val alertDialog = builder.show()
             alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
                 val tasks = arrayListOf<Task<Void>>()
@@ -78,6 +82,7 @@ class DetailHospitalActivity : AppCompatActivity() {
                 tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
 
                 Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                    alertDialog.dismiss()
                     if (task.isSuccessful) {
                         Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                         val resultIntent = Intent().apply {
@@ -105,7 +110,7 @@ class DetailHospitalActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")
                 val post = snapshot.getValue(Hospital::class.java) ?: return
@@ -118,20 +123,15 @@ class DetailHospitalActivity : AppCompatActivity() {
                 binding.tvDetailHospitalLocationContents.text = post.location
                 binding.tvDetailHospitalPriceContents.text = post.price
                 binding.tvDetailHospitalReviewContents.text = post.content
+                binding.ivDetailHospitalPictureLeft.load(post.imageUrl)
 
                 Log.d("DetailHospitalActivity", "Snapshot data: ${snapshot.toString()}")
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.d("DetailHospitalActivity", "Failed to read post data", error.toException())
             }
         })
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailHospitalPictureLeft.load(uri.toString()) {
-                crossfade(true)
-            }
-        }
+
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
@@ -153,7 +153,7 @@ class DetailHospitalActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailHospitalNickname.text = userId
@@ -175,15 +175,12 @@ class DetailHospitalActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+    private fun loadUpdatedImage(key: String, imageUri : String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                imageUrl?.let { url ->
-                    binding.ivDetailHospitalPictureLeft.load(url) {
-                        crossfade(true)
-                    }
+                binding.ivDetailHospitalPictureLeft.load(imageUri) {
+                    crossfade(true)
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -191,5 +188,4 @@ class DetailHospitalActivity : AppCompatActivity() {
             }
         })
     }
-
 }

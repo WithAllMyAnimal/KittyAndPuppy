@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
@@ -50,6 +51,7 @@ class MypageBehavior : AppCompatActivity() {
     private var tagListBehavior = mutableListOf<String>()
     private var currentPostKey: String? = null
     private var imageUri: Uri? = null
+    private var currentImageUri: Uri? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -75,7 +77,8 @@ class MypageBehavior : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 imageUri = result.data?.data
-                binding.ivMypageBehaviorPictureLeft.setImageURI(result.data?.data)
+                binding.ivMypageBehaviorPictureLeft.setImageURI(imageUri)
+                Log.d("pick", imageUri.toString())
             }
         }
 
@@ -90,76 +93,110 @@ class MypageBehavior : AppCompatActivity() {
 
         binding.btnMypageBehaviorSave.setOnClickListener {
             val uid = FBAuth.getUid()
-            val eventListener = (object :
-                ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val dogcatValue = snapshot.getValue(String::class.java)
-                    if (dogcatValue != null) {
-                        val animalAndCategory = "${dogcatValue}행동"
-
-                        val title = binding.etvMypageBehaviorTitle.text.toString()
-                        val content = binding.etvMypageBehavior.text.toString()
-                        val tags = tagListBehavior.toList()
-                        val review = binding.etvMypageBehaviorReview.text.toString()
-                        val time = FBAuth.getTime()
-                        val uidAndCategory = "${uid}행동"
-
-                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
-
-                        val behaviorData = Behavior(
-                            review = review,
-                            content = content,
-                            tags = tags,
-                            time = time,
-                            title = title,
-                            animalAndCategory = animalAndCategory,
-                            uid = uid,
-                            animal = dogcatValue,
-                            uidAndCategory = uidAndCategory,
-                            key = key
-                        )
-
-                        FBRef.boardRef
-                            .child(key)
-                            .setValue(behaviorData)
-                            .addOnCompleteListener {
-                                Toast.makeText(
-                                    this@MypageBehavior,
-                                    "저장되었습니다.",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
-
-                                lifecycleScope.launch {
-
-                                    if (isImageUpload && imageUri != null) {
-                                        ImageUtils.imageUpload(
-                                            this@MypageBehavior,
-                                            imageUri ?: Uri.EMPTY,
-                                            key
-                                        )
-                                    }
-                                    val resultIntent = Intent().putExtra("postAdded", true)
-                                    resultIntent.putExtra("addedPostUid", uid)
-                                    resultIntent.putExtra("addedPostKey", key)
-                                    resultIntent.putExtra("imageUri", imageUri)
-                                    setResult(Activity.RESULT_OK, resultIntent)
-                                    Log.d("mmm", "성공33")
-                                    finish()
-                                }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this@MypageBehavior, "저장 실패", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {}
-            })
-
             FBRef.users.child(uid).child("profile").child("dogcat")
-                .addValueEventListener(eventListener)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val dogcatValue = snapshot.getValue(String::class.java)
+                        if (dogcatValue != null) {
+                            val animalAndCategory = "${dogcatValue}행동"
+                            val title = binding.etvMypageBehaviorTitle.text.toString()
+                            val content = binding.etvMypageBehavior.text.toString()
+                            val tags = tagListBehavior.toList()
+                            val review = binding.etvMypageBehaviorReview.text.toString()
+                            val time = FBAuth.getTime()
+                            val uidAndCategory = "${uid}행동"
+                            val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
+
+                            val behaviorData = Behavior(
+                                review = review,
+                                content = content,
+                                tags = tags,
+                                time = time,
+                                title = title,
+                                animalAndCategory = animalAndCategory,
+                                uid = uid,
+                                animal = dogcatValue,
+                                uidAndCategory = uidAndCategory,
+                                key = key,
+                                localUrl = if (currentImageUri != null) currentImageUri.toString() else imageUri.toString()
+                            )
+
+                            FBRef.boardRef.child(key).setValue(behaviorData)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Toast.makeText(
+                                            this@MypageBehavior,
+                                            "저장되었습니다.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        if (!isImageUpload && currentImageUri != null) {
+                                            lifecycleScope.launch {
+                                                ImageUtils.imageUpload(
+                                                    this@MypageBehavior,
+                                                    currentImageUri!!,
+                                                    key
+                                                ).let { uploadSuccess ->
+                                                    if (uploadSuccess) {
+                                                        val resultIntent = Intent().apply {
+                                                            putExtra("postAdded", true)
+                                                            putExtra("addedPostUid", uid)
+                                                            putExtra("addedPostKey", key)
+                                                            putExtra("imageUri", currentImageUri.toString())
+                                                        }
+                                                        setResult(Activity.RESULT_OK, resultIntent)
+                                                        finish()
+                                                    }
+                                                }
+                                            }
+                                        } else if (isImageUpload && imageUri != null) {
+                                            lifecycleScope.launch {
+                                                ImageUtils.imageUpload(
+                                                    this@MypageBehavior,
+                                                    imageUri!!,
+                                                    key
+                                                ).let { uploadSuccess ->
+                                                    if (uploadSuccess) {
+                                                        val resultIntent = Intent().apply {
+                                                            putExtra("postAdded", true)
+                                                            putExtra("addedPostUid", uid)
+                                                            putExtra("addedPostKey", key)
+                                                            putExtra(
+                                                                "imageUri",
+                                                                imageUri.toString()
+                                                            )
+                                                        }
+                                                        setResult(Activity.RESULT_OK, resultIntent)
+                                                    } else {
+                                                        Toast.makeText(
+                                                            this@MypageBehavior,
+                                                            "이미지 업로드 실패",
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                    finish()
+                                                }
+                                            }
+                                        } else {
+                                            Toast.makeText(
+                                                this@MypageBehavior,
+                                                "새 이미지가 선택되지 않았습니다",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            finish()
+                                        }
+                                    } else {
+                                        Toast.makeText(
+                                            this@MypageBehavior,
+                                            "저장 실패",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {}
+                })
         }
 
         binding.ivMypageBehaviorPictureLeft.setOnClickListener {
@@ -227,6 +264,10 @@ class MypageBehavior : AppCompatActivity() {
                     binding.etvMypageBehaviorTitle.setText(it.title)
                     binding.etvMypageBehavior.setText(it.content)
                     binding.etvMypageBehaviorReview.setText(it.review)
+                    binding.ivMypageBehaviorPictureLeft.load(it.imageUrl)
+                    currentImageUri = it.localUrl.toUri()
+                    Log.d("loadData", it.imageUrl)
+                    Log.d("loadData", it.localUrl)
                     it.tags.forEach { tag ->
                         addChip(tag)
                     }
@@ -238,13 +279,13 @@ class MypageBehavior : AppCompatActivity() {
                     .show()
             }
         })
-        val storageImage = Firebase.storage.reference.child("${postKey}.png")
-        storageImage.downloadUrl.addOnSuccessListener { uri ->
-            Log.d("JINA", "loadUpdatedImage: ${uri.toString()}")
-            binding.ivMypageBehaviorPictureLeft.load(uri.toString()) {
-                crossfade(true)
-            }
-        }
+//        val storageImage = Firebase.storage.reference.child("${postKey}.png")
+//        storageImage.downloadUrl.addOnSuccessListener { uri ->
+//            Log.d("JINA", "loadUpdatedImage: ${uri.toString()}")
+//            binding.ivMypageBehaviorPictureLeft.load(uri.toString()){
+//                crossfade(true)
+//            }
+//        }
     }
 
     private fun addChip(chipName: String) {

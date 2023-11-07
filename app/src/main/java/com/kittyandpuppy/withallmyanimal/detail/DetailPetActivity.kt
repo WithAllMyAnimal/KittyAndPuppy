@@ -44,8 +44,13 @@ class DetailPetActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
-                loadUpdatedImage(key)
+                val key = result.data?.getStringExtra("key")
+                val imageUri = result.data?.getStringExtra("imageUri")
+                if (key != null) {
+                    if (imageUri != null) {
+                        loadUpdatedImage(key, imageUri)
+                    }
+                }
             }
         }
 
@@ -77,6 +82,7 @@ class DetailPetActivity : AppCompatActivity() {
                 tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
 
                 Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                    alertDialog.dismiss()
                     if (task.isSuccessful) {
                         Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                         val resultIntent = Intent().apply {
@@ -104,7 +110,7 @@ class DetailPetActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Pet::class.java) ?: return
@@ -118,18 +124,14 @@ class DetailPetActivity : AppCompatActivity() {
                 }
                 binding.tvDetailPetCautionContents.text = post.caution
                 binding.tvDetailPetReviewContents.text = post.content
+                binding.ivDetailPetPictureLeft.load(post.imageUrl)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.d("DetailPetActivity", "Failed to read post data", error.toException())
             }
         })
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailPetPictureLeft.load(uri.toString()) {
-                crossfade(true)
-            }
-        }
+
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
@@ -151,7 +153,7 @@ class DetailPetActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailPetNickname.text = userId
@@ -173,15 +175,12 @@ class DetailPetActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+    private fun loadUpdatedImage(key: String, imageUri : String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                imageUrl?.let { url ->
-                    binding.ivDetailPetPictureLeft.load(url) {
-                        crossfade(true)
-                    }
+                binding.ivDetailPetPictureLeft.load(imageUri) {
+                    crossfade(true)
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -189,15 +188,4 @@ class DetailPetActivity : AppCompatActivity() {
             }
         })
     }
-
-//    private fun loadUpdatedImage(key: String) {
-//        val storageRef = Firebase.storage.reference.child("${key}.png")
-//        storageRef.downloadUrl.addOnSuccessListener { uri ->
-//            binding.ivDetailPetPictureLeft.load(uri.toString()) {
-//                crossfade(true)
-//            }
-//        }.addOnFailureListener {
-//            Toast.makeText(this, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 }
