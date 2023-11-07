@@ -219,7 +219,8 @@ class MypageBehavior : AppCompatActivity() {
         }
 
         binding.btnBehaviorAdd.setOnClickListener {
-            val chipName = binding.etvMypageBehaviorTag.text.toString()
+            val chipName = binding.etvMypageBehaviorTag.text.toString().trim()
+
             if (chipName.isNotBlank()) {
                 // 태그 제한 개수 설정
                 val maxChips = 3
@@ -229,15 +230,7 @@ class MypageBehavior : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                var isDuplicate = false
-                for (i in 0 until binding.chipGroup.childCount) {
-                    val chip = binding.chipGroup.getChildAt(i) as Chip
-                    if (chip.text.toString() == chipName) {
-                        isDuplicate = true
-                        break
-                    }
-                }
-
+                val isDuplicate = tagListBehavior.any { it.equals(chipName, ignoreCase = true) }
                 if (isDuplicate) {
                     Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
                 } else {
@@ -246,8 +239,6 @@ class MypageBehavior : AppCompatActivity() {
                         isCloseIconVisible = true
                         setOnCloseIconClickListener {
                             binding.chipGroup.removeView(this)
-                            // 이 부분이 없어서 오류가 났었다.
-                            tagListBehavior.remove(chipName)
                         }
                         chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
                         val typeface: Typeface? =
@@ -282,6 +273,7 @@ class MypageBehavior : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@MypageBehavior, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
                     .show()
@@ -297,31 +289,18 @@ class MypageBehavior : AppCompatActivity() {
     }
 
     private fun addChip(chipName: String) {
-        var isDuplicate = false
-        for (i in 0 until binding.chipGroup.childCount) {
-            val chip = binding.chipGroup.getChildAt(i) as Chip
-            if (chip.text.toString() == chipName) {
-                isDuplicate = true
-                break
+        binding.chipGroup.addView(Chip(this).apply {
+            text = chipName
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                binding.chipGroup.removeView(this)
+                tagListBehavior.remove(chipName)
             }
-        }
-
-        if (!isDuplicate) {
-            binding.chipGroup.addView(Chip(this).apply {
-                text = chipName
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    binding.chipGroup.removeView(this)
-                    tagListBehavior.remove(chipName)
-                }
-                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
-                val typeface: Typeface? =
-                    ResourcesCompat.getFont(this@MypageBehavior, R.font.cafe24)
-                this.typeface = typeface
-            })
-            tagListBehavior.add(chipName)
-        } else {
-            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
-        }
+            chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+            val typeface: Typeface? =
+                ResourcesCompat.getFont(this@MypageBehavior, R.font.cafe24)
+            this.typeface = typeface
+        })
+        tagListBehavior.add(chipName)
     }
 }
