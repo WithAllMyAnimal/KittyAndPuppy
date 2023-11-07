@@ -25,7 +25,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter(val list: MutableList<BaseModel>) :
+class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
     androidx.recyclerview.widget.ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName

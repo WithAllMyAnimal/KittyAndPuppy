@@ -49,11 +49,11 @@ class DetailBehaviorActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val key = result.data?.getStringExtra("key")
                 val imageUri = result.data?.getStringExtra("imageUri")
-//                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
                 if (key != null) {
                     if (imageUri != null) {
                         loadUpdatedImage(key, imageUri)
                     }
+                    Log.d("이미지변경",imageUri.toString())
                 }
             }
         }
@@ -113,6 +113,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             val intent = Intent(this, MypageBehavior::class.java)
             intent.putExtra("key", key)
             startForResult.launch(intent)
+            Log.d("이미지변경", "startForResult")
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
