@@ -115,10 +115,10 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             }
         }
     }
-    fun updateImage(key: String, imageUrl: Uri) {
+    fun updateImage(key: String, imageUrl: String) {
         val index = boardList.indexOfFirst { it.key == key }
         if (index != -1) {
-            boardList[index].imageUrl = imageUrl.toString()
+            boardList[index].imageUrl = imageUrl
             notifyItemChanged(index)
             Log.d("Debug22", "Received Image URI: $imageUrl")
         }

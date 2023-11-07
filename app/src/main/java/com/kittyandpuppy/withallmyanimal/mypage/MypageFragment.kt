@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.google.android.material.tabs.TabLayout
@@ -26,6 +27,7 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentMypageBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.home.HomeRVAdapter
+import com.kittyandpuppy.withallmyanimal.home.HomeViewModel
 import com.kittyandpuppy.withallmyanimal.setting.SettingActivity
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
@@ -40,7 +42,6 @@ class MypageFragment : Fragment() {
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
     private lateinit var rvAdapter: MyPageRVAdapter
-
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
@@ -48,7 +49,7 @@ class MypageFragment : Fragment() {
     private lateinit var key : String
     private lateinit var deletedKey : String
     private lateinit var imageUrl : String
-
+    private lateinit var homeViewModel : HomeViewModel
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
 
@@ -58,10 +59,9 @@ class MypageFragment : Fragment() {
                 deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
                 key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                rvAdapter?.deletePost(deletedKey)
-                rvAdapter?.updateImage(key, imageUrl)
+                rvAdapter.deletePost(deletedKey)
+                rvAdapter.updateImage(key, imageUrl)
             }
-            Log.d("shin", "startForResult,${imageUrl}")
         }
 
 
@@ -77,6 +77,7 @@ class MypageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         setUpRecyclerView()
         loadDefaultTabData()
@@ -178,6 +179,14 @@ class MypageFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = gridLayoutManager
             adapter = rvAdapter
+        }
+        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+            list.forEach { homeModel ->
+                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+                    rvAdapter.updateImage(homeModel.key, imageUrl)
+                }
+            }
+            rvAdapter.submitList(list)
         }
     }
 

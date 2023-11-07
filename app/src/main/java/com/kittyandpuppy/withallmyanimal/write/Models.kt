@@ -15,8 +15,8 @@ open class BaseModel(
     open val animalAndCategory: String = "",
     open val animal : String = "",
     open val uidAndCategory : String = "",
-    open var imageUrl : String = "", //storage에 업로드 된 주소 https:// firebasestorage.~ 로 시작
-    open var localUrl : String = ""
+    open var imageUrl : String = "", // storage에 업로드 된 주소 https:// firebasestorage.~ 로 시작
+    open var localUrl : String = "" // 로컬에 저장되어있는 이미지 주소 content://로 시작
 )
 
 data class Behavior(

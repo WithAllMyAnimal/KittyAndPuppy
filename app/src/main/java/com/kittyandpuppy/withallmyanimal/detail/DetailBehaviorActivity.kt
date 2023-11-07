@@ -3,7 +3,6 @@ package com.kittyandpuppy.withallmyanimal.detail
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Paint
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -30,7 +29,6 @@ import com.kittyandpuppy.withallmyanimal.comments.CommentsFragment
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
-import com.kittyandpuppy.withallmyanimal.home.HomeFragment
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -47,14 +45,10 @@ class DetailBehaviorActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = result.data?.getStringExtra("key")
-                val imageUri = result.data?.getStringExtra("imageUri")
-//                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
-                if (key != null) {
-                    if (imageUri != null) {
-                        loadUpdatedImage(key, imageUri)
-                    }
-                }
+                val key = result.data?.getStringExtra("key") ?: return@registerForActivityResult
+                val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                loadUpdatedImage(key, imageUri)
+                Log.d("이미지변경",imageUri)
             }
         }
 
@@ -113,6 +107,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
             val intent = Intent(this, MypageBehavior::class.java)
             intent.putExtra("key", key)
             startForResult.launch(intent)
+            Log.d("이미지변경", "startForResult")
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
