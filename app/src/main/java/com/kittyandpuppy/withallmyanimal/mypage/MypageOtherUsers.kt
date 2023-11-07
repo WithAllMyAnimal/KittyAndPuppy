@@ -1,9 +1,11 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.google.android.material.tabs.TabLayout
@@ -19,6 +21,7 @@ import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageOtherUsersBinding
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
+import com.kittyandpuppy.withallmyanimal.home.HomeRVAdapter
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
@@ -38,6 +41,22 @@ class MypageOtherUsers : AppCompatActivity() {
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var uid : String
+
+    private lateinit var key : String
+    private lateinit var deletedKey : String
+    private lateinit var imageUrl : String
+
+    private val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
+                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.deletePost(deletedKey)
+                rvAdapter?.updateImage(key, imageUrl)
+            }
+            Log.d(TAG, "startForResult")
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uid = intent.getStringExtra("uid") ?: return
@@ -124,7 +143,9 @@ class MypageOtherUsers : AppCompatActivity() {
             false
     }
     private fun setUpRV() {
-        rvAdapter = MyPageRVAdapter(list)
+        rvAdapter = MyPageRVAdapter(list) { intent ->
+            startForResult.launch(intent)
+        }
         gridLayoutManager = GridLayoutManager(this, 3)
 
         binding.recyclerviewMypageList.apply {
