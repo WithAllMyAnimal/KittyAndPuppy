@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.firebase.database.DataSnapshot
@@ -15,14 +14,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageLikeListBinding
 import com.kittyandpuppy.withallmyanimal.databinding.ItemMypageListBinding
 import com.kittyandpuppy.withallmyanimal.detail.DetailBehaviorActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailDailyActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
-import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
 class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
@@ -70,7 +67,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        binding.root.context.startActivity(intent)
+                        startForResult(intent)
                     }
                 }
             }
@@ -149,25 +146,15 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-                        binding.root.context.startActivity(intent)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startForResult(intent)
                     }
                 }
             }
         }
         fun bind(model: BaseModel) {
             Log.d("rv adapter", "bind request")
-            val storageRef = Firebase.storage.reference.child("${model.key}.png")
-            storageRef.downloadUrl.addOnSuccessListener { uri ->
-                binding.ivMypageRvImage.load(uri.toString()) {
-                    crossfade(true)
-                    Log.d("rv adapter", "success")
-                }
-            }.addOnFailureListener {
-                binding.ivMypageRvImage.load(R.drawable.add_image) {
-                    crossfade(true)
-                    Log.d(TAG, "binded")
-                }
-            }
+            binding.ivMypageRvImage.load(model.imageUrl)
         }
     }
 

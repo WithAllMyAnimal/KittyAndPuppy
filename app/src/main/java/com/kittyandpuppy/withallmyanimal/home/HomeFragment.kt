@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
-    private lateinit var homeViewModel : HomeViewModel
+//    private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
     private lateinit var deletedKey : String
@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "viewCreated 불리니")
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+//        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpRecyclerView()
         onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
@@ -152,14 +152,14 @@ class HomeFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = rvAdapter
         }
-        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
-            list.forEach { homeModel ->
-                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
-                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
-                }
-            }
-            rvAdapter!!.submitList(list)
-        }
+//        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+//            list.forEach { homeModel ->
+//                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+//                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
+//                }
+//            }
+//            rvAdapter!!.submitList(list)
+//        }
     }
     private fun refreshData() {
         if (!refreshing) {
