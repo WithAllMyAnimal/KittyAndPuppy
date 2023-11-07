@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
@@ -42,6 +43,8 @@ class HomeFragment : Fragment() {
     private lateinit var key : String
     private lateinit var deletedKey : String
     private var boardValueEventListener: ValueEventListener? = null
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private var refreshing = false
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -84,6 +87,11 @@ class HomeFragment : Fragment() {
         binding.ivHomeMegaphone.setOnClickListener {
             val intent = Intent(requireContext(), NoticeActivity::class.java)
             startActivity(intent)
+        }
+
+        swipeRefreshLayout = binding.swipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
         }
 
         var isDogAndCatSpinnerInitialized = false
@@ -163,6 +171,17 @@ class HomeFragment : Fragment() {
             rvAdapter!!.submitList(list)
         }
     }
+    private fun refreshData() {
+        if (!refreshing) {
+            refreshing = true
+            boardList.clear()
+            getBoardData()
+            swipeRefreshLayout.isRefreshing = false
+            refreshing = false
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -181,7 +200,7 @@ class HomeFragment : Fragment() {
         boardList.clear()
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
-            query.addValueEventListener (object : ValueEventListener {
+            query.addListenerForSingleValueEvent (object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     handlePostsData(snapshot)
                 }
@@ -233,7 +252,7 @@ class HomeFragment : Fragment() {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         }
-        query.second.addValueEventListener (boardValueEventListener!!)
+        query.second.addListenerForSingleValueEvent (boardValueEventListener!!)
     }
     private fun handlePostsData(snapshot: DataSnapshot) {
 
@@ -257,7 +276,7 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
-                likesCountRef.addValueEventListener (object : ValueEventListener {
+                likesCountRef.addListenerForSingleValueEvent (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val likesCount = snapshot.getValue(Int::class.java) ?: 0
                         post.likesCount = likesCount
@@ -270,7 +289,7 @@ class HomeFragment : Fragment() {
                 })
 
                 val commentsRef = FBRef.commentRef.child(postKey)
-                commentsRef.addValueEventListener (object : ValueEventListener {
+                commentsRef.addListenerForSingleValueEvent (object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         post.commentsCount = snapshot.childrenCount.toInt()
                         rvAdapter?.notifyDataSetChanged()
