@@ -49,6 +49,9 @@ class MypageDaily : AppCompatActivity() {
 
     private var isImageUpload = false
     private var tagListDaily = mutableListOf<String>()
+    private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
+    private var currentImageUri: Uri? = null
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -72,12 +75,11 @@ class MypageDaily : AppCompatActivity() {
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             imageUri = result.data?.data
-            binding.ivMypageDailyPictureLeft.setImageURI(result.data?.data)
+            binding.ivMypageDailyPictureLeft.setImageURI(imageUri)
         }
     }
 
-    private var currentPostKey: String? = null
-    private var imageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -95,13 +97,11 @@ class MypageDaily : AppCompatActivity() {
                     val dogcatValue = snapshot.getValue(String::class.java)
                     if (dogcatValue != null) {
                         val animalAndCategory = "${dogcatValue}일상"
-
                         val time = FBAuth.getTime()
                         val title = binding.etvMypageDailyTitle.text.toString()
                         val tags = tagListDaily.toList()
                         val content = binding.etvMypageDaily.text.toString()
                         val uidAndCategory = "${uid}일상"
-
                         val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
                         val dailyData = Daily(
@@ -113,38 +113,86 @@ class MypageDaily : AppCompatActivity() {
                             uid = uid,
                             animal = dogcatValue,
                             uidAndCategory = uidAndCategory,
-                            key = key
+                            key = key,
+                            localUrl = if (currentImageUri != null) currentImageUri.toString() else imageUri.toString()
                         )
 
                         FBRef.boardRef
                             .child(key)
                             .setValue(dailyData)
-                            .addOnSuccessListener {
-                                Toast.makeText(this@MypageDaily, "저장되었습니다.", Toast.LENGTH_SHORT)
-                                    .show()
-
-                                lifecycleScope.launch {
-                                    if (isImageUpload && imageUri != null) {
-                                        ImageUtils.imageUpload(
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        this@MypageDaily,
+                                        "저장되었습니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    if (!isImageUpload && currentImageUri != null) {
+                                        lifecycleScope.launch {
+                                            ImageUtils.imageUpload(
+                                                this@MypageDaily,
+                                                currentImageUri!!,
+                                                key
+                                            ).let { uploadSuccess ->
+                                                if (uploadSuccess) {
+                                                    val resultIntent = Intent().apply {
+                                                        putExtra("postAdded", true)
+                                                        putExtra("addedPostUid", uid)
+                                                        putExtra("addedPostKey", key)
+                                                        putExtra("imageUri", currentImageUri.toString())
+                                                    }
+                                                    setResult(Activity.RESULT_OK, resultIntent)
+                                                    finish()
+                                                }
+                                            }
+                                        }
+                                    } else if (isImageUpload && imageUri != null) {
+                                        lifecycleScope.launch {
+                                            ImageUtils.imageUpload(
+                                                this@MypageDaily,
+                                                imageUri!!,
+                                                key
+                                            ).let { uploadSuccess ->
+                                                if (uploadSuccess) {
+                                                    val resultIntent = Intent().apply {
+                                                        putExtra("postAdded", true)
+                                                        putExtra("addedPostUid", uid)
+                                                        putExtra("addedPostKey", key)
+                                                        putExtra(
+                                                            "imageUri",
+                                                            imageUri.toString()
+                                                        )
+                                                    }
+                                                    setResult(Activity.RESULT_OK, resultIntent)
+                                                } else {
+                                                    Toast.makeText(
+                                                        this@MypageDaily,
+                                                        "이미지 업로드 실패",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                                finish()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(
                                             this@MypageDaily,
-                                            imageUri ?: Uri.EMPTY,
-                                            key
-                                        )
+                                            "새 이미지가 선택되지 않았습니다",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        finish()
                                     }
-                                    val resultIntent = Intent().putExtra("postAdded", true)
-                                    resultIntent.putExtra("addedPostUid", uid)
-                                    resultIntent.putExtra("addedPostKey", key)
-                                    resultIntent.putExtra("imageUri", imageUri)
-                                    setResult(Activity.RESULT_OK, resultIntent)
-                                    finish()
+                                } else {
+                                    Toast.makeText(
+                                        this@MypageDaily,
+                                        "저장 실패",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this@MypageDaily, "저장 실패", Toast.LENGTH_SHORT)
-                                    .show()
                             }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
             })
         }
@@ -205,12 +253,13 @@ class MypageDaily : AppCompatActivity() {
         }
     }
     private fun loadData(postKey: String) {
-        FBRef.boardRef.child(postKey).addValueEventListener(object : ValueEventListener {
+        FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val behaviorData = snapshot.getValue(Daily::class.java)
                 behaviorData?.let {
                     binding.etvMypageDailyTitle.setText(it.title)
                     binding.etvMypageDaily.setText(it.content)
+                    binding.ivMypageDailyPictureLeft.load(it.imageUrl)
                     it.tags.forEach { tag ->
                         addChip(tag)
                     }
@@ -221,12 +270,6 @@ class MypageDaily : AppCompatActivity() {
                     .show()
             }
         })
-        val storageImage = Firebase.storage.reference.child("${postKey}.png")
-        storageImage.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivMypageDailyPictureLeft.load(uri.toString()){
-                crossfade(true)
-            }
-        }
     }
     private fun addChip(chipName: String) {
         var isDuplicate = false

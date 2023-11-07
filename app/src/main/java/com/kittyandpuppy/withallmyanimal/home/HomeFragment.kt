@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -36,21 +37,31 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
-//    private lateinit var homeViewModel : HomeViewModel
+    private lateinit var homeViewModel : HomeViewModel
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
     private lateinit var deletedKey : String
-    private lateinit var imageUrl : String
     private var boardValueEventListener: ValueEventListener? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
-                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                rvAdapter?.deletePost(deletedKey)
-                rvAdapter?.updateImage(key, imageUrl)
+                result.data?.let { data ->
+                    data.getStringExtra("deletedPostKey")?.let {
+                        deletedKey = it
+                        rvAdapter?.deletePost(deletedKey)
+                    }
+                    data.getStringExtra("addedPostKey")?.let {
+                        key = it
+                        Log.d(TAG, "${key}입니다")
+                    }
+                    val imageUrl = data.getStringExtra("imageUri") ?: ""
+
+                    if (key.isNotEmpty() && imageUrl.isNotEmpty()) {
+                        rvAdapter?.updateImage(key, imageUrl.toUri())
+                        Log.d(TAG, "${imageUrl}입니다")
+                    }
+                }
             }
             Log.d(TAG, "startForResult")
         }
@@ -67,7 +78,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "viewCreated 불리니")
-//        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         setUpRecyclerView()
         onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
@@ -143,14 +154,14 @@ class HomeFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = rvAdapter
         }
-//        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
-//            list.forEach { homeModel ->
-//                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
-//                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
-//                }
-//            }
-//            rvAdapter!!.submitList(list)
-//        }
+        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
+            list.forEach { homeModel ->
+                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
+                    rvAdapter!!.updateImage(homeModel.key, imageUrl.toUri())
+                }
+            }
+            rvAdapter!!.submitList(list)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

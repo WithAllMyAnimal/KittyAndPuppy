@@ -1,4 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.write
+
+import android.net.Uri
+
 open class BaseModel(
     open val category: String = "",
     open val content: String = "",
@@ -12,7 +15,8 @@ open class BaseModel(
     open val animalAndCategory: String = "",
     open val animal : String = "",
     open val uidAndCategory : String = "",
-    open var imageUrl : String = ""
+    open var imageUrl : String = "", //storage에 업로드 된 주소 https:// firebasestorage.~ 로 시작
+    open var localUrl : String = ""
 )
 
 data class Behavior(
@@ -26,6 +30,7 @@ data class Behavior(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
+    override var localUrl: String = ""
 ) : BaseModel(category = "행동")
 
 data class Daily(
@@ -38,6 +43,7 @@ data class Daily(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
+    override var localUrl: String = ""
 ) : BaseModel(category = "일상")
 
 data class Hospital(
@@ -54,6 +60,7 @@ data class Hospital(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
+    override var localUrl: String = ""
 ) : BaseModel(category = "병원")
 
 data class Pet(
@@ -70,4 +77,5 @@ data class Pet(
     override var key: String = "",
     override val animal : String = "",
     override val uidAndCategory: String = "",
+    override var localUrl: String = ""
 ) : BaseModel(category = "펫용품")

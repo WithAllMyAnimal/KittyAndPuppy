@@ -47,8 +47,14 @@ class DetailBehaviorActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
-                loadUpdatedImage(key)
+                val key = result.data?.getStringExtra("key")
+                val imageUri = result.data?.getStringExtra("imageUri")
+//                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
+                if (key != null) {
+                    if (imageUri != null) {
+                        loadUpdatedImage(key, imageUri)
+                    }
+                }
             }
         }
 
@@ -82,6 +88,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
 
                 Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                    alertDialog.dismiss()
                     if (task.isSuccessful) {
                         Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                         val resultIntent = Intent().apply {
@@ -89,17 +96,12 @@ class DetailBehaviorActivity : AppCompatActivity() {
                             putExtra("deletedPostUid", uid)
                             putExtra("deletedPostKey", key)
                         }
-                        setResult(RESULT_OK, resultIntent)
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     } else {
-                        // 하나 이상의 태스크가 실패한 경우, 어떤 태스크가 실패했는지를 파악
-                        var errorMessage = "삭제 실패: "
-                        tasks.forEach { individualTask ->
-                            if (!individualTask.isSuccessful) {
-                                errorMessage += "${individualTask.exception?.message}\n"
-                            }
+                        task.exception?.let {
+                            Toast.makeText(this, "삭제 실패", Toast.LENGTH_SHORT).show()
                         }
-                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -114,7 +116,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val post = snapshot.getValue(Behavior::class.java) ?: return
 
@@ -122,6 +124,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 binding.tvDetailDate.text = post.time
                 binding.tvDetailBehaviorCautionContents.text = post.content
                 binding.tvDetailBehaviorReviewContents.text = post.review
+                binding.ivDetailBehaviorPictureLeft.load(post.imageUrl)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -129,13 +132,13 @@ class DetailBehaviorActivity : AppCompatActivity() {
             }
         })
 
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        Log.d("mmmmm", "성공22")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailBehaviorPictureLeft.load(uri.toString()) {
-                crossfade(true)
-            }
-        }
+//        val storageRef = Firebase.storage.reference.child("${key}.png")
+//        Log.d("mmmmm", "성공22")
+//        storageRef.downloadUrl.addOnSuccessListener { uri ->
+//            binding.ivDetailBehaviorPictureLeft.load(uri.toString()) {
+//                crossfade(true)
+//            }
+//        }
 
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
@@ -159,7 +162,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userid = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailBehaviorNickname.text = userid
@@ -181,21 +184,17 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+    private fun loadUpdatedImage(key: String, imageUri : String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                imageUrl?.let { url ->
-                    binding.ivDetailBehaviorPictureLeft.load(url) {
+                    binding.ivDetailBehaviorPictureLeft.load(imageUri) {
                         crossfade(true)
                     }
-                }
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
             }
         })
     }
-
 }

@@ -45,8 +45,13 @@ class DetailDailyActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = intent.getStringExtra("key") ?: return@registerForActivityResult
-                loadUpdatedImage(key)
+                val key = result.data?.getStringExtra("key")
+                val imageUri = result.data?.getStringExtra("imageUri")
+                if (key != null) {
+                    if (imageUri != null) {
+                        loadUpdatedImage(key, imageUri)
+                    }
+                }
             }
         }
 
@@ -78,6 +83,7 @@ class DetailDailyActivity : AppCompatActivity() {
                 tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
 
                 Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                    alertDialog.dismiss()
                     if (task.isSuccessful) {
                         Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
                         val resultIntent = Intent().apply {
@@ -105,7 +111,7 @@ class DetailDailyActivity : AppCompatActivity() {
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("DetailHospitalActivity", "$snapshot")
                 val post = snapshot.getValue(Daily::class.java) ?: return
@@ -113,19 +119,12 @@ class DetailDailyActivity : AppCompatActivity() {
                 binding.tvDetailDailyTitle.text = post.title
                 binding.tvDetailDate.text = post.time
                 binding.tvDetailDailyReviewContents.text = post.content
-
+                binding.ivDetailDailyPictureLeft.load(post.imageUrl)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.d("DetailDailyActivity", "failed to read post data", error.toException())
             }
         })
-        val storageRef = Firebase.storage.reference.child("${key}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivDetailDailyPictureLeft.load(uri.toString()) {
-                crossfade(true)
-            }
-        }
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
@@ -148,7 +147,7 @@ class DetailDailyActivity : AppCompatActivity() {
         }
 
         FBRef.users.child(uid)
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userId = snapshot.child("profile").child("userIdname").value.toString()
                     binding.tvDetailDailyNickname.text = userId
@@ -171,15 +170,12 @@ class DetailDailyActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board")
+    private fun loadUpdatedImage(key: String, imageUri : String) {
+        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
         databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                imageUrl?.let { url ->
-                    binding.ivDetailDailyPictureLeft.load(url) {
-                        crossfade(true)
-                    }
+                binding.ivDetailDailyPictureLeft.load(imageUri) {
+                    crossfade(true)
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
