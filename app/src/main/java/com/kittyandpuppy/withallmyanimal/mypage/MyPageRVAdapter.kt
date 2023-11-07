@@ -25,8 +25,8 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter(val list: MutableList<BaseModel>) :
-    ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class MyPageRVAdapter(val list: MutableList<BaseModel>,private val startForResult: (Intent) -> Unit ) :
+    androidx.recyclerview.widget.ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName
 
@@ -45,41 +45,34 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "category: $category")
 
                 val database = FirebaseDatabase.getInstance()
-                val reference = database.getReference("board")
+                val reference = database.getReference("board").get()
 
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
-                        if (datasnapshot.exists()) {
-                            val intent: Intent
-                            when (category) {
-                                "행동" -> intent =
-                                    Intent(binding.root.context, DetailBehaviorActivity::class.java)
-                                "일상" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailDailyActivity::class.java
-                                )
-                                "병원" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailHospitalActivity::class.java
-                                )
-                                "펫용품" -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-                                else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-                            }
-                            intent.putExtra("uid", uid)
-                            intent.putExtra("key", key)
-                            intent.putExtra("category", category)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            binding.root.context.startActivity(intent)
-                            Log.d("jjjjjjj", "myrvadapter")
+                reference.addOnSuccessListener {
+                    if (it.exists()){
+                        val intent: Intent
+                        when (category) {
+                            "행동" -> intent =
+                                Intent(binding.root.context, DetailBehaviorActivity::class.java)
+                            "일상" -> intent = Intent(
+                                binding.root.context,
+                                DetailDailyActivity::class.java
+                            )
+                            "병원" -> intent = Intent(
+                                binding.root.context,
+                                DetailHospitalActivity::class.java
+                            )
+                            "펫용품" -> intent =
+                                Intent(binding.root.context, DetailPetActivity::class.java)
+                            else -> intent =
+                                Intent(binding.root.context, DetailPetActivity::class.java)
                         }
+                        intent.putExtra("uid", uid)
+                        intent.putExtra("key", key)
+                        intent.putExtra("category", category)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        binding.root.context.startActivity(intent)
                     }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("MyPageRvAdapter", "Faild to read userID", error.toException())
-                    }
-                })
+                }
             }
         }
 
@@ -103,10 +96,8 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                         }.addOnFailureListener {
                         }
                     }
-
                     binding.tvMypageListNickname.text = userIdName ?: ""
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.d(TAG, "Failed to read user info", error.toException())
                 }
@@ -129,43 +120,38 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
                 Log.d("MyPageRVAdapter", "category: $category")
 
                 val database = FirebaseDatabase.getInstance()
-                val reference = database.getReference("board")
+                val reference = database.getReference("board").get()
 
-                reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(datasnapshot: DataSnapshot) {
-                        if (datasnapshot.exists()) {
-                            val intent: Intent
-                            when (category) {
-                                "행동" -> intent =
-                                    Intent(binding.root.context, DetailBehaviorActivity::class.java)
+                reference.addOnSuccessListener {
+                    if (it.exists()){
 
-                                "일상" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailDailyActivity::class.java
-                                )
+                        val intent: Intent
+                        when (category) {
+                            "행동" -> intent =
+                                Intent(binding.root.context, DetailBehaviorActivity::class.java)
 
-                                "병원" -> intent = Intent(
-                                    binding.root.context,
-                                    DetailHospitalActivity::class.java
-                                )
+                            "일상" -> intent = Intent(
+                                binding.root.context,
+                                DetailDailyActivity::class.java
+                            )
 
-                                "펫용품" -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                            "병원" -> intent = Intent(
+                                binding.root.context,
+                                DetailHospitalActivity::class.java
+                            )
 
-                                else -> intent =
-                                    Intent(binding.root.context, DetailPetActivity::class.java)
-                            }
-                            intent.putExtra("uid", uid)
-                            intent.putExtra("key", key)
-                            intent.putExtra("category", category)
-                            binding.root.context.startActivity(intent)
+                            "펫용품" -> intent =
+                                Intent(binding.root.context, DetailPetActivity::class.java)
+
+                            else -> intent =
+                                Intent(binding.root.context, DetailPetActivity::class.java)
                         }
+                        intent.putExtra("uid", uid)
+                        intent.putExtra("key", key)
+                        intent.putExtra("category", category)
+                        binding.root.context.startActivity(intent)
                     }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.d("MyPageRvAdapter","Faild to read userID",error.toException())
-                    }
-                })
+                }
             }
         }
         fun bind(model: BaseModel) {
@@ -220,9 +206,32 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>) :
 
     private var selectedTab = TYPE_MY_LIST
 
+
+
     fun selectedTab(tab: Int) {
         selectedTab = tab
         notifyDataSetChanged()
+    }
+
+    fun deletePost(key : String) {
+        val iterator = list.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (item.key == key) {
+                val index = list.indexOf(item)
+                iterator.remove()
+                notifyItemChanged(index)
+                break
+            }
+        }
+    }
+
+    fun updateImage(key: String, imageUrl: String) {
+        val index = list.indexOfFirst { it.key == key }
+        if (index != -1) {
+            list[index].imageUrl = imageUrl
+            notifyItemChanged(index)
+        }
     }
 
     companion object {

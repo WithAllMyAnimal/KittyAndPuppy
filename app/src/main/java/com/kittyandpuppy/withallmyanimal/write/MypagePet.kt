@@ -46,6 +46,9 @@ class MypagePet : AppCompatActivity() {
 
     private var isImageUpload = false
     private var tagListPet = mutableListOf<String>()
+    private var currentPostKey: String? = null
+    private var imageUri: Uri? = null
+    private var currentImageUri: Uri? = null
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if (isGranted) {
@@ -70,9 +73,6 @@ class MypagePet : AppCompatActivity() {
             binding.ivMypagePetPictureLeft.setImageURI(result.data?.data)
         }
     }
-
-    private var currentPostKey: String? = null
-    private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -115,41 +115,88 @@ class MypagePet : AppCompatActivity() {
                             uid = uid,
                             animal = dogcatValue,
                             uidAndCategory = uidAndCategory,
-                            key = key
+                            key = key,
+                            localUrl = if (currentImageUri != null) currentImageUri.toString() else imageUri.toString()
                         )
 
                         FBRef.boardRef
                             .child(key)
                             .setValue(petData)
-                            .addOnSuccessListener {
-                                Toast.makeText(this@MypagePet, "저장되었습니다.", Toast.LENGTH_SHORT)
-                                    .show()
-
-                                lifecycleScope.launch {
-                                    if (isImageUpload && imageUri != null) {
-                                        ImageUtils.imageUpload(
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        this@MypagePet,
+                                        "저장되었습니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    if (!isImageUpload && currentImageUri != null) {
+                                        lifecycleScope.launch {
+                                            ImageUtils.imageUpload(
+                                                this@MypagePet,
+                                                currentImageUri!!,
+                                                key
+                                            ).let { uploadSuccess ->
+                                                if (uploadSuccess) {
+                                                    val resultIntent = Intent().apply {
+                                                        putExtra("postAdded", true)
+                                                        putExtra("addedPostUid", uid)
+                                                        putExtra("addedPostKey", key)
+                                                        putExtra("imageUri", currentImageUri.toString())
+                                                    }
+                                                    setResult(Activity.RESULT_OK, resultIntent)
+                                                    finish()
+                                                }
+                                            }
+                                        }
+                                    } else if (isImageUpload && imageUri != null) {
+                                        lifecycleScope.launch {
+                                            ImageUtils.imageUpload(
+                                                this@MypagePet,
+                                                imageUri!!,
+                                                key
+                                            ).let { uploadSuccess ->
+                                                if (uploadSuccess) {
+                                                    val resultIntent = Intent().apply {
+                                                        putExtra("postAdded", true)
+                                                        putExtra("addedPostUid", uid)
+                                                        putExtra("addedPostKey", key)
+                                                        putExtra(
+                                                            "imageUri",
+                                                            imageUri.toString()
+                                                        )
+                                                    }
+                                                    setResult(Activity.RESULT_OK, resultIntent)
+                                                } else {
+                                                    Toast.makeText(
+                                                        this@MypagePet,
+                                                        "이미지 업로드 실패",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                                finish()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(
                                             this@MypagePet,
-                                            imageUri ?: Uri.EMPTY,
-                                            key
-                                        )
+                                            "새 이미지가 선택되지 않았습니다",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        finish()
                                     }
-                                    val resultIntent = Intent().putExtra("postAdded", true)
-                                    resultIntent.putExtra("addedPostUid", uid)
-                                    resultIntent.putExtra("addedPostKey", key)
-                                    resultIntent.putExtra("imageUri", imageUri)
-                                    setResult(Activity.RESULT_OK, resultIntent)
-                                    finish()
+                                } else {
+                                    Toast.makeText(
+                                        this@MypagePet,
+                                        "저장 실패",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this@MypagePet, "저장 실패", Toast.LENGTH_SHORT)
-                                    .show()
                             }
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {}
             })
-
         }
         binding.ivMypagePetPictureLeft.setOnClickListener {
             isImageUpload = true
@@ -256,23 +303,17 @@ class MypagePet : AppCompatActivity() {
                     binding.etvMypagePetPrice.setText(it.price)
                     binding.etvMypagePetSupplies.setText(it.name)
                     binding.ratMypagePetStar.rating = it.satisfaction.toFloat()
+                    binding.ivMypagePetPictureLeft.load(it.imageUrl)
                     it.tags.forEach { tag ->
                         addChip(tag)
                     }
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@MypagePet, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
                     .show()
             }
         })
-        val storageImage = Firebase.storage.reference.child("${postKey}.png")
-        storageImage.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivMypagePetPictureLeft.load(uri.toString()){
-                crossfade(true)
-            }
-        }
     }
     private fun addChip(chipName: String) {
         var isDuplicate = false
