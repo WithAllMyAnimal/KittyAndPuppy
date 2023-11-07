@@ -90,72 +90,76 @@ class MypageBehavior : AppCompatActivity() {
 
         binding.btnMypageBehaviorSave.setOnClickListener {
             val uid = FBAuth.getUid()
-            FBRef.users.child(uid).child("profile").child("dogcat")
-                .addValueEventListener(object :
-                    ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val dogcatValue = snapshot.getValue(String::class.java)
-                        if (dogcatValue != null) {
-                            val animalAndCategory = "${dogcatValue}행동"
+            val eventListener = (object :
+                ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val dogcatValue = snapshot.getValue(String::class.java)
+                    if (dogcatValue != null) {
+                        val animalAndCategory = "${dogcatValue}행동"
 
-                            val title = binding.etvMypageBehaviorTitle.text.toString()
-                            val content = binding.etvMypageBehavior.text.toString()
-                            val tags = tagListBehavior.toList()
-                            val review = binding.etvMypageBehaviorReview.text.toString()
-                            val time = FBAuth.getTime()
-                            val uidAndCategory = "${uid}행동"
+                        val title = binding.etvMypageBehaviorTitle.text.toString()
+                        val content = binding.etvMypageBehavior.text.toString()
+                        val tags = tagListBehavior.toList()
+                        val review = binding.etvMypageBehaviorReview.text.toString()
+                        val time = FBAuth.getTime()
+                        val uidAndCategory = "${uid}행동"
 
-                            val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
+                        val key = currentPostKey ?: FBRef.boardRef.push().key.toString()
 
-                            val behaviorData = Behavior(
-                                review = review,
-                                content = content,
-                                tags = tags,
-                                time = time,
-                                title = title,
-                                animalAndCategory = animalAndCategory,
-                                uid = uid,
-                                animal = dogcatValue,
-                                uidAndCategory = uidAndCategory,
-                                key = key
-                            )
+                        val behaviorData = Behavior(
+                            review = review,
+                            content = content,
+                            tags = tags,
+                            time = time,
+                            title = title,
+                            animalAndCategory = animalAndCategory,
+                            uid = uid,
+                            animal = dogcatValue,
+                            uidAndCategory = uidAndCategory,
+                            key = key
+                        )
 
-                            FBRef.boardRef
-                                .child(key)
-                                .setValue(behaviorData)
-                                .addOnCompleteListener {
-                                    Toast.makeText(
-                                        this@MypageBehavior,
-                                        "저장되었습니다.",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                        FBRef.boardRef
+                            .child(key)
+                            .setValue(behaviorData)
+                            .addOnCompleteListener {
+                                Toast.makeText(
+                                    this@MypageBehavior,
+                                    "저장되었습니다.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
 
-                                    lifecycleScope.launch {
+                                lifecycleScope.launch {
 
-                                        if (isImageUpload && imageUri != null) {
-                                            ImageUtils.imageUpload(
-                                                this@MypageBehavior,
-                                                imageUri ?: Uri.EMPTY,
-                                                key
-                                            )
-                                        }
-                                        val resultIntent = Intent().putExtra("postAdded", true)
-                                        resultIntent.putExtra("addedPostUid", uid)
-                                        resultIntent.putExtra("addedPostKey", key)
-                                        resultIntent.putExtra("imageUri", imageUri)
-                                        setResult(Activity.RESULT_OK, resultIntent)
-                                        Log.d("mmm", "성공33")
-                                        finish()
+                                    if (isImageUpload && imageUri != null) {
+                                        ImageUtils.imageUpload(
+                                            this@MypageBehavior,
+                                            imageUri ?: Uri.EMPTY,
+                                            key
+                                        )
                                     }
+                                    val resultIntent = Intent().putExtra("postAdded", true)
+                                    resultIntent.putExtra("addedPostUid", uid)
+                                    resultIntent.putExtra("addedPostKey", key)
+                                    resultIntent.putExtra("imageUri", imageUri)
+                                    setResult(Activity.RESULT_OK, resultIntent)
+                                    Log.d("mmm", "성공33")
+                                    finish()
                                 }
-                                .addOnFailureListener {
-                                    Toast.makeText(this@MypageBehavior, "저장 실패", Toast.LENGTH_SHORT).show()
-                                }
-                        }
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this@MypageBehavior, "저장 실패", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
                     }
-                    override fun onCancelled(error: DatabaseError) {}
-                })
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+            FBRef.users.child(uid).child("profile").child("dogcat")
+                .addValueEventListener(eventListener)
         }
 
         binding.ivMypageBehaviorPictureLeft.setOnClickListener {
@@ -178,7 +182,8 @@ class MypageBehavior : AppCompatActivity() {
         }
 
         binding.btnBehaviorAdd.setOnClickListener {
-            val chipName = binding.etvMypageBehaviorTag.text.toString()
+            val chipName = binding.etvMypageBehaviorTag.text.toString().trim()
+
             if (chipName.isNotBlank()) {
                 // 태그 제한 개수 설정
                 val maxChips = 3
@@ -188,24 +193,15 @@ class MypageBehavior : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                var isDuplicate = false
-                for (i in 0 until binding.chipGroup.childCount) {
-                    val chip = binding.chipGroup.getChildAt(i) as Chip
-                    if (chip.text.toString() == chipName) {
-                        isDuplicate = true
-                        break
-                    }
-                }
-
+                val isDuplicate = tagListBehavior.any { it.equals(chipName, ignoreCase = true) }
                 if (isDuplicate) {
                     Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     binding.chipGroup.addView(Chip(this).apply {
                         text = chipName
                         isCloseIconVisible = true
-                        setOnCloseIconClickListener { binding.chipGroup.removeView(this)
-                            // 이 부분이 없어서 오류가 났었다.
-                            tagListBehavior.remove(chipName)
+                        setOnCloseIconClickListener {
+                            binding.chipGroup.removeView(this)
                         }
                         chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
                         val typeface: Typeface? =
@@ -222,6 +218,7 @@ class MypageBehavior : AppCompatActivity() {
             }
         }
     }
+
     private fun loadData(postKey: String) {
         FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -235,6 +232,7 @@ class MypageBehavior : AppCompatActivity() {
                     }
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@MypageBehavior, "데이터를 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT)
                     .show()
@@ -243,38 +241,25 @@ class MypageBehavior : AppCompatActivity() {
         val storageImage = Firebase.storage.reference.child("${postKey}.png")
         storageImage.downloadUrl.addOnSuccessListener { uri ->
             Log.d("JINA", "loadUpdatedImage: ${uri.toString()}")
-            binding.ivMypageBehaviorPictureLeft.load(uri.toString()){
+            binding.ivMypageBehaviorPictureLeft.load(uri.toString()) {
                 crossfade(true)
             }
         }
     }
 
     private fun addChip(chipName: String) {
-        var isDuplicate = false
-        for (i in 0 until binding.chipGroup.childCount) {
-            val chip = binding.chipGroup.getChildAt(i) as Chip
-            if (chip.text.toString() == chipName) {
-                isDuplicate = true
-                break
+        binding.chipGroup.addView(Chip(this).apply {
+            text = chipName
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                binding.chipGroup.removeView(this)
+                tagListBehavior.remove(chipName)
             }
-        }
-
-        if (!isDuplicate) {
-            binding.chipGroup.addView(Chip(this).apply {
-                text = chipName
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    binding.chipGroup.removeView(this)
-                    tagListBehavior.remove(chipName)
-                }
-                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
-                val typeface: Typeface? =
-                    ResourcesCompat.getFont(this@MypageBehavior, R.font.cafe24)
-                this.typeface = typeface
-            })
-            tagListBehavior.add(chipName)
-        } else {
-            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
-        }
+            chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+            val typeface: Typeface? =
+                ResourcesCompat.getFont(this@MypageBehavior, R.font.cafe24)
+            this.typeface = typeface
+        })
+        tagListBehavior.add(chipName)
     }
 }

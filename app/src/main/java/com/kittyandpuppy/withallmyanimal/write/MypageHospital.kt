@@ -208,7 +208,8 @@ class MypageHospital : AppCompatActivity() {
         })
 
         binding.btnDailyAdd.setOnClickListener {
-            val chipName = binding.etvMypageHospitalTag.text.toString()
+            val chipName = binding.etvMypageHospitalTag.text.toString().trim()
+
             if (chipName.isNotBlank()) {
                 // 태그 제한 개수 설정
                 val maxChips = 3
@@ -217,15 +218,7 @@ class MypageHospital : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                var isDuplicate = false
-                for (i in 0 until binding.chipGroup.childCount) {
-                    val chip = binding.chipGroup.getChildAt(i) as Chip
-                    if (chip.text.toString() == chipName) {
-                        isDuplicate = true
-                        break
-                    }
-                }
-
+                val isDuplicate = tagListHospital.any { it.equals(chipName, ignoreCase = true) }
                 if (isDuplicate) {
                     Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
                 } else {
@@ -234,11 +227,11 @@ class MypageHospital : AppCompatActivity() {
                         isCloseIconVisible = true
                         setOnCloseIconClickListener {
                             binding.chipGroup.removeView(this)
-                            // 이 부분이 없어서 오류가 났었다.
                             tagListHospital.remove(chipName)
                         }
                         chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
-                        val typeface: Typeface? = ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
+                        val typeface: Typeface? =
+                            ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
                         this.typeface = typeface
                         tagListHospital.add(chipName)
                     })
@@ -281,31 +274,18 @@ class MypageHospital : AppCompatActivity() {
         }
     }
     private fun addChip(chipName: String) {
-        var isDuplicate = false
-        for (i in 0 until binding.chipGroup.childCount) {
-            val chip = binding.chipGroup.getChildAt(i) as Chip
-            if (chip.text.toString() == chipName) {
-                isDuplicate = true
-                break
+        binding.chipGroup.addView(Chip(this).apply {
+            text = chipName
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                binding.chipGroup.removeView(this)
+                tagListHospital.remove(chipName)
             }
-        }
-
-        if (!isDuplicate) {
-            binding.chipGroup.addView(Chip(this).apply {
-                text = chipName
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    binding.chipGroup.removeView(this)
-                    tagListHospital.remove(chipName)
-                }
-                chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
-                val typeface: Typeface? =
-                    ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
-                this.typeface = typeface
-            })
-            tagListHospital.add(chipName)
-        } else {
-            Toast.makeText(this, "중복된 태그가 있습니다.", Toast.LENGTH_SHORT).show()
-        }
+            chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+            val typeface: Typeface? =
+                ResourcesCompat.getFont(this@MypageHospital, R.font.cafe24)
+            this.typeface = typeface
+        })
+        tagListHospital.add(chipName)
     }
 }
