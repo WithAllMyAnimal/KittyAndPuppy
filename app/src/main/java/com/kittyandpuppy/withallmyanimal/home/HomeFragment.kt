@@ -42,6 +42,7 @@ class HomeFragment : Fragment() {
     private val TAG = HomeFragment::class.java.simpleName
     private lateinit var key : String
     private lateinit var deletedKey : String
+    private lateinit var  imageUrl : String
     private var boardValueEventListener: ValueEventListener? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
@@ -49,22 +50,11 @@ class HomeFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.let { data ->
-                    data.getStringExtra("deletedPostKey")?.let {
-                        deletedKey = it
-                        rvAdapter?.deletePost(deletedKey)
-                    }
-                    data.getStringExtra("addedPostKey")?.let {
-                        key = it
-                        Log.d(TAG, "${key}입니다")
-                    }
-                    val imageUrl = data.getStringExtra("imageUri") ?: ""
-
-                    if (key.isNotEmpty() && imageUrl.isNotEmpty()) {
-                        rvAdapter?.updateImage(key, imageUrl.toUri())
-                        Log.d(TAG, "${imageUrl}입니다")
-                    }
-                }
+                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
+                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                rvAdapter?.deletePost(deletedKey)
+                rvAdapter?.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
         }
@@ -165,7 +155,7 @@ class HomeFragment : Fragment() {
         homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
             list.forEach { homeModel ->
                 homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
-                    rvAdapter!!.updateImage(homeModel.key, imageUrl.toUri())
+                    rvAdapter!!.updateImage(homeModel.key, imageUrl)
                 }
             }
             rvAdapter!!.submitList(list)
