@@ -40,23 +40,27 @@ class MypageOtherUsers : AppCompatActivity() {
     private val TAG = MypageFragment::class.java.simpleName
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
-    private lateinit var uid : String
+    private lateinit var uid: String
 
-    private lateinit var key : String
-    private lateinit var deletedKey : String
-    private lateinit var imageUrl : String
+    private lateinit var key: String
+    private lateinit var deletedKey: String
+    private lateinit var imageUrl: String
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
-                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                deletedKey = result.data?.getStringExtra("deletedPostKey")
+                    ?: return@registerForActivityResult
+                key =
+                    result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl =
+                    result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 rvAdapter.deletePost(deletedKey)
                 rvAdapter.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
         }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uid = intent.getStringExtra("uid") ?: return
@@ -80,14 +84,17 @@ class MypageOtherUsers : AppCompatActivity() {
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
 
                     }
+
                     1 -> {
                         gridLayoutManager.spanCount = 1
                         binding.conOtherUserTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
                     }
+
                     else -> {}
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
@@ -132,6 +139,7 @@ class MypageOtherUsers : AppCompatActivity() {
             finish()
         }
     }
+
     private fun resetButtonSelectionsExcept(currentButton: View) {
         if (binding.btnOtherUserTagHospital != currentButton) binding.btnOtherUserTagHospital.isSelected =
             false
@@ -142,6 +150,7 @@ class MypageOtherUsers : AppCompatActivity() {
         if (binding.btnOtherUserTagDaily != currentButton) binding.btnOtherUserTagDaily.isSelected =
             false
     }
+
     private fun setUpRV() {
         rvAdapter = MyPageRVAdapter(list) { intent ->
             startForResult.launch(intent)
@@ -154,11 +163,13 @@ class MypageOtherUsers : AppCompatActivity() {
             adapter = rvAdapter
         }
     }
+
     private fun loadDefaultTabData() {
         binding.conOtherUserTag.visibility = View.VISIBLE
         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
         getMyData()
     }
+
     private fun getMyData(filter: String? = null) {
 
         val query = if (filter != null) {
@@ -167,7 +178,7 @@ class MypageOtherUsers : AppCompatActivity() {
             FBRef.boardRef.orderByChild("uid").equalTo(uid)
         }
 
-        query.addValueEventListener(object : ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list.clear()
 
@@ -198,35 +209,43 @@ class MypageOtherUsers : AppCompatActivity() {
             }
         })
     }
+
     private fun loadUserData() {
-        userProfileRef =
-            FirebaseDatabase.getInstance().getReference("users").child(uid).child("profile")
+        val userId = Firebase.auth.currentUser?.uid
+        if (userId != null) {
+            userProfileRef =
+                FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
 
-        valueEventListener = userProfileRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
+            FBRef.users.child("userId").child("profile")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userIdname =
+                            snapshot.child("userIdname").getValue(String::class.java)
+                        val petName = snapshot.child("petName").getValue(String::class.java)
+                        val birth = snapshot.child("birth").getValue(String::class.java)
+                        Log.d("JINA", "onDataChange: ${birth}")
 
-                val userIdname = snapshot.child("userIdname").getValue(String::class.java)
-                val petName = snapshot.child("petName").getValue(String::class.java)
-                val birth = snapshot.child("birth").getValue(String::class.java)
-                Log.d(TAG, "onDataChange: ${birth}")
+                        binding.tvOtherUserPageName.text = petName
+                        binding.tvOtherUserPageId.text = userIdname
+                        binding.tvOtherUserPageBirth.text = birth
 
-                binding.tvOtherUserPageName.text = petName
-                binding.tvOtherUserPageId.text = userIdname
-                binding.tvOtherUserPageBirth.text = birth
+                        if (birth != null && todayBirthday(birth)) {
+                            binding.ivMypageBirthday.visibility = View.VISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
+                        } else {
+                            binding.ivMypageBirthday.visibility = View.INVISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
+                        }
+                    }
 
-                if (birth != null && todayBirthday(birth)) {
-                    binding.ivMypageBirthday.visibility = View.VISIBLE
-                    binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
-                } else {
-                    binding.ivMypageBirthday.visibility = View.INVISIBLE
-                    binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Error loading user data: ${error.message}")
-            }
-        })
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "Error loading user data: ${error.message}")
+                    }
+                })
+        }
     }
+
     private fun todayBirthday(birth: String): Boolean {
         val calendar = Calendar.getInstance()
         val month = calendar.get(Calendar.MONTH) + 1
@@ -244,10 +263,11 @@ class MypageOtherUsers : AppCompatActivity() {
         }
         return day == birthDay && month == birthMonth
     }
+
     private fun setProfileImage() {
         val storageRef = Firebase.storage.reference.child("profileImages").child("${uid}.png")
         storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.imgOtherUserProfile.load(uri.toString()){
+            binding.imgOtherUserProfile.load(uri.toString()) {
                 crossfade(true)
             }
         }
