@@ -160,10 +160,10 @@
         android:id="@+id/con_mypage_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/con_mypage_tablayout">
@@ -180,11 +180,10 @@
             android:text="병원"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_pet"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/btn_mypage_tag_pet"
@@ -194,15 +193,14 @@
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="펫용품"
             android:paddingHorizontal="20dp"
+            android:text="펫용품"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_hospital"
             app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_behavior"
-            />
+            app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_hospital"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/btn_mypage_tag_behavior"
@@ -212,15 +210,14 @@
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="행동"
             android:paddingHorizontal="25dp"
+            android:text="행동"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_mypage_tag_daily"
             app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_pet"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/btn_mypage_tag_daily"
@@ -230,15 +227,14 @@
             android:background="@drawable/mypage_btn_selector"
             android:fontFamily="@font/cafe24"
             android:gravity="center"
-            android:text="일상"
             android:paddingHorizontal="25dp"
+            android:text="일상"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_mypage_tag_behavior"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -254,16 +250,26 @@
         app:layout_constraintStart_toStartOf="@id/iv_mypage_birthday_background"
         />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_mypage_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/sw_mypage_swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/con_mypage_tag" />
+        app:layout_constraintTop_toBottomOf="@+id/con_mypage_tag">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_mypage_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/con_mypage_tag" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

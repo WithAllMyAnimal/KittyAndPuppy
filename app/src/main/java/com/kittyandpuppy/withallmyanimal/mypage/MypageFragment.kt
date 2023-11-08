@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.ktx.auth
@@ -50,6 +51,9 @@ class MypageFragment : Fragment() {
     private lateinit var deletedKey : String
     private lateinit var imageUrl : String
     private lateinit var userProfileRef: DatabaseReference
+    private lateinit var valueEventListener: ValueEventListener
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private var refreshing = false
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -84,6 +88,10 @@ class MypageFragment : Fragment() {
         loadDefaultTabData()
         loadUserData()
 
+        swipeRefreshLayout = binding.swMypageSwipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
         defaultTab?.select()
@@ -191,6 +199,7 @@ class MypageFragment : Fragment() {
 
     private fun getMyData(filter : String? = null) {
         val currentUserId = FBAuth.getUid()
+        val myPostKeys = mutableListOf<String>()
 
         val query = if (filter != null) {
             FBRef.boardRef.orderByChild("uidAndCategory").equalTo("${currentUserId}$filter")
@@ -266,34 +275,32 @@ class MypageFragment : Fragment() {
             userProfileRef =
                 FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
 
-            FBRef.users.child("userId").child("profile")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (isAdded && !isDetached && !isRemoving) {
-                            val userIdname =
-                                snapshot.child("userIdname").getValue(String::class.java)
-                            val petName = snapshot.child("petName").getValue(String::class.java)
-                            val birth = snapshot.child("birth").getValue(String::class.java)
-                            Log.d("JINA", "onDataChange: ${birth}")
+            valueEventListener = userProfileRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (isAdded && !isDetached && !isRemoving) {
+                        val userIdname = snapshot.child("userIdname").getValue(String::class.java)
+                        val petName = snapshot.child("petName").getValue(String::class.java)
+                        val birth = snapshot.child("birth").getValue(String::class.java)
+                        Log.d("JINA", "onDataChange: ${birth}")
 
-                            binding.tvMypage.text = petName
-                            binding.tvMypageNickname.text = userIdname
-                            binding.tvMypageBirth.text = birth
+                        binding.tvMypage.text = petName
+                        binding.tvMypageNickname.text = userIdname
+                        binding.tvMypageBirth.text = birth
 
-                            if (birth != null && todayBirthday(birth)) {
-                                binding.ivMypageBirthday.visibility = View.VISIBLE
-                                binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
-                            } else {
-                                binding.ivMypageBirthday.visibility = View.INVISIBLE
-                                binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
-                            }
+                        if (birth != null && todayBirthday(birth)) {
+                            binding.ivMypageBirthday.visibility = View.VISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
+                        } else {
+                            binding.ivMypageBirthday.visibility = View.INVISIBLE
+                            binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
                         }
                     }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e(TAG, "Error loading user data: ${error.message}")
-                    }
-                })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Error loading user data: ${error.message}")
+                }
+            })
         }
     }
 
@@ -327,8 +334,26 @@ class MypageFragment : Fragment() {
 
     }
 
+    private fun refreshData() {
+        if (!refreshing) {
+            refreshing = true
+            list.clear()
+            getMyData()
+            swipeRefreshLayout.isRefreshing = false
+            refreshing = false
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        if (::userProfileRef.isInitialized && ::valueEventListener.isInitialized) {
+            userProfileRef.removeEventListener(valueEventListener)
+        }
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
     }
 }
