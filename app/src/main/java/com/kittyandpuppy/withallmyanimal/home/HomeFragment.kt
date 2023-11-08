@@ -39,9 +39,9 @@ class HomeFragment : Fragment() {
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
     private val TAG = HomeFragment::class.java.simpleName
-    private lateinit var key : String
-    private lateinit var deletedKey : String
-    private lateinit var  imageUrl : String
+    private lateinit var key: String
+    private lateinit var deletedKey: String
+    private lateinit var imageUrl: String
     private var boardValueEventListener: ValueEventListener? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
@@ -49,9 +49,12 @@ class HomeFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
-                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                deletedKey = result.data?.getStringExtra("deletedPostKey")
+                    ?: return@registerForActivityResult
+                key =
+                    result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                imageUrl =
+                    result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 rvAdapter?.deletePost(deletedKey)
                 rvAdapter?.updateImage(key, imageUrl)
             }
@@ -107,6 +110,7 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
@@ -127,6 +131,7 @@ class HomeFragment : Fragment() {
                     }
                     onSpinnerItemSelected()
                 }
+
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
 
@@ -141,6 +146,7 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList) { intent ->
             startForResult.launch(intent)
@@ -151,6 +157,7 @@ class HomeFragment : Fragment() {
             adapter = rvAdapter
         }
     }
+
     private fun refreshData() {
         if (!refreshing) {
             refreshing = true
@@ -166,6 +173,7 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     enum class QueryType {
         COMBINED_SPINNER,
         ONLY_CATEGORY,
@@ -180,7 +188,7 @@ class HomeFragment : Fragment() {
         boardList.clear()
         positions.forEach { position ->
             val query = boardRef.orderByChild(position).equalTo(search)
-            query.addListenerForSingleValueEvent (object : ValueEventListener {
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     handlePostsData(snapshot)
                 }
@@ -191,6 +199,7 @@ class HomeFragment : Fragment() {
             })
         }
     }
+
     private fun getBoardData(
         combinedSpinnerValue: String? = null,
         onlyCategory: String? = null,
@@ -232,8 +241,9 @@ class HomeFragment : Fragment() {
                 Log.w(TAG, "Post Failed", error.toException())
             }
         }
-        query.second.addListenerForSingleValueEvent (boardValueEventListener!!)
+        query.second.addListenerForSingleValueEvent(boardValueEventListener!!)
     }
+
     private fun handlePostsData(snapshot: DataSnapshot) {
 
         for (postSnapshot in snapshot.children) {
@@ -256,7 +266,7 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
-                likesCountRef.addListenerForSingleValueEvent (object : ValueEventListener {
+                likesCountRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val likesCount = snapshot.getValue(Int::class.java) ?: 0
                         post.likesCount = likesCount
@@ -269,7 +279,7 @@ class HomeFragment : Fragment() {
                 })
 
                 val commentsRef = FBRef.commentRef.child(postKey)
-                commentsRef.addListenerForSingleValueEvent (object : ValueEventListener {
+                commentsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         post.commentsCount = snapshot.childrenCount.toInt()
                         rvAdapter?.notifyDataSetChanged()
@@ -287,6 +297,7 @@ class HomeFragment : Fragment() {
         }
         rvAdapter?.submitList(boardList.toList())
     }
+
     fun onSpinnerItemSelected() {
         val spinnerDogCatValue = binding.spinnerDogandcat.selectedItem.toString()
         val spinnerCategoryValue = binding.spinnerCategory.selectedItem.toString()
@@ -310,5 +321,10 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "너가 불려야 하는데")
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData()
     }
 }
