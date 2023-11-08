@@ -49,7 +49,10 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 Log.d("이미지변경", "찍혀라")
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 Log.d("이미지변경",imageUri)
-                loadUpdatedImage(imageUri)
+                val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
+                val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                val review = result.data?.getStringExtra("review") ?: return@registerForActivityResult
+                loadUpdatedImage(imageUri, title, content, review)
             }
         }
 
@@ -173,8 +176,11 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(imageUri : String) {
+    private fun loadUpdatedImage(imageUri : String, title : String, content : String, review : String) {
         Log.d("이미지변경", "loadUpdatedImage")
         binding.ivDetailBehaviorPictureLeft.load(imageUri)
+        binding.tvDetailBehaviorTitle.text = title
+        binding.tvDetailBehaviorCautionContents.text = content
+        binding.tvDetailBehaviorReviewContents.text = review
     }
 }

@@ -45,7 +45,13 @@ class DetailHospitalActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                loadUpdatedImage(imageUri)
+                val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
+                val date = result.data?.getStringExtra("date") ?: return@registerForActivityResult
+                val disease = result.data?.getStringExtra("disease") ?: return@registerForActivityResult
+                val location = result.data?.getStringExtra("location") ?: return@registerForActivityResult
+                val price = result.data?.getStringExtra("price") ?: return@registerForActivityResult
+                val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                loadUpdatedImage(imageUri, title, date, disease, location, price, content)
             }
         }
 
@@ -170,7 +176,13 @@ class DetailHospitalActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(imageUri : String) {
+    private fun loadUpdatedImage(imageUri : String, title : String, date : String, disease : String, location : String, price : String, content : String) {
         binding.ivDetailHospitalPictureLeft.load(imageUri)
+        binding.tvDetailHospitalTitle.text = title
+        binding.tvDetailHospitalDateContents.text = date
+        binding.tvDetailHospitalDiseaseContents.text = disease
+        binding.tvDetailHospitalLocationContents.text = location
+        binding.tvDetailHospitalPriceContents.text = price
+        binding.tvDetailHospitalReviewContents.text = content
     }
 }

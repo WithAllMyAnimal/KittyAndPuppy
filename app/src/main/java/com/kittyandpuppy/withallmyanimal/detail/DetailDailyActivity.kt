@@ -46,7 +46,9 @@ class DetailDailyActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                loadUpdatedImage(imageUri)
+                val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
+                val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                loadUpdatedImage(imageUri, title, content)
             }
         }
 
@@ -165,7 +167,9 @@ class DetailDailyActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(imageUri : String) {
+    private fun loadUpdatedImage(imageUri : String, title : String, content : String) {
         binding.ivDetailDailyPictureLeft.load(imageUri)
+        binding.tvDetailDailyTitle.text = title
+        binding.tvDetailDailyReviewContents.text = content
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
@@ -148,6 +149,12 @@ class MypageHospital : AppCompatActivity() {
                                                         putExtra("addedPostUid", uid)
                                                         putExtra("addedPostKey", key)
                                                         putExtra("imageUri", currentImageUri.toString())
+                                                        putExtra("title", title)
+                                                        putExtra("data", date)
+                                                        putExtra("disease", disease)
+                                                        putExtra("location", location)
+                                                        putExtra("price", price)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                     finish()
@@ -170,6 +177,12 @@ class MypageHospital : AppCompatActivity() {
                                                             "imageUri",
                                                             imageUri.toString()
                                                         )
+                                                        putExtra("title", title)
+                                                        putExtra("data", date)
+                                                        putExtra("disease", disease)
+                                                        putExtra("location", location)
+                                                        putExtra("price", price)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                 } else {
@@ -188,7 +201,7 @@ class MypageHospital : AppCompatActivity() {
                                             "새 이미지가 선택되지 않았습니다",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        finish()
+                                        binding.btnMypageHospitalSave.isEnabled
                                     }
                                 } else {
                                     Toast.makeText(
@@ -302,6 +315,7 @@ class MypageHospital : AppCompatActivity() {
                     binding.etvMypageHospitalCheckup.setText(it.date)
                     binding.spMypageHospital.setText(it.location)
                     binding.edtMypageHospital.setText(it.date)
+                    currentImageUri = it.localUrl.toUri()
                     binding.ivMypageHospitalPictureLeft.load(it.imageUrl)
                     it.tags.forEach { tag ->
                         addChip(tag)
