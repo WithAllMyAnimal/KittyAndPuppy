@@ -168,6 +168,7 @@ class MypageBehavior : AppCompatActivity() {
                                                         setResult(Activity.RESULT_OK, resultIntent)
                                                         finish()
                                                         Log.d("이미지변경", "작성페이지 : $imageUri")
+                                                        Log.d("마이페이지이미지변경", "작성페이지 : $imageUri")
 
                                                     } else {
                                                         Toast.makeText(

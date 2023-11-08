@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -22,7 +23,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit ) :
+class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicked: (Intent) -> Unit) :
     androidx.recyclerview.widget.ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName
@@ -67,8 +68,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startForResult(intent)
-                        Log.d("마이페이지이미지변경", "startForResult")
+                        onItemClicked(intent)
                     }
                 }
             }
@@ -148,7 +148,8 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        startForResult(intent)
+                        onItemClicked(intent)
+                        Log.d("마이페이지이미지변경", "startForResult")
                     }
                 }
             }
