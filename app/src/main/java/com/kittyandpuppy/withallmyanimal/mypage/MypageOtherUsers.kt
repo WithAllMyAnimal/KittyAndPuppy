@@ -52,8 +52,8 @@ class MypageOtherUsers : AppCompatActivity() {
                 deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
                 key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                rvAdapter?.deletePost(deletedKey)
-                rvAdapter?.updateImage(key, imageUrl)
+                rvAdapter.deletePost(deletedKey)
+                rvAdapter.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
         }

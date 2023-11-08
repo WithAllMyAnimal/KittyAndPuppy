@@ -49,16 +49,19 @@ class MypageFragment : Fragment() {
     private lateinit var key : String
     private lateinit var deletedKey : String
     private lateinit var imageUrl : String
-    private lateinit var homeViewModel : HomeViewModel
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                Log.d("마이페이지이미지변경", result.resultCode.toString())
                 deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
+                Log.d("마이페이지이미지변경", deletedKey)
                 key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                Log.d("마이페이지이미지변경", key)
                 imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                Log.d("마이페이지이미지변경", imageUrl)
                 rvAdapter.deletePost(deletedKey)
                 rvAdapter.updateImage(key, imageUrl)
             }
@@ -77,7 +80,6 @@ class MypageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         setUpRecyclerView()
         loadDefaultTabData()
@@ -179,14 +181,6 @@ class MypageFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = gridLayoutManager
             adapter = rvAdapter
-        }
-        homeViewModel.boardList.observe(viewLifecycleOwner) { list ->
-            list.forEach { homeModel ->
-                homeViewModel.getImageUrl(homeModel.key).observe(viewLifecycleOwner) { imageUrl ->
-                    rvAdapter.updateImage(homeModel.key, imageUrl)
-                }
-            }
-            rvAdapter.submitList(list)
         }
     }
 
