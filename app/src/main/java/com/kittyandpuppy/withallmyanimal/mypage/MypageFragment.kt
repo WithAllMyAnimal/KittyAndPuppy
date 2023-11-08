@@ -50,7 +50,6 @@ class MypageFragment : Fragment() {
     private lateinit var deletedKey : String
     private lateinit var imageUrl : String
     private lateinit var userProfileRef: DatabaseReference
-    private lateinit var valueEventListener: ValueEventListener
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -192,7 +191,6 @@ class MypageFragment : Fragment() {
 
     private fun getMyData(filter : String? = null) {
         val currentUserId = FBAuth.getUid()
-        val myPostKeys = mutableListOf<String>()
 
         val query = if (filter != null) {
             FBRef.boardRef.orderByChild("uidAndCategory").equalTo("${currentUserId}$filter")
@@ -200,7 +198,7 @@ class MypageFragment : Fragment() {
             FBRef.boardRef.orderByChild("uid").equalTo(currentUserId)
         }
 
-        query.addValueEventListener(object : ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 list.clear()
 
@@ -268,32 +266,34 @@ class MypageFragment : Fragment() {
             userProfileRef =
                 FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
 
-            valueEventListener = userProfileRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (isAdded && !isDetached && !isRemoving) {
-                        val userIdname = snapshot.child("userIdname").getValue(String::class.java)
-                        val petName = snapshot.child("petName").getValue(String::class.java)
-                        val birth = snapshot.child("birth").getValue(String::class.java)
-                        Log.d("JINA", "onDataChange: ${birth}")
+            FBRef.users.child("userId").child("profile")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (isAdded && !isDetached && !isRemoving) {
+                            val userIdname =
+                                snapshot.child("userIdname").getValue(String::class.java)
+                            val petName = snapshot.child("petName").getValue(String::class.java)
+                            val birth = snapshot.child("birth").getValue(String::class.java)
+                            Log.d("JINA", "onDataChange: ${birth}")
 
-                        binding.tvMypage.text = petName
-                        binding.tvMypageNickname.text = userIdname
-                        binding.tvMypageBirth.text = birth
+                            binding.tvMypage.text = petName
+                            binding.tvMypageNickname.text = userIdname
+                            binding.tvMypageBirth.text = birth
 
-                        if (birth != null && todayBirthday(birth)) {
-                            binding.ivMypageBirthday.visibility = View.VISIBLE
-                            binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
-                        } else {
-                            binding.ivMypageBirthday.visibility = View.INVISIBLE
-                            binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
+                            if (birth != null && todayBirthday(birth)) {
+                                binding.ivMypageBirthday.visibility = View.VISIBLE
+                                binding.ivMypageBirthdayBackground.visibility = View.VISIBLE
+                            } else {
+                                binding.ivMypageBirthday.visibility = View.INVISIBLE
+                                binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
+                            }
                         }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e(TAG, "Error loading user data: ${error.message}")
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "Error loading user data: ${error.message}")
+                    }
+                })
         }
     }
 
@@ -329,9 +329,6 @@ class MypageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if (::userProfileRef.isInitialized && ::valueEventListener.isInitialized) {
-            userProfileRef.removeEventListener(valueEventListener)
-        }
         _binding = null
     }
 }
