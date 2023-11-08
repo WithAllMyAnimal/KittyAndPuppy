@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
@@ -166,6 +167,7 @@ class MypageDaily : AppCompatActivity() {
                                                         )
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
+                                                    finish()
                                                 } else {
                                                     Toast.makeText(
                                                         this@MypageDaily,
@@ -198,6 +200,7 @@ class MypageDaily : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
         }
+
         binding.ivMypageDailyPictureLeft.setOnClickListener {
             isImageUpload = true
             if (ContextCompat.checkSelfPermission(this, storagePermission) == PackageManager.PERMISSION_GRANTED) {
@@ -257,6 +260,7 @@ class MypageDaily : AppCompatActivity() {
                     binding.etvMypageDailyTitle.setText(it.title)
                     binding.etvMypageDaily.setText(it.content)
                     binding.ivMypageDailyPictureLeft.load(it.imageUrl)
+                    currentImageUri = it.localUrl.toUri()
                     it.tags.forEach { tag ->
                         addChip(tag)
                     }

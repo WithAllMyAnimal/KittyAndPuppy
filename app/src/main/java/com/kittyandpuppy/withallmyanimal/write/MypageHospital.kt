@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
@@ -302,6 +303,7 @@ class MypageHospital : AppCompatActivity() {
                     binding.etvMypageHospitalCheckup.setText(it.date)
                     binding.spMypageHospital.setText(it.location)
                     binding.edtMypageHospital.setText(it.date)
+                    currentImageUri = it.localUrl.toUri()
                     binding.ivMypageHospitalPictureLeft.load(it.imageUrl)
                     it.tags.forEach { tag ->
                         addChip(tag)

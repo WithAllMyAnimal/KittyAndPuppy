@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.chip.Chip
@@ -70,7 +71,7 @@ class MypagePet : AppCompatActivity() {
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             imageUri = result.data?.data
-            binding.ivMypagePetPictureLeft.setImageURI(result.data?.data)
+            binding.ivMypagePetPictureLeft.setImageURI(imageUri)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -299,6 +300,7 @@ class MypagePet : AppCompatActivity() {
                     binding.etvMypagePetSupplies.setText(it.name)
                     binding.ratMypagePetStar.rating = it.satisfaction.toFloat()
                     binding.ivMypagePetPictureLeft.load(it.imageUrl)
+                    currentImageUri = it.localUrl.toUri()
                     it.tags.forEach { tag ->
                         addChip(tag)
                     }
