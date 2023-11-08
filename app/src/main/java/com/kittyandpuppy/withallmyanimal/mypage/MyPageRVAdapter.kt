@@ -86,7 +86,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicke
                     val userIdName = snapshot.child("userIdname").getValue(String::class.java)
 
                     userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.key}.png")
+                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)
