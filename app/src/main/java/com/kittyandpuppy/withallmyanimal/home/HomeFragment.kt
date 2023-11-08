@@ -1,6 +1,7 @@
 package com.kittyandpuppy.withallmyanimal.home
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -67,7 +68,6 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -114,6 +114,7 @@ class HomeFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
+
         val categoryAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.category,
@@ -145,6 +146,34 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
+        val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
+        val savedDogCatItem = sharedPref.getString("selectedDogCatItem", defaultDogCatItem)
+        val savedCategoryItem = sharedPref.getString("selectedCategoryItem", defaultCategoryItem)
+        binding.spinnerDogandcat.setSelection(
+            (binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(
+                savedDogCatItem
+            )
+        )
+        binding.spinnerCategory.setSelection(
+            (binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(
+                savedCategoryItem
+            )
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        val selectedDogCatItem = binding.spinnerDogandcat.selectedItem.toString()
+        val selectedCategoryItem = binding.spinnerCategory.selectedItem.toString()
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString("selectedDogCatItem", selectedDogCatItem)
+            putString("selectedCategoryItem", selectedCategoryItem)
+            apply()
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -323,8 +352,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
+        val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
+        val savedDogCatItem = sharedPref.getString("selectedDogCatItem", defaultDogCatItem)
+        val savedCategoryItem = sharedPref.getString("selectedCategoryItem", defaultCategoryItem)
+        binding.spinnerDogandcat.setSelection((binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(savedDogCatItem))
+        binding.spinnerCategory.setSelection((binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(savedCategoryItem))
+    }
+
+
     override fun onResume() {
         super.onResume()
-        refreshData()
+        onSpinnerItemSelected()
     }
 }
