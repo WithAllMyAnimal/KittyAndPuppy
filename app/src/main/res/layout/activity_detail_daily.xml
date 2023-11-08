@@ -100,11 +100,12 @@
                     android:gravity="center"
                     android:maxLength="20"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
+                    android:paddingVertical="5dp"
                     android:text="설기의 새로운 장난감"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/view_detail_daily_line_top"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_detail_date"
                     app:layout_constraintEnd_toEndOf="@+id/con_detail_daily"
                     app:layout_constraintStart_toStartOf="@+id/con_detail_daily"
                     app:layout_constraintTop_toTopOf="@id/con_detail_daily" />
@@ -116,32 +117,23 @@
                     android:text="2023.11.02"
                     android:textColor="@color/textColor"
                     android:textSize="11sp"
-                    android:layout_marginBottom="-5dp"
                     android:fontFamily="@font/cafe24"
+                    android:layout_marginVertical="5dp"
+                    app:layout_constraintBottom_toTopOf="@id/iv_detail_daily_picture_left"
                     app:layout_constraintTop_toBottomOf="@id/tv_detail_daily_title"
                     app:layout_constraintEnd_toEndOf="@id/con_detail_daily"
                     />
-
-                <View
-                    android:id="@+id/view_detail_daily_line_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
-                    android:background="@android:color/transparent"
-                    app:layout_constraintEnd_toEndOf="@id/con_detail_daily"
-                    app:layout_constraintStart_toStartOf="@id/con_detail_daily"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_detail_date" />
 
                 <ImageView
                     android:id="@+id/iv_detail_daily_picture_left"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_marginVertical="10dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/add_image"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/con_detail_daily"
                     app:layout_constraintStart_toStartOf="@id/con_detail_daily"
-                    app:layout_constraintTop_toBottomOf="@id/view_detail_daily_line_top" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_date" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
