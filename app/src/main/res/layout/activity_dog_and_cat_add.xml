@@ -65,6 +65,7 @@
                 android:id="@+id/imageView6"
                 android:layout_width="60dp"
                 android:layout_height="50dp"
+                android:layout_marginTop="-5dp"
                 app:layout_constraintEnd_toEndOf="@id/con_add"
                 app:layout_constraintStart_toStartOf="@id/iv_circle_my"
                 app:layout_constraintTop_toTopOf="@+id/iv_circle_my"
