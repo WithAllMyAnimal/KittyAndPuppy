@@ -44,11 +44,12 @@ class DetailBehaviorActivity : AppCompatActivity() {
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            Log.d("이미지변경", result.resultCode.toString())
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = result.data?.getStringExtra("key") ?: return@registerForActivityResult
+                Log.d("이미지변경", "찍혀라")
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                loadUpdatedImage(key, imageUri)
                 Log.d("이미지변경",imageUri)
+                loadUpdatedImage(imageUri)
             }
         }
 
@@ -106,8 +107,9 @@ class DetailBehaviorActivity : AppCompatActivity() {
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypageBehavior::class.java)
             intent.putExtra("key", key)
+            Log.d("이미지변경", "startForResult1")
             startForResult.launch(intent)
-            Log.d("이미지변경", "startForResult")
+            Log.d("이미지변경", "startForResult2")
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
@@ -126,14 +128,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
                 Log.d("DetailBehaviorActivity", "Failed to read post data", error.toException())
             }
         })
-
-//        val storageRef = Firebase.storage.reference.child("${key}.png")
-//        Log.d("mmmmm", "성공22")
-//        storageRef.downloadUrl.addOnSuccessListener { uri ->
-//            binding.ivDetailBehaviorPictureLeft.load(uri.toString()) {
-//                crossfade(true)
-//            }
-//        }
 
         val storageProfile = Firebase.storage.reference.child("profileImages")
             .child("$uid.png")
@@ -179,17 +173,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String, imageUri : String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                    binding.ivDetailBehaviorPictureLeft.load(imageUri) {
-                        crossfade(true)
-                    }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
-            }
-        })
+    private fun loadUpdatedImage(imageUri : String) {
+        Log.d("이미지변경", "loadUpdatedImage")
+        binding.ivDetailBehaviorPictureLeft.load(imageUri)
     }
 }

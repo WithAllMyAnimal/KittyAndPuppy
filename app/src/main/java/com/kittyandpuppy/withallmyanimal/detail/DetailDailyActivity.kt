@@ -45,13 +45,8 @@ class DetailDailyActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val key = result.data?.getStringExtra("key")
-                val imageUri = result.data?.getStringExtra("imageUri")
-                if (key != null) {
-                    if (imageUri != null) {
-                        loadUpdatedImage(key, imageUri)
-                    }
-                }
+                val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                loadUpdatedImage(imageUri)
             }
         }
 
@@ -170,17 +165,7 @@ class DetailDailyActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(key: String, imageUri : String) {
-        val databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                binding.ivDetailDailyPictureLeft.load(imageUri) {
-                    crossfade(true)
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w("DetailBehaviorActivity", "loadImage:onCancelled", databaseError.toException())
-            }
-        })
+    private fun loadUpdatedImage(imageUri : String) {
+        binding.ivDetailDailyPictureLeft.load(imageUri)
     }
 }

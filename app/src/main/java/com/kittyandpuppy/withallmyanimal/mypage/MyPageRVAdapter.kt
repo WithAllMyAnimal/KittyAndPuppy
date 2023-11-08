@@ -68,6 +68,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         startForResult(intent)
+                        Log.d("마이페이지이미지변경", "startForResult")
                     }
                 }
             }
