@@ -143,6 +143,8 @@ class MypageDaily : AppCompatActivity() {
                                                         putExtra("addedPostUid", uid)
                                                         putExtra("addedPostKey", key)
                                                         putExtra("imageUri", currentImageUri.toString())
+                                                        putExtra("title", title)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                     finish()
@@ -165,6 +167,8 @@ class MypageDaily : AppCompatActivity() {
                                                             "imageUri",
                                                             imageUri.toString()
                                                         )
+                                                        putExtra("title", title)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                     finish()
@@ -184,7 +188,7 @@ class MypageDaily : AppCompatActivity() {
                                             "새 이미지가 선택되지 않았습니다",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        finish()
+                                        binding.btnMypageDailySave.isEnabled
                                     }
                                 } else {
                                     Toast.makeText(

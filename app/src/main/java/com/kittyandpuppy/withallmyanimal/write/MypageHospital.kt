@@ -149,6 +149,12 @@ class MypageHospital : AppCompatActivity() {
                                                         putExtra("addedPostUid", uid)
                                                         putExtra("addedPostKey", key)
                                                         putExtra("imageUri", currentImageUri.toString())
+                                                        putExtra("title", title)
+                                                        putExtra("data", date)
+                                                        putExtra("disease", disease)
+                                                        putExtra("location", location)
+                                                        putExtra("price", price)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                     finish()
@@ -171,6 +177,12 @@ class MypageHospital : AppCompatActivity() {
                                                             "imageUri",
                                                             imageUri.toString()
                                                         )
+                                                        putExtra("title", title)
+                                                        putExtra("data", date)
+                                                        putExtra("disease", disease)
+                                                        putExtra("location", location)
+                                                        putExtra("price", price)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                 } else {
@@ -189,7 +201,7 @@ class MypageHospital : AppCompatActivity() {
                                             "새 이미지가 선택되지 않았습니다",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        finish()
+                                        binding.btnMypageHospitalSave.isEnabled
                                     }
                                 } else {
                                     Toast.makeText(

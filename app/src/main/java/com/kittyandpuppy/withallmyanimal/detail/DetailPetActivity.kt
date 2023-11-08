@@ -45,7 +45,13 @@ class DetailPetActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                loadUpdatedImage(imageUri)
+                val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
+                val name = result.data?.getStringExtra("name") ?: return@registerForActivityResult
+                val price = result.data?.getStringExtra("price") ?: return@registerForActivityResult
+                val satisfaction = result.data?.getStringExtra("satisfaction") ?: return@registerForActivityResult
+                val caution = result.data?.getStringExtra("caution") ?: return@registerForActivityResult
+                val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                loadUpdatedImage(imageUri, title, name, price, satisfaction, caution, content)
             }
         }
 
@@ -170,7 +176,13 @@ class DetailPetActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(imageUri : String) {
+    private fun loadUpdatedImage(imageUri : String, title : String, name : String, price : String, satisfaction : String, caution : String, content : String) {
         binding.ivDetailPetPictureLeft.load(imageUri)
+        binding.tvDetailPetTitle.text = title
+        binding.tvDetailPetNameContents.text = name
+        binding.tvDetailPetPriceContents.text = price
+        binding.ratDetailPetStar.rating = satisfaction.toFloat()
+        binding.tvDetailPetCautionContents.text = caution
+        binding.tvDetailPetReviewContents.text = content
     }
 }

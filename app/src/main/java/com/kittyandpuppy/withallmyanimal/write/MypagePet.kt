@@ -143,6 +143,12 @@ class MypagePet : AppCompatActivity() {
                                                         putExtra("addedPostUid", uid)
                                                         putExtra("addedPostKey", key)
                                                         putExtra("imageUri", currentImageUri.toString())
+                                                        putExtra("title", title)
+                                                        putExtra("name", name)
+                                                        putExtra("price", price)
+                                                        putExtra("satisfaction", satisfaction)
+                                                        putExtra("caution", caution)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                     finish()
@@ -165,6 +171,12 @@ class MypagePet : AppCompatActivity() {
                                                             "imageUri",
                                                             imageUri.toString()
                                                         )
+                                                        putExtra("title", title)
+                                                        putExtra("name", name)
+                                                        putExtra("price", price)
+                                                        putExtra("satisfaction", satisfaction)
+                                                        putExtra("caution", caution)
+                                                        putExtra("content", content)
                                                     }
                                                     setResult(Activity.RESULT_OK, resultIntent)
                                                 } else {
@@ -183,7 +195,7 @@ class MypagePet : AppCompatActivity() {
                                             "새 이미지가 선택되지 않았습니다",
                                             Toast.LENGTH_SHORT
                                         ).show()
-                                        finish()
+                                        binding.btnMypagePetSave.isEnabled
                                     }
                                 } else {
                                     Toast.makeText(
