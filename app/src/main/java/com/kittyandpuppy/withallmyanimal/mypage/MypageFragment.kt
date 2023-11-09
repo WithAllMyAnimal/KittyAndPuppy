@@ -47,9 +47,7 @@ class MypageFragment : Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
     private val TAG = MypageFragment::class.java.simpleName
-    private lateinit var key : String
     private lateinit var deletedKey : String
-    private lateinit var imageUrl : String
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -58,15 +56,8 @@ class MypageFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                Log.d("마이페이지이미지변경", result.resultCode.toString())
                 deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
-                Log.d("마이페이지이미지변경", deletedKey)
-                key = result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                Log.d("마이페이지이미지변경", key)
-                imageUrl = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                Log.d("마이페이지이미지변경", imageUrl)
                 rvAdapter.deletePost(deletedKey)
-                rvAdapter.updateImage(key, imageUrl)
             }
         }
 

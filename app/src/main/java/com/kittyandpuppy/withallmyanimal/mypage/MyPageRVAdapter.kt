@@ -178,7 +178,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = currentList[position]
         when (holder) {
             is LikesViewHolder -> {
                 if (selectedTab == TYPE_LIKES && list.isNotEmpty()) {
@@ -197,8 +197,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
     }
 
     private var selectedTab = TYPE_MY_LIST
-
-
 
     fun selectedTab(tab: Int) {
         selectedTab = tab

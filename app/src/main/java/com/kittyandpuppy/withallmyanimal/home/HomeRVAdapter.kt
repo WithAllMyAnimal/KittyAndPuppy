@@ -59,14 +59,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.ivRvImage.load(homeModel.imageUrl)
             Log.d("behavior2222", "홈피드 : ${homeModel.imageUrl}")
 
-//            val storageRef = Firebase.storage.reference.child("${homeModel.key}.png")
-//            storageRef.downloadUrl.addOnSuccessListener { uri ->
-//                val imageUrl = uri.toString()
-//                binding.ivRvImage.load(imageUrl) {
-//                    crossfade(true)
-//                }
-//            }
-
             binding.root.setOnClickListener {
                 val clickedItem = boardList[adapterPosition]
                 val uid = clickedItem.uid

@@ -41,22 +41,14 @@ class MypageOtherUsers : AppCompatActivity() {
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var uid: String
-
-    private lateinit var key: String
     private lateinit var deletedKey: String
-    private lateinit var imageUrl: String
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 deletedKey = result.data?.getStringExtra("deletedPostKey")
                     ?: return@registerForActivityResult
-                key =
-                    result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                imageUrl =
-                    result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 rvAdapter.deletePost(deletedKey)
-                rvAdapter.updateImage(key, imageUrl)
             }
             Log.d(TAG, "startForResult")
         }
@@ -223,7 +215,7 @@ class MypageOtherUsers : AppCompatActivity() {
                             snapshot.child("userIdname").getValue(String::class.java)
                         val petName = snapshot.child("petName").getValue(String::class.java)
                         val birth = snapshot.child("birth").getValue(String::class.java)
-                        Log.d("JINA", "onDataChange: ${birth}")
+                        Log.d("JINA", "onDataChange: $birth")
 
                         binding.tvOtherUserPageName.text = petName
                         binding.tvOtherUserPageId.text = userIdname
