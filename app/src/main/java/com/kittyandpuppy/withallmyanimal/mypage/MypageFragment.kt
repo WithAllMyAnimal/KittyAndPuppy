@@ -81,7 +81,6 @@ class MypageFragment : Fragment() {
         swipeRefreshLayout = binding.swMypageSwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
-            Log.d("새로고침", "onViewCreated")
         }
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -327,7 +326,6 @@ class MypageFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         refreshData()
-        Log.d("새로고침", "onResume")
     }
     private fun refreshData() {
         if (!refreshing) {
@@ -339,7 +337,6 @@ class MypageFragment : Fragment() {
             swipeRefreshLayout.isRefreshing = false
             refreshing = false
         }
-        Log.d("새로고침", "refreshData")
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -53,7 +53,6 @@ class HomeFragment : Fragment() {
                     ?: return@registerForActivityResult
                 rvAdapter?.deletePost(deletedKey)
             }
-            Log.d(TAG, "삭제")
         }
 
     override fun onCreateView(
@@ -285,7 +284,6 @@ class HomeFragment : Fragment() {
 
             if (post != null) {
                 boardList.add(post)
-                Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
                 likesCountRef.addListenerForSingleValueEvent(object : ValueEventListener {

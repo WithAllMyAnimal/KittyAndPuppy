@@ -48,7 +48,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
                         val userId = snapshot.child("profile").child("userIdname").value.toString()
                         binding.tvRvId.text = userId
                     }
-
                     override fun onCancelled(error: DatabaseError) {
                         Log.d("HomeRVAdapter", "Failed to read userID", error.toException())
                     }
@@ -57,7 +56,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
             binding.tvRvLikes.text = homeModel.likesCount.toString()
             binding.tvRvChat.text = homeModel.commentsCount.toString()
             binding.ivRvImage.load(homeModel.imageUrl)
-            Log.d("behavior2222", "홈피드 : ${homeModel.imageUrl}")
 
             binding.root.setOnClickListener {
                 val clickedItem = boardList[adapterPosition]

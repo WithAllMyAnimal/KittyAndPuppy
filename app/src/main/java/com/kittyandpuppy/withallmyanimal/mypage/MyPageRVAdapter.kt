@@ -67,7 +67,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startForResult(intent)
                     }
                 }
@@ -149,7 +149,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startForResult(intent)
-                        Log.d("마이페이지이미지변경", "startForResult")
                     }
                 }
             }
@@ -225,7 +224,6 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
     }
 
     companion object {
-
         const val TYPE_LIKES = 0
         const val TYPE_MY_LIST = 1
 
