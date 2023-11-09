@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -51,8 +52,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         fabBinding = FabLayoutBinding.bind(binding.root)
         setContentView(binding.root)
+
 
         fragmentManager = supportFragmentManager
         if (savedInstanceState == null) {
