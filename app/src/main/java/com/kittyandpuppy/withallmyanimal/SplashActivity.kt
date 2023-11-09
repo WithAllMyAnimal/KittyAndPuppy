@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatDelegate
 import coil.load
 import com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity
 import com.kittyandpuppy.withallmyanimal.databinding.ActivitySplashBinding
@@ -20,6 +21,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         Handler(Looper.getMainLooper()).postDelayed({
             val intent= Intent( this,LoginActivity::class.java)
             startActivity(intent)
