@@ -47,7 +47,7 @@
         android:fontFamily="@font/cafe24"
         android:text="계정"
         android:paddingStart="20dp"
-        android:paddingVertical="5dp"
+        android:paddingVertical="7dp"
         android:background="@color/blue"
         android:textColor="@color/black"
         android:textSize="18sp"
