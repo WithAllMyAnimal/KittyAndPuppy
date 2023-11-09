@@ -7,8 +7,6 @@
 
 - ### [Team GitHub](https://github.com/WithAllMyAnimal/KittyAndPuppy)
 
-- ### [Canva](https://www.canva.com/design/DAFwTIBILho/2GmYVZDvnnnt3G2f4-i6MA/view?utm_content=DAFwTIBILho&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink)
-
 | 이름   | 역할   | BLOG                           | GitHub                         | 
 | ------ | ------ | ------------------------------ | -----------------------------  |
 | 김민지 | 리더   | https://url.kr/q2f3kv          | https://github.com/minji-0420  |
@@ -25,6 +23,13 @@
   
 ![image](https://github.com/WithAllMyAnimal/KittyAndPuppy/blob/dev/wireframe_figma.png)
 - ### [Team Figma](https://www.figma.com/file/M0ZK13PiR2EQHOeFlHHSkq/NBC_2%EC%A1%B0?type=design&node-id=0%3A1&mode=design&t=Gk9iIecXx5N5Zk3x-1)
+</details>
+
+<details>
+<summary>로그인 페이지</summary>
+
+<img src=  https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/7e3debd2-953a-4602-b904-101fa798ee69 width="1000" height="300">
+
 </details>
 
 ## 📗 Platforms & Languages 📒
