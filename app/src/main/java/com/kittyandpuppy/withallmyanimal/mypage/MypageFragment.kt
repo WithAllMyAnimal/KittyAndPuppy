@@ -70,11 +70,10 @@ class MypageFragment : Fragment() {
             }
         }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
         database = Firebase.database.reference
         binding.imgMypageProfile.load(Constants.currentUserProfileImg)
@@ -91,6 +90,7 @@ class MypageFragment : Fragment() {
         swipeRefreshLayout = binding.swMypageSwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
+            Log.d("새로고침", "onViewCreated")
         }
         val tabLayout = binding.tlMypageTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -333,27 +333,28 @@ class MypageFragment : Fragment() {
         return day == birthDay && month == birthMonth
 
     }
-
+    override fun onResume() {
+        super.onResume()
+        refreshData()
+        Log.d("새로고침", "onResume")
+    }
     private fun refreshData() {
         if (!refreshing) {
             refreshing = true
-            list.clear()
-            getMyData()
+            when (binding.tlMypageTabLayout.selectedTabPosition) {
+                0 -> getMyData()
+                1 -> getLikedPosts()
+            }
             swipeRefreshLayout.isRefreshing = false
             refreshing = false
         }
+        Log.d("새로고침", "refreshData")
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         if (::userProfileRef.isInitialized && ::valueEventListener.isInitialized) {
             userProfileRef.removeEventListener(valueEventListener)
         }
         _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        refreshData()
     }
 }

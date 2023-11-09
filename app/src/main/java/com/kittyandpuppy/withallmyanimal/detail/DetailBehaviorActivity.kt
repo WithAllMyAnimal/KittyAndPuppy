@@ -44,11 +44,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Log.d("이미지변경", result.resultCode.toString())
             if (result.resultCode == Activity.RESULT_OK) {
-                Log.d("이미지변경", "찍혀라")
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                Log.d("이미지변경",imageUri)
                 val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
                 val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
                 val review = result.data?.getStringExtra("review") ?: return@registerForActivityResult
@@ -110,9 +107,7 @@ class DetailBehaviorActivity : AppCompatActivity() {
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypageBehavior::class.java)
             intent.putExtra("key", key)
-            Log.d("이미지변경", "startForResult1")
             startForResult.launch(intent)
-            Log.d("이미지변경", "startForResult2")
         }
 
         databaseRef = FirebaseDatabase.getInstance().getReference("board").child(key)
@@ -177,7 +172,6 @@ class DetailBehaviorActivity : AppCompatActivity() {
         }
     }
     private fun loadUpdatedImage(imageUri : String, title : String, content : String, review : String) {
-        Log.d("이미지변경", "loadUpdatedImage")
         binding.ivDetailBehaviorPictureLeft.load(imageUri)
         binding.tvDetailBehaviorTitle.text = title
         binding.tvDetailBehaviorCautionContents.text = content

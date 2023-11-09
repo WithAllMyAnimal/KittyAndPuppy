@@ -50,14 +50,18 @@ class HomeFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                Log.d(TAG, result.resultCode.toString())
                 deletedKey = result.data?.getStringExtra("deletedPostKey")
                     ?: return@registerForActivityResult
                 key =
                     result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
+                Log.d(TAG, key)
                 imageUrl =
                     result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                Log.d(TAG, imageUrl)
                 rvAdapter?.deletePost(deletedKey)
                 rvAdapter?.updateImage(key, imageUrl)
+                Log.d(TAG, "updated")
             }
             Log.d(TAG, "startForResult")
         }
@@ -196,7 +200,6 @@ class HomeFragment : Fragment() {
             refreshing = false
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
