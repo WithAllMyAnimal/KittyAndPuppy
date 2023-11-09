@@ -26,12 +26,23 @@
 </details>
 
 <details>
-<summary>로그인 페이지</summary>
+<summary>로그인 페이지</summary>  
 
 <img src=  https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/7e3debd2-953a-4602-b904-101fa798ee69 width="1000" height="300">
 
 </details>
 
+<details>
+<summary>홈 피드 페이지</summary>  
+</details>
+
+<details>
+<summary>마이 페이지</summary>  
+</details>
+
+<details>
+<summary>설정 페이지</summary>  
+</details>
 ## 📗 Platforms & Languages 📒
 <img src="https://img.shields.io/badge/android-3DDC84?style=flat-square&logo=android&logoColor=white"/>  <img src="https://img.shields.io/badge/kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white"/>
 
