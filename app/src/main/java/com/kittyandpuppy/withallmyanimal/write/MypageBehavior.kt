@@ -118,7 +118,7 @@ class MypageBehavior : AppCompatActivity() {
                                 animal = dogcatValue,
                                 uidAndCategory = uidAndCategory,
                                 key = key,
-                                localUrl = if (currentImageUri != null) currentImageUri.toString() else imageUri.toString()
+                                localUrl = if (!isImageUpload && currentImageUri != null) currentImageUri.toString() else imageUri.toString()
                             )
 
                             FBRef.boardRef.child(key).setValue(behaviorData)
@@ -289,13 +289,6 @@ class MypageBehavior : AppCompatActivity() {
                     .show()
             }
         })
-//        val storageImage = Firebase.storage.reference.child("${postKey}.png")
-//        storageImage.downloadUrl.addOnSuccessListener { uri ->
-//            Log.d("JINA", "loadUpdatedImage: ${uri.toString()}")
-//            binding.ivMypageBehaviorPictureLeft.load(uri.toString()){
-//                crossfade(true)
-//            }
-//        }
     }
 
     private fun addChip(chipName: String) {

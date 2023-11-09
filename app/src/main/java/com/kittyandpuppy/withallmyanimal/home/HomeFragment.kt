@@ -40,9 +40,7 @@ class HomeFragment : Fragment() {
     private var rvAdapter: HomeRVAdapter? = null
     private val boardList = mutableListOf<BaseModel>()
     private val TAG = HomeFragment::class.java.simpleName
-    private lateinit var key: String
     private lateinit var deletedKey: String
-    private lateinit var imageUrl: String
     private var boardValueEventListener: ValueEventListener? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
@@ -53,17 +51,8 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, result.resultCode.toString())
                 deletedKey = result.data?.getStringExtra("deletedPostKey")
                     ?: return@registerForActivityResult
-                key =
-                    result.data?.getStringExtra("addedPostKey") ?: return@registerForActivityResult
-                Log.d(TAG, key)
-                imageUrl =
-                    result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
-                Log.d(TAG, imageUrl)
                 rvAdapter?.deletePost(deletedKey)
-                rvAdapter?.updateImage(key, imageUrl)
-                Log.d(TAG, "updated")
             }
-            Log.d(TAG, "startForResult")
         }
 
     override fun onCreateView(
@@ -295,7 +284,6 @@ class HomeFragment : Fragment() {
 
             if (post != null) {
                 boardList.add(post)
-                Log.d(TAG, "boardList size : ${boardList.size}")
 
                 val likesCountRef = FBRef.likesCount.child(postKey)
                 likesCountRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -350,7 +338,6 @@ class HomeFragment : Fragment() {
 
             else -> {
                 getBoardData()
-                Log.d(TAG, "너가 불려야 하는데")
             }
         }
     }
@@ -365,7 +352,6 @@ class HomeFragment : Fragment() {
         binding.spinnerDogandcat.setSelection((binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(savedDogCatItem))
         binding.spinnerCategory.setSelection((binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(savedCategoryItem))
     }
-
 
     override fun onResume() {
         super.onResume()

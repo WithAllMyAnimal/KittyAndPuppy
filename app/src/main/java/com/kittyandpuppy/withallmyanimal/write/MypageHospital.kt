@@ -124,7 +124,7 @@ class MypageHospital : AppCompatActivity() {
                             animal = dogcatValue,
                             uidAndCategory = uidAndCategory,
                             key = key,
-                            localUrl = if (currentImageUri != null) currentImageUri.toString() else imageUri.toString()
+                            localUrl = if (!isImageUpload && currentImageUri != null) currentImageUri.toString() else imageUri.toString()
                         )
                         FBRef.boardRef
                             .child(key)
