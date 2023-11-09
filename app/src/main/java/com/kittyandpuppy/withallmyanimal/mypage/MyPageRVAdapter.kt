@@ -23,7 +23,7 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicked: (Intent) -> Unit) :
+class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit) :
     androidx.recyclerview.widget.ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName
@@ -68,7 +68,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicke
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        onItemClicked(intent)
+                        startForResult(intent)
                     }
                 }
             }
@@ -147,15 +147,14 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicke
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        onItemClicked(intent)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startForResult(intent)
                         Log.d("마이페이지이미지변경", "startForResult")
                     }
                 }
             }
         }
         fun bind(model: BaseModel) {
-            Log.d("rv adapter", "bind request")
             binding.ivMypageRvImage.load(model.imageUrl)
         }
     }
@@ -182,10 +181,14 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val onItemClicke
         val item = getItem(position)
         when (holder) {
             is LikesViewHolder -> {
-                holder.bind(item)
+                if (selectedTab == TYPE_LIKES && list.isNotEmpty()) {
+                    holder.bind(item)
+                }
             }
             is MyListViewHolder -> {
-                holder.bind(item)
+                if (selectedTab == TYPE_MY_LIST && list.isNotEmpty()) {
+                    holder.bind(item)
+                }
             }
         }
     }
