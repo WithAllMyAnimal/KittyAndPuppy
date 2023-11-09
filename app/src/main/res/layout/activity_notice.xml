@@ -116,7 +116,7 @@
             android:background="@color/blue"
             android:fontFamily="@font/maple"
             android:gravity="center|start"
-            android:text=" [필수 지식] "
+            android:text=" [필수지식] "
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/tv_notice_second_detail"
