@@ -77,6 +77,8 @@
             android:text="세부내용이 들어갈 곳입니다 세부내용이 들어갈 곳입니다 \n세부내용이 들어갈 곳입니다 세부내용이 들어갈 곳입니다"
             android:textColor="#999999"
             android:textSize="11sp"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="@id/con_mypage_item_list"
             app:layout_constraintStart_toStartOf="@id/tv_mypage_list_title"
             app:layout_constraintBottom_toTopOf="@id/tv_mypage_list_date"

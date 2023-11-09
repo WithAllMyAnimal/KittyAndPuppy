@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,13 +94,12 @@
             android:id="@+id/cb_resignation_checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="주의사항을 모두 확인하였으며, 회원탈퇴에 동의합니다."
             android:layout_marginTop="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_warning"
+            android:text="주의사항을 모두 확인하였으며, 회원탈퇴에 동의합니다."
             app:layout_constraintBottom_toTopOf="@id/btn_resignation_resignbutton"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_warning" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_resignation_resignbutton"
