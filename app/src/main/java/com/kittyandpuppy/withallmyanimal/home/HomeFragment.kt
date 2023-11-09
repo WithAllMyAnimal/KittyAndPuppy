@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
     private var boardValueEventListener: ValueEventListener? = null
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
+    private var currentSearchTag: String? = null
 
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -80,7 +81,6 @@ class HomeFragment : Fragment() {
 
         var isDogAndCatSpinnerInitialized = false
         var isCategorySpinnerInitialized = false
-
         val dogCatAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.dogandcat,
@@ -107,7 +107,6 @@ class HomeFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-
         val categoryAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.category,
@@ -133,12 +132,13 @@ class HomeFragment : Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                searchTags()
+                searchTags(p0.toString())
                 if (p0.toString().isEmpty()) {
                     getBoardData()
                 }
             }
         })
+
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
         val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
@@ -167,6 +167,19 @@ class HomeFragment : Fragment() {
             putString("selectedCategoryItem", selectedCategoryItem)
             apply()
         }
+    }
+
+    private fun saveSearchTagInPreferences(searchTag: String) {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putString("SEARCH_TAG", searchTag)
+            apply()
+        }
+    }
+
+    private fun loadSearchTagFromPreferences(): String {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return ""
+        return sharedPref.getString("SEARCH_TAG", "") ?: ""
     }
 
     private fun setUpRecyclerView() {
@@ -201,9 +214,10 @@ class HomeFragment : Fragment() {
         ONLY_ANIMAL,
         DEFAULT
     }
-
-    private fun searchTags() {
-        val search = binding.etSearch.text.toString()
+    private fun searchTags(tag: String? = null) {
+        val search = tag ?: binding.etSearch.text.toString()
+        currentSearchTag = search
+        saveSearchTagInPreferences(search)
         val positions = listOf("tags/0", "tags/1", "tags/2")
 
         boardList.clear()
@@ -349,12 +363,25 @@ class HomeFragment : Fragment() {
         val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
         val savedDogCatItem = sharedPref.getString("selectedDogCatItem", defaultDogCatItem)
         val savedCategoryItem = sharedPref.getString("selectedCategoryItem", defaultCategoryItem)
-        binding.spinnerDogandcat.setSelection((binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(savedDogCatItem))
-        binding.spinnerCategory.setSelection((binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(savedCategoryItem))
+        binding.spinnerDogandcat.setSelection(
+            (binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(
+                savedDogCatItem
+            )
+        )
+        binding.spinnerCategory.setSelection(
+            (binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(
+                savedCategoryItem
+            )
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        onSpinnerItemSelected()
+        currentSearchTag = loadSearchTagFromPreferences() // 화면 재진입 시 검색어 가져오기
+        if (!currentSearchTag.isNullOrEmpty()) {
+            searchTags(currentSearchTag) // 검색어로 필터링
+        } else {
+            getBoardData() // 검색어가 없다면 전체 데이터 로드
+        }
     }
 }
