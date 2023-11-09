@@ -23,6 +23,7 @@
         android:padding="15dp"
         android:scaleType="fitCenter"
         android:src="@drawable/image_back"
+        app:layout_constraintBottom_toBottomOf="@id/tb_setting_toolbar"
         app:layout_constraintStart_toStartOf="@+id/tb_setting_toolbar"
         app:layout_constraintTop_toTopOf="@id/tb_setting_toolbar" />
 
