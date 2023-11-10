@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.database.DataSnapshot
@@ -138,6 +138,20 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+        binding.etSearch.setOnEditorActionListener { textView, keyboarddown, event ->
+            if (keyboarddown == EditorInfo.IME_ACTION_SEARCH || keyboarddown == EditorInfo.IME_ACTION_DONE) {
+
+                // 키보드 내리기
+                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(textView.windowToken, 0)
+
+                val searchQuery = textView.text.toString()
+                searchTags(searchQuery)
+
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
 
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
         val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
