@@ -34,6 +34,9 @@
 
 <details>
 <summary>홈 피드 페이지</summary>  
+
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/8d0c3a1b-b257-49fc-a124-42e533e751ce  width="1000" height="600">
+  
 </details>
 
 <details>
