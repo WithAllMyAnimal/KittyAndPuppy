@@ -28,23 +28,29 @@
 <details>
 <summary>로그인 페이지</summary>  
 
-<img src=  https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/7e3debd2-953a-4602-b904-101fa798ee69 width="1000" height="300">
+<img src=  https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/7e3debd2-953a-4602-b904-101fa798ee69 width="1000" height="400">
 
 </details>
 
 <details>
 <summary>홈 피드 페이지</summary>  
 
-<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/8d0c3a1b-b257-49fc-a124-42e533e751ce  width="1000" height="600">
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/8d0c3a1b-b257-49fc-a124-42e533e751ce  width="1000" height="1000">
   
 </details>
 
 <details>
 <summary>마이 페이지</summary>  
+
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/63e79ccc-a992-4512-8048-3662219589ea  width="1000" height="500">
 </details>
 
 <details>
 <summary>설정 페이지</summary>  
+
+
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/6c2cc9e1-68eb-4121-b84f-2c461f9135b1  width="1000" height="500">
+  
 </details>
 ## 📗 Platforms & Languages 📒
 <img src="https://img.shields.io/badge/android-3DDC84?style=flat-square&logo=android&logoColor=white"/>  <img src="https://img.shields.io/badge/kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white"/>
