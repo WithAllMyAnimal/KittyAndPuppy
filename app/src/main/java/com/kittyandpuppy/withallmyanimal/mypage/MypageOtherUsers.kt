@@ -53,6 +53,10 @@ class MypageOtherUsers : AppCompatActivity() {
             Log.d(TAG, "startForResult")
         }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "gggg")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uid = intent.getStringExtra("uid") ?: return
