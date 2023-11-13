@@ -203,7 +203,6 @@ class MypageOtherUsers : AppCompatActivity() {
     }
 
     private fun loadUserData() {
-        // Todo: 상대방 uid 가져오기
         val userId = uid
         val storage = Firebase.storage
         val storageRef = storage.reference
