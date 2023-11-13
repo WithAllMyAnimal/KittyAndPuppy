@@ -36,19 +36,19 @@ class MainActivity : AppCompatActivity() {
     private val auth = Firebase.auth
     private val storage = Firebase.storage
 
-    companion object {
-        const val USER_PROFILE_IMAGES = "profileImages"
-    }
-
-    // 리팩토링 시 필요한 것
-    init {
-        Constants.currentUserUid = auth.currentUser!!.uid
-        storage.reference.child(USER_PROFILE_IMAGES)
-            .child("${Constants.currentUserUid}.png").downloadUrl.addOnSuccessListener {
-                Constants.currentUserProfileImg = it
-            }.addOnFailureListener {
-            }
-    }
+//    companion object {
+//        const val USER_PROFILE_IMAGES = "profileImages"
+//    }
+//
+//    // 리팩토링 시 필요한 것
+//    init {
+//        Constants.currentUserUid = auth.currentUser!!.uid
+//        storage.reference.child(USER_PROFILE_IMAGES)
+//            .child("${Constants.currentUserUid}.png").downloadUrl.addOnSuccessListener {
+//                Constants.currentUserProfileImg = it
+//            }.addOnFailureListener {
+//            }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

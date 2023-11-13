@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -47,7 +48,7 @@ class MypageFragment : Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var database: DatabaseReference
     private val TAG = MypageFragment::class.java.simpleName
-    private lateinit var deletedKey : String
+    private lateinit var deletedKey: String
     private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -56,7 +57,8 @@ class MypageFragment : Fragment() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey") ?: return@registerForActivityResult
+                deletedKey = result.data?.getStringExtra("deletedPostKey")
+                    ?: return@registerForActivityResult
                 rvAdapter.deletePost(deletedKey)
             }
         }
@@ -95,12 +97,14 @@ class MypageFragment : Fragment() {
                         getMyData()
 
                     }
+
                     1 -> {
                         gridLayoutManager.spanCount = 1
                         binding.conMypageTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
                         getLikedPosts()
                     }
+
                     else -> {}
                 }
             }
@@ -123,7 +127,7 @@ class MypageFragment : Fragment() {
         binding.btnMypageTagHospital.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
-            if (it.isSelected){
+            if (it.isSelected) {
                 getMyData("병원")
             } else {
                 getMyData()
@@ -132,7 +136,7 @@ class MypageFragment : Fragment() {
         binding.btnMypageTagPet.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
-            if (it.isSelected){
+            if (it.isSelected) {
                 getMyData("펫용품")
             } else {
                 getMyData()
@@ -141,7 +145,7 @@ class MypageFragment : Fragment() {
         binding.btnMypageTagBehavior.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
-            if (it.isSelected){
+            if (it.isSelected) {
                 getMyData("행동")
             } else {
                 getMyData()
@@ -150,7 +154,7 @@ class MypageFragment : Fragment() {
         binding.btnMypageTagDaily.setOnClickListener {
             resetButtonSelectionsExcept(it)
             it.isSelected = !it.isSelected
-            if (it.isSelected){
+            if (it.isSelected) {
                 getMyData("일상")
             } else {
                 getMyData()
@@ -187,7 +191,7 @@ class MypageFragment : Fragment() {
         getMyData()
     }
 
-    private fun getMyData(filter : String? = null) {
+    private fun getMyData(filter: String? = null) {
         val currentUserId = FBAuth.getUid()
         val myPostKeys = mutableListOf<String>()
 
@@ -234,33 +238,42 @@ class MypageFragment : Fragment() {
 
         list.clear()
 
-        FBRef.users.child(currentUserId).child("likedlist").addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val likedPostKeys = snapshot.children.map { it.key!! }
+        FBRef.users.child(currentUserId).child("likedlist")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val likedPostKeys = snapshot.children.map { it.key!! }
 
-                for (postKey in likedPostKeys) {
-                    FBRef.boardRef.child(postKey).addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val post = snapshot.getValue(BaseModel::class.java)
-                            post?.let { list.add(it) }
-                            rvAdapter.submitList(list.toList())
-                        }
+                    for (postKey in likedPostKeys) {
+                        FBRef.boardRef.child(postKey)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val post = snapshot.getValue(BaseModel::class.java)
+                                    post?.let { list.add(it) }
+                                    rvAdapter.submitList(list.toList())
+                                }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            Log.w("MyPageFragment", "loadPost:onCancelled", error.toException())
-                        }
-                    })
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.w(
+                                        "MyPageFragment",
+                                        "loadPost:onCancelled",
+                                        error.toException()
+                                    )
+                                }
+                            })
+                    }
                 }
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+            })
     }
 
     private fun loadUserData() {
         val userId = Firebase.auth.currentUser?.uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+
         if (userId != null) {
             userProfileRef =
                 FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
@@ -268,10 +281,10 @@ class MypageFragment : Fragment() {
             valueEventListener = userProfileRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (isAdded && !isDetached && !isRemoving) {
+                        val imageRef = storageRef.child("profileImages").child("$userId.png")
                         val userIdname = snapshot.child("userIdname").getValue(String::class.java)
                         val petName = snapshot.child("petName").getValue(String::class.java)
                         val birth = snapshot.child("birth").getValue(String::class.java)
-                        Log.d("JINA", "onDataChange: ${birth}")
 
                         binding.tvMypage.text = petName
                         binding.tvMypageNickname.text = userIdname
@@ -284,6 +297,13 @@ class MypageFragment : Fragment() {
                             binding.ivMypageBirthday.visibility = View.INVISIBLE
                             binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
                         }
+                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                            binding.imgMypageProfile.load(uri) {
+                                crossfade(true)
+                                transformations(CircleCropTransformation())
+                            }
+                        }.addOnFailureListener {
+                        }
                     }
                 }
 
@@ -294,39 +314,33 @@ class MypageFragment : Fragment() {
         }
     }
 
-    private fun todayBirthday(birth:String):Boolean {
+    private fun todayBirthday(birth: String): Boolean {
         // 오늘 날짜 불러오기
         val calendar = Calendar.getInstance()
         val month = calendar.get(Calendar.MONTH) + 1
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        Log.d("jina", "Today's Date: ${month}/$day")
-
         val birthParts = birth.split("/")
         if (birthParts.size < 3) {
-            Log.d("jina", "Invalid birth format: $birth")
             return false
         }
 
         val birthYear = birthParts[0].toIntOrNull()
         val birthMonth = birthParts[1].toIntOrNull() ?: run {
-            Log.d("jina", "Invalid birth month in: $birth")
             return false
         }
         val birthDay = birthParts[2].toIntOrNull() ?: run {
-            Log.d("jina", "Invalid birth day in: $birth")
             return false
         }
-
-        Log.d("rina", "Parsed Birth Date: $birthMonth$birthDay")
-
         return day == birthDay && month == birthMonth
 
     }
+
     override fun onResume() {
         super.onResume()
         refreshData()
     }
+
     private fun refreshData() {
         if (!refreshing) {
             refreshing = true
@@ -338,6 +352,7 @@ class MypageFragment : Fragment() {
             refreshing = false
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         if (::userProfileRef.isInitialized && ::valueEventListener.isInitialized) {
