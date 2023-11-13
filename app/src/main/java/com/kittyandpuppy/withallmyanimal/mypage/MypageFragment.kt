@@ -68,8 +68,6 @@ class MypageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
-        database = Firebase.database.reference
-        binding.imgMypageProfile.load(Constants.currentUserProfileImg)
         return binding.root
     }
 
