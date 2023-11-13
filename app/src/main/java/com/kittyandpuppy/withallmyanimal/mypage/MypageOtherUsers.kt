@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -38,7 +39,6 @@ class MypageOtherUsers : AppCompatActivity() {
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
     private val TAG = MypageFragment::class.java.simpleName
-    private lateinit var userProfileRef: DatabaseReference
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var uid: String
     private lateinit var deletedKey: String
@@ -207,19 +207,20 @@ class MypageOtherUsers : AppCompatActivity() {
     }
 
     private fun loadUserData() {
-        val userId = Firebase.auth.currentUser?.uid
-        if (userId != null) {
-            userProfileRef =
-                FirebaseDatabase.getInstance().getReference("users").child(userId).child("profile")
+        val userId = uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
 
-            FBRef.users.child("userId").child("profile")
+        if (userId != null) {
+            FBRef.users.child("$userId").child("profile")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
+                        val imageRef = storageRef.child("profileImages").child("$userId.png")
                         val userIdname =
                             snapshot.child("userIdname").getValue(String::class.java)
                         val petName = snapshot.child("petName").getValue(String::class.java)
                         val birth = snapshot.child("birth").getValue(String::class.java)
-                        Log.d("JINA", "onDataChange: $birth")
+                        Log.d("JINA", "onDataChange: $userIdname pet $petName birth $birth")
 
                         binding.tvOtherUserPageName.text = petName
                         binding.tvOtherUserPageId.text = userIdname
@@ -231,6 +232,12 @@ class MypageOtherUsers : AppCompatActivity() {
                         } else {
                             binding.ivMypageBirthday.visibility = View.INVISIBLE
                             binding.ivMypageBirthdayBackground.visibility = View.INVISIBLE
+                        }
+                        imageRef.downloadUrl.addOnSuccessListener { uri ->
+                            binding.imgOtherUserProfile.load(uri) {
+                                crossfade(true)
+                                transformations(CircleCropTransformation())
+                            }
                         }
                     }
 

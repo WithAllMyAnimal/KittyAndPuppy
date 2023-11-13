@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -124,7 +126,7 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setUpRV() {
-        rvAdapter = CommentsRVAdapter(commentDataList,key)
+        rvAdapter = CommentsRVAdapter(commentDataList, key)
         binding.rvComments.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 1)
@@ -137,9 +139,9 @@ class CommentsFragment : BottomSheetDialogFragment() {
         commentsListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 commentDataList.clear()
-                Log.d("snapshot.children","snapshot.children,${snapshot}")
+                Log.d("snapshot.children", "snapshot.children,${snapshot}")
                 for (dataModel in snapshot.children) {
-                    Log.d("dataModel","datamodel,${dataModel.key}")
+                    Log.d("dataModel", "datamodel,${dataModel.key}")
                     val item = dataModel.getValue(CommentsModel::class.java)
                     if (item != null) {
                         commentDataList.add(item)
@@ -174,12 +176,17 @@ class CommentsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setMyProfileImage() {
-        val storageRef = Firebase.storage.reference.child("profileImages")
-            .child("${Constants.currentUserUid}.png")
-        storageRef.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()) {
+        val userId = Firebase.auth.currentUser?.uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val imageRef = storageRef.child("profileImages").child("$userId.png")
+
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri) {
                 crossfade(true)
+                transformations(CircleCropTransformation())
             }
+        }.addOnFailureListener {
         }
     }
 
