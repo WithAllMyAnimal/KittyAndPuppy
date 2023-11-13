@@ -14,8 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -30,7 +32,6 @@ import com.kittyandpuppy.withallmyanimal.databinding.ActivityDetailBehaviorBindi
 import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.mypage.MypageOtherUsers
-import com.kittyandpuppy.withallmyanimal.util.Constants
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.MypageBehavior
 
@@ -45,10 +46,13 @@ class DetailBehaviorActivity : AppCompatActivity() {
     private val startForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
+                val imageUri =
+                    result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
-                val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
-                val review = result.data?.getStringExtra("review") ?: return@registerForActivityResult
+                val content =
+                    result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                val review =
+                    result.data?.getStringExtra("review") ?: return@registerForActivityResult
                 loadUpdatedImage(imageUri, title, content, review)
             }
         }
@@ -69,40 +73,56 @@ class DetailBehaviorActivity : AppCompatActivity() {
             binding.ivDetailEdit.isVisible = true
             binding.ivDetailDelete.isVisible = true
         }
+
+        val userId = Firebase.auth.currentUser?.uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val imageRef = storageRef.child("profileImages").child("$userId.png")
+
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+        }.addOnFailureListener {
+        }
+
         binding.ivDetailDelete.setOnClickListener {
             val myDialog = LayoutInflater.from(this).inflate(R.layout.alarm_delete, null)
             val builder = AlertDialog.Builder(this)
                 .setView(myDialog)
             val alertDialog = builder.show()
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)?.setOnClickListener {
-                val tasks = arrayListOf<Task<Void>>()
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_checkbutton)
+                ?.setOnClickListener {
+                    val tasks = arrayListOf<Task<Void>>()
 
-                tasks.add(FBRef.boardRef.child(key).removeValue())
-                tasks.add(FBRef.commentRef.child(key).removeValue())
-                tasks.add(FBRef.likesCount.child(key).removeValue())
-                tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
+                    tasks.add(FBRef.boardRef.child(key).removeValue())
+                    tasks.add(FBRef.commentRef.child(key).removeValue())
+                    tasks.add(FBRef.likesCount.child(key).removeValue())
+                    tasks.add(FirebaseStorage.getInstance().getReference("${key}.png").delete())
 
-                Tasks.whenAll(tasks).addOnCompleteListener { task ->
-                    alertDialog.dismiss()
-                    if (task.isSuccessful) {
-                        Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
-                        val resultIntent = Intent().apply {
-                            putExtra("postDeleted", true)
-                            putExtra("deletedPostUid", uid)
-                            putExtra("deletedPostKey", key)
-                        }
-                        setResult(Activity.RESULT_OK, resultIntent)
-                        finish()
-                    } else {
-                        task.exception?.let {
-                            Toast.makeText(this, "삭제 실패", Toast.LENGTH_SHORT).show()
+                    Tasks.whenAll(tasks).addOnCompleteListener { task ->
+                        alertDialog.dismiss()
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "삭제 완료", Toast.LENGTH_SHORT).show()
+                            val resultIntent = Intent().apply {
+                                putExtra("postDeleted", true)
+                                putExtra("deletedPostUid", uid)
+                                putExtra("deletedPostKey", key)
+                            }
+                            setResult(Activity.RESULT_OK, resultIntent)
+                            finish()
+                        } else {
+                            task.exception?.let {
+                                Toast.makeText(this, "삭제 실패", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }
-            }
-            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)?.setOnClickListener {
-                alertDialog.dismiss()
-            }
+            alertDialog.findViewById<Button>(R.id.btn_settinglogout_cancelbutton)
+                ?.setOnClickListener {
+                    alertDialog.dismiss()
+                }
         }
         binding.ivDetailEdit.setOnClickListener {
             val intent = Intent(this, MypageBehavior::class.java)
@@ -132,20 +152,13 @@ class DetailBehaviorActivity : AppCompatActivity() {
         storageProfile.downloadUrl.addOnSuccessListener { uri ->
             binding.ivDetailBehaviorProfile.load(uri.toString()) {
                 crossfade(true)
+                transformations(CircleCropTransformation())
             }
         }
         binding.ivDetailBehaviorProfile.setOnClickListener {
             val intent = Intent(this, MypageOtherUsers::class.java)
             intent.putExtra("uid", uid)
             startActivity(intent)
-        }
-
-        val storageProfileReview = Firebase.storage.reference.child("profileImages")
-            .child("${Constants.currentUserUid}.png")
-        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()) {
-                crossfade(true)
-            }
         }
 
         FBRef.users.child(uid)
@@ -171,7 +184,8 @@ class DetailBehaviorActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun loadUpdatedImage(imageUri : String, title : String, content : String, review : String) {
+
+    private fun loadUpdatedImage(imageUri: String, title: String, content: String, review: String) {
         binding.ivDetailBehaviorPictureLeft.load(imageUri)
         binding.tvDetailBehaviorTitle.text = title
         binding.tvDetailBehaviorCautionContents.text = content

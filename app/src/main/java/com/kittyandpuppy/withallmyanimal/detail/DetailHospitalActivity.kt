@@ -14,8 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -69,6 +71,20 @@ class DetailHospitalActivity : AppCompatActivity() {
             binding.ivDetailEdit.isVisible = true
             binding.ivDetailDelete.isVisible = true
         }
+
+        val userId = Firebase.auth.currentUser?.uid
+        val storage = Firebase.storage
+        val storageRef = storage.reference
+        val imageRef = storageRef.child("profileImages").child("$userId.png")
+
+        imageRef.downloadUrl.addOnSuccessListener { uri ->
+            binding.ivCircleMy.load(uri) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+        }.addOnFailureListener {
+        }
+
         binding.ivDetailDelete.setOnClickListener {
             val myDialog = LayoutInflater.from(this).inflate(R.layout.alarm_delete, null)
             val builder = AlertDialog.Builder(this)
@@ -144,13 +160,6 @@ class DetailHospitalActivity : AppCompatActivity() {
             val intent = Intent(this, MypageOtherUsers::class.java)
             intent.putExtra("uid", uid)
             startActivity(intent)
-        }
-        val storageProfileReview = Firebase.storage.reference.child("profileImages")
-            .child("${Constants.currentUserUid}.png")
-        storageProfileReview.downloadUrl.addOnSuccessListener { uri ->
-            binding.ivCircleMy.load(uri.toString()) {
-                crossfade(true)
-            }
         }
 
         FBRef.users.child(uid)

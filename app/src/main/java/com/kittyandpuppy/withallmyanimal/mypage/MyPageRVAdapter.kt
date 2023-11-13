@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -90,6 +91,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)
+                                transformations(CircleCropTransformation())
                             }
                         }.addOnFailureListener {
                         }
