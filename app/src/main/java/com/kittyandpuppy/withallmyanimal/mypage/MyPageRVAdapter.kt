@@ -68,7 +68,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startForResult(intent)
                     }
                 }
@@ -149,7 +149,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                        intent.addFlags(Intent.FLAG_ACTIYVIT_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startForResult(intent)
                     }
                 }
