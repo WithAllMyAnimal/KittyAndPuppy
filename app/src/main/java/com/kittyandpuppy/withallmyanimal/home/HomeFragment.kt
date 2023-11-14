@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -45,16 +46,8 @@ class HomeFragment : Fragment() {
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
     private var currentSearchTag: String? = null
+    private var startForResult: ActivityResultLauncher<Intent>? = null
 
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                Log.d(TAG, result.resultCode.toString())
-                deletedKey = result.data?.getStringExtra("deletedPostKey")
-                    ?: return@registerForActivityResult
-                rvAdapter?.deletePost(deletedKey)
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +60,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG, "viewCreated 불리니")
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Log.d(TAG, result.resultCode.toString())
+                    deletedKey = result.data?.getStringExtra("deletedPostKey")
+                        ?: return@registerForActivityResult
+                    rvAdapter?.deletePost(deletedKey)
+                }
+            }
         setUpRecyclerView()
         onSpinnerItemSelected()
         binding.ivHomeMegaphone.setOnClickListener {
@@ -142,7 +144,8 @@ class HomeFragment : Fragment() {
             if (keyboarddown == EditorInfo.IME_ACTION_SEARCH || keyboarddown == EditorInfo.IME_ACTION_DONE) {
 
                 // 키보드 내리기
-                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(textView.windowToken, 0)
 
                 val searchQuery = textView.text.toString()
@@ -198,7 +201,7 @@ class HomeFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         rvAdapter = HomeRVAdapter(boardList) { intent ->
-            startForResult.launch(intent)
+            startForResult?.launch(intent)
         }
         binding.rvHome.apply {
             setHasFixedSize(true)
@@ -222,12 +225,18 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    override fun onDestroy() {
+        startForResult = null
+        super.onDestroy()
+    }
+
     enum class QueryType {
         COMBINED_SPINNER,
         ONLY_CATEGORY,
         ONLY_ANIMAL,
         DEFAULT
     }
+
     private fun searchTags(tag: String? = null) {
         val search = tag ?: binding.etSearch.text.toString()
         currentSearchTag = search
