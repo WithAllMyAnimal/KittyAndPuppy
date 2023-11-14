@@ -98,7 +98,7 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
                         intent.putExtra("uid", uid)
                         intent.putExtra("key", key)
                         intent.putExtra("category", category)
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                         startForResult(intent)
                     }
                 }
