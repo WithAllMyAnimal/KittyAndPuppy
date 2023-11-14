@@ -78,6 +78,21 @@ class HomeFragment : Fragment() {
         swipeRefreshLayout = binding.swipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
+
+            binding.etSearch.text?.clear()
+
+            val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
+            val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
+            binding.spinnerDogandcat.setSelection(
+                (binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(
+                    defaultDogCatItem
+                )
+            )
+            binding.spinnerCategory.setSelection(
+                (binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(
+                    defaultCategoryItem
+                )
+            )
         }
 
         var isDogAndCatSpinnerInitialized = false
