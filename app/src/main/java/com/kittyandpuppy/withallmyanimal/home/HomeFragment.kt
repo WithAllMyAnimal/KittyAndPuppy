@@ -399,11 +399,21 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        currentSearchTag = loadSearchTagFromPreferences() // 화면 재진입 시 검색어 가져오기
-        if (!currentSearchTag.isNullOrEmpty()) {
-            searchTags(currentSearchTag) // 검색어로 필터링
-        } else {
-            getBoardData() // 검색어가 없다면 전체 데이터 로드
-        }
+
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val defaultDogCatItem = resources.getStringArray(R.array.dogandcat)[0]
+        val defaultCategoryItem = resources.getStringArray(R.array.category)[0]
+        val savedDogCatItem = sharedPref.getString("selectedDogCatItem", defaultDogCatItem)
+        val savedCategoryItem = sharedPref.getString("selectedCategoryItem", defaultCategoryItem)
+        binding.spinnerDogandcat.setSelection(
+            (binding.spinnerDogandcat.adapter as ArrayAdapter<String>).getPosition(
+                savedDogCatItem
+            )
+        )
+        binding.spinnerCategory.setSelection(
+            (binding.spinnerCategory.adapter as ArrayAdapter<String>).getPosition(
+                savedCategoryItem
+            )
+        )
     }
 }
