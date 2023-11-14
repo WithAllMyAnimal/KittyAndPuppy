@@ -24,7 +24,10 @@ import com.kittyandpuppy.withallmyanimal.detail.DetailHospitalActivity
 import com.kittyandpuppy.withallmyanimal.detail.DetailPetActivity
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 
-class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResult: (Intent) -> Unit) :
+class MyPageRVAdapter(
+    val list: MutableList<BaseModel>,
+    private val startForResult: (Intent) -> Unit
+) :
     androidx.recyclerview.widget.ListAdapter<BaseModel, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
     val TAG = MyPageRVAdapter::class.java.simpleName
@@ -34,42 +37,49 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
 
         init {
             binding.root.setOnClickListener {
-                val clickedItem = list[adapterPosition]
-                val uid = clickedItem.uid
-                val key = clickedItem.key
-                val category = clickedItem.category
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION && list.size > position) {
+                    val clickedItem = list[adapterPosition]
+                    val uid = clickedItem.uid
+                    val key = clickedItem.key
+                    val category = clickedItem.category
 
-                Log.d("MyPageRVAdapter", "uid:$uid")
-                Log.d("MyPageRVAdapter", "key: $key")
-                Log.d("MyPageRVAdapter", "category: $category")
+                    Log.d("MyPageRVAdapter", "uid:$uid")
+                    Log.d("MyPageRVAdapter", "key: $key")
+                    Log.d("MyPageRVAdapter", "category: $category")
 
-                val database = FirebaseDatabase.getInstance()
-                val reference = database.getReference("board").get()
+                    val database = FirebaseDatabase.getInstance()
+                    val reference = database.getReference("board").get()
 
-                reference.addOnSuccessListener {
-                    if (it.exists()){
-                        val intent: Intent
-                        when (category) {
-                            "행동" -> intent =
-                                Intent(binding.root.context, DetailBehaviorActivity::class.java)
-                            "일상" -> intent = Intent(
-                                binding.root.context,
-                                DetailDailyActivity::class.java
-                            )
-                            "병원" -> intent = Intent(
-                                binding.root.context,
-                                DetailHospitalActivity::class.java
-                            )
-                            "펫용품" -> intent =
-                                Intent(binding.root.context, DetailPetActivity::class.java)
-                            else -> intent =
-                                Intent(binding.root.context, DetailPetActivity::class.java)
+                    reference.addOnSuccessListener {
+                        if (it.exists()) {
+                            val intent: Intent
+                            when (category) {
+                                "행동" -> intent =
+                                    Intent(binding.root.context, DetailBehaviorActivity::class.java)
+
+                                "일상" -> intent = Intent(
+                                    binding.root.context,
+                                    DetailDailyActivity::class.java
+                                )
+
+                                "병원" -> intent = Intent(
+                                    binding.root.context,
+                                    DetailHospitalActivity::class.java
+                                )
+
+                                "펫용품" -> intent =
+                                    Intent(binding.root.context, DetailPetActivity::class.java)
+
+                                else -> intent =
+                                    Intent(binding.root.context, DetailPetActivity::class.java)
+                            }
+                            intent.putExtra("uid", uid)
+                            intent.putExtra("key", key)
+                            intent.putExtra("category", category)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            startForResult(intent)
                         }
-                        intent.putExtra("uid", uid)
-                        intent.putExtra("key", key)
-                        intent.putExtra("category", category)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        startForResult(intent)
                     }
                 }
             }
@@ -80,14 +90,17 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
             binding.tvMypageListDate.text = model.time
             binding.tvMypageListReview.text = model.content
 
-            val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid).child("profile")
+            val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid)
+                .child("profile")
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val userProfileImageKey = snapshot.child("profileImage").getValue(String::class.java)
+                    val userProfileImageKey =
+                        snapshot.child("profileImage").getValue(String::class.java)
                     val userIdName = snapshot.child("userIdname").getValue(String::class.java)
 
                     userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages").child("${model.uid}.png")
+                        val storageRef = Firebase.storage.reference.child("profileImages")
+                            .child("${model.uid}.png")
                         storageRef.downloadUrl.addOnSuccessListener { uri ->
                             binding.ivMypageListProfile.load(uri.toString()) {
                                 crossfade(true)
@@ -98,6 +111,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                     }
                     binding.tvMypageListNickname.text = userIdName ?: ""
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.d(TAG, "Failed to read user info", error.toException())
                 }
@@ -123,7 +137,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                 val reference = database.getReference("board").get()
 
                 reference.addOnSuccessListener {
-                    if (it.exists()){
+                    if (it.exists()) {
 
                         val intent: Intent
                         when (category) {
@@ -155,6 +169,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                 }
             }
         }
+
         fun bind(model: BaseModel) {
             binding.ivMypageRvImage.load(model.imageUrl)
         }
@@ -186,6 +201,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
                     holder.bind(item)
                 }
             }
+
             is MyListViewHolder -> {
                 if (selectedTab == TYPE_MY_LIST && list.isNotEmpty()) {
                     holder.bind(item)
@@ -193,6 +209,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
             }
         }
     }
+
     override fun getItemViewType(position: Int): Int {
         return selectedTab
     }
@@ -204,7 +221,7 @@ class MyPageRVAdapter(val list: MutableList<BaseModel>, private val startForResu
         notifyDataSetChanged()
     }
 
-    fun deletePost(key : String) {
+    fun deletePost(key: String) {
         val iterator = list.iterator()
         while (iterator.hasNext()) {
             val item = iterator.next()
