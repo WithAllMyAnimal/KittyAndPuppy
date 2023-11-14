@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
@@ -53,15 +54,7 @@ class MypageFragment : Fragment() {
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private var refreshing = false
-
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey")
-                    ?: return@registerForActivityResult
-                rvAdapter.deletePost(deletedKey)
-            }
-        }
+    private var startForResult: ActivityResultLauncher<Intent>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +66,14 @@ class MypageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    deletedKey = result.data?.getStringExtra("deletedPostKey")
+                        ?: return@registerForActivityResult
+                    rvAdapter.deletePost(deletedKey)
+                }
+            }
 
         setUpRecyclerView()
         loadDefaultTabData()
@@ -172,7 +173,7 @@ class MypageFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         rvAdapter = MyPageRVAdapter(list) { intent ->
-            startForResult.launch(intent)
+            startForResult?.launch(intent)
         }
         gridLayoutManager = GridLayoutManager(requireContext(), 3)
 
@@ -357,5 +358,10 @@ class MypageFragment : Fragment() {
             userProfileRef.removeEventListener(valueEventListener)
         }
         _binding = null
+    }
+
+    override fun onDestroy() {
+        startForResult = null
+        super.onDestroy()
     }
 }
