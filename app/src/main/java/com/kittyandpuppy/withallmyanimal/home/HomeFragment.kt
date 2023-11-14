@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
     private var currentSearchTag: String? = null
     private var startForResult: ActivityResultLauncher<Intent>? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
