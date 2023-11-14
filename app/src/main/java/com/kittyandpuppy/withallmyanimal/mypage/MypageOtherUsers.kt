@@ -1,28 +1,24 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageOtherUsersBinding
-import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
-import com.kittyandpuppy.withallmyanimal.home.HomeRVAdapter
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
@@ -39,34 +35,32 @@ class MypageOtherUsers : AppCompatActivity() {
     private val list = mutableListOf<BaseModel>()
     private lateinit var gridLayoutManager: GridLayoutManager
     private val TAG = MypageFragment::class.java.simpleName
-    private lateinit var valueEventListener: ValueEventListener
     private lateinit var uid: String
     private lateinit var deletedKey: String
-
-    private val startForResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                deletedKey = result.data?.getStringExtra("deletedPostKey")
-                    ?: return@registerForActivityResult
-                rvAdapter.deletePost(deletedKey)
-            }
-            Log.d(TAG, "startForResult")
-        }
+    private var startForResult: ActivityResultLauncher<Intent>? = null
 
     override fun onDestroy() {
+        startForResult = null
         super.onDestroy()
-        Log.d(TAG, "gggg")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        uid = intent.getStringExtra("uid") ?: return
-
         setContentView(binding.root)
+
+        uid = intent.getStringExtra("uid") ?: return
+        startForResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    deletedKey = result.data?.getStringExtra("deletedPostKey")
+                        ?: return@registerForActivityResult
+                    rvAdapter.deletePost(deletedKey)
+                }
+            }
+
         setUpRV()
         loadDefaultTabData()
         loadUserData()
         setProfileImage()
-
 
         val tabLayout = binding.tlOtherUserTabLayout
         val defaultTab = tabLayout.getTabAt(0)
@@ -149,7 +143,7 @@ class MypageOtherUsers : AppCompatActivity() {
 
     private fun setUpRV() {
         rvAdapter = MyPageRVAdapter(list) { intent ->
-            startForResult.launch(intent)
+            startForResult?.launch(intent)
         }
         gridLayoutManager = GridLayoutManager(this, 3)
 
