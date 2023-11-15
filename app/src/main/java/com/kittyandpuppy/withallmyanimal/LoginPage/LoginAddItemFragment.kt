@@ -89,32 +89,32 @@ class LoginAddItemFragment : DialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 isGoToJoin = false
+            }
 
-                if (isGoToJoin) {
-                    auth.createUserWithEmailAndPassword(email, password1)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
+            if (isGoToJoin) {
+                auth.createUserWithEmailAndPassword(email, password1)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "성공", Toast.LENGTH_LONG).show()
 
-                                val userId = auth.currentUser?.uid
+                            val userId = auth.currentUser?.uid
 
-                                val database = FirebaseDatabase.getInstance()
+                            val database = FirebaseDatabase.getInstance()
 
-                                userId?.let {
-                                    database.getReference("users").child(it).child("info")
-                                        .setValue(mapOf("email" to email))
-                                        .addOnSuccessListener { Log.d(TAG, "이메일 저장!") }
-                                        .addOnFailureListener { e -> Log.e(TAG, "이메일 저장 실패!", e) }
+                            userId?.let {
+                                database.getReference("users").child(it).child("info")
+                                    .setValue(mapOf("email" to email))
+                                    .addOnSuccessListener { Log.d(TAG, "이메일 저장!") }
+                                    .addOnFailureListener { e -> Log.e(TAG, "이메일 저장 실패!", e) }
 
 
-                                    val intent = Intent(context, LoginActivity::class.java)
-                                    intent.flags =
-                                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    dismiss()
-                                }
+                                val intent = Intent(context, LoginActivity::class.java)
+                                intent.flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                dismiss()
                             }
                         }
-                }
+                    }
             }
 
             binding.btnLoginSignup.setOnClickListener {
