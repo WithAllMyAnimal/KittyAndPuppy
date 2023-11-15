@@ -42,14 +42,14 @@
 <details>
 <summary>마이 페이지</summary>  
 
-<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/63e79ccc-a992-4512-8048-3662219589ea  width="1000" height="500">
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/63e79ccc-a992-4512-8048-3662219589ea  width="1600" height="500">
 </details>
 
 <details>
 <summary>설정 페이지</summary>  
 
 
-<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/6c2cc9e1-68eb-4121-b84f-2c461f9135b1  width="1000" height="500">
+<img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/58aeec05-4016-4d67-8fdb-1703040f7be0  width="1600" height="500">
   
 </details>
 ## 📗 Platforms & Languages 📒
