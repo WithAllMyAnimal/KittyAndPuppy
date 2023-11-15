@@ -113,7 +113,7 @@ class LoginAddItemFragment : DialogFragment() {
             if (!passwordMatcher.matcher(password1).matches()) {
                 Toast.makeText(
                     context,
-                    "비밀번호는 6자리 이상 16자리 이하이며, 특수문자, 숫자, 영문으로만 구성해야 합니다.",
+                    "비밀번호는 6자리 이상 16자리 이하이며, 특수문자, 숫자, 영문을 필수로 사용하여 구성해야 합니다.",
                     Toast.LENGTH_SHORT
                 ).show()
                 isGoToJoin = false
