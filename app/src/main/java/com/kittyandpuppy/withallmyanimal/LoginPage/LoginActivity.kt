@@ -27,14 +27,46 @@ class LoginActivity : AppCompatActivity() {
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
-            finish()
+            val userId = currentUser.uid
+            val database = FirebaseDatabase.getInstance()
 
+            database.getReference("users").child(userId).child("profile")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val userIdname = dataSnapshot.child("userIdname").getValue(String::class.java)
+                        val petName = dataSnapshot.child("petName").getValue(String::class.java)
+                        val birth = dataSnapshot.child("birth").getValue(String::class.java)
+                        val dogCat = dataSnapshot.child("dogcat").getValue(String::class.java)
+
+                        if (userIdname != null && petName != null && birth != null && dogCat != null) {
+                            startActivity(
+                                Intent(this@LoginActivity, MainActivity::class.java).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                }
+                            )
+                            finish()
+                        } else {
+                            startActivity(
+                                Intent(this@LoginActivity, DogAndCatAddActivity::class.java).apply {
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                }
+                            )
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {}
+                })
         } else {
-
             setContentView(binding.root)
+
+            binding.btnLoginSignup.setOnClickListener {
+                val signupFragment = LoginAddItemFragment()
+                signupFragment.show(supportFragmentManager, "signUpDialog")
+            }
+            binding.btnLoginResetPassword.setOnClickListener {
+                val findPasswordFragment = FindPwFragment()
+                findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
+            }
 
             binding.btnLoginLogin.setOnClickListener {
                 val email = binding.etLoginId.text.toString()
@@ -49,11 +81,16 @@ class LoginActivity : AppCompatActivity() {
                             database.getReference("users").child(userId).child("profile")
                                 .addListenerForSingleValueEvent(object : ValueEventListener {
                                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                        val petName =
-                                            dataSnapshot.child("userIdname")
-                                                .getValue(String::class.java)
+                                        val userIdname = dataSnapshot.child("userIdname")
+                                            .getValue(String::class.java)
+                                        val petName = dataSnapshot.child("petName")
+                                            .getValue(String::class.java)
+                                        val birth =
+                                            dataSnapshot.child("birth").getValue(String::class.java)
+                                        val dogCat = dataSnapshot.child("dogcat")
+                                            .getValue(String::class.java)
 
-                                        if (petName != null) {
+                                        if (userIdname != null && petName != null && birth != null && dogCat != null) {
                                             startActivity(
                                                 Intent(
                                                     this@LoginActivity,
@@ -63,6 +100,11 @@ class LoginActivity : AppCompatActivity() {
                                                         Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                 }
                                             )
+                                            Toast.makeText(
+                                                this@LoginActivity,
+                                                "로그인 성공",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         } else {
                                             startActivity(
                                                 Intent(
@@ -74,28 +116,12 @@ class LoginActivity : AppCompatActivity() {
                                                 }
                                             )
                                         }
-
-                                        Toast.makeText(
-                                            this@LoginActivity,
-                                            "로그인 성공",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
                                     }
 
                                     override fun onCancelled(databaseError: DatabaseError) {}
                                 })
-                        } else {
-                            Toast.makeText(this, "로그인 실패", Toast.LENGTH_SHORT).show()
                         }
                     }
-            }
-            binding.btnLoginSignup.setOnClickListener {
-                val signupFragment = LoginAddItemFragment()
-                signupFragment.show(supportFragmentManager, "signUpDialog")
-            }
-            binding.btnLoginResetPassword.setOnClickListener {
-                val findPasswordFragment = FindPwFragment()
-                findPasswordFragment.show(supportFragmentManager, "findPasswordDialog")
             }
         }
     }
