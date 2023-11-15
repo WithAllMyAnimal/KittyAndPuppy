@@ -298,7 +298,7 @@ class HomeFragment : Fragment() {
             }
 
             else -> {
-                Pair(QueryType.DEFAULT, boardRef)
+                Pair(QueryType.DEFAULT, boardRef.orderByChild("timestamp"))
             }
         }
 
@@ -366,6 +366,7 @@ class HomeFragment : Fragment() {
                 })
             }
         }
+        boardList.reverse()
         rvAdapter?.submitList(boardList.toList())
     }
 
