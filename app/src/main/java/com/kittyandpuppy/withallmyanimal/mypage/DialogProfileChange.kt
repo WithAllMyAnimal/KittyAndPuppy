@@ -235,7 +235,7 @@ class DialogProfileChange(val listener:ChangeImage) : DialogFragment() {
                     }
                 })
             val userProfileImage = Firebase.storage.reference.child("profileImages")
-                .child("${Constants.currentUserUid}.png")
+                .child("$userId.png")
             userProfileImage.downloadUrl.addOnSuccessListener { uri ->
                 binding.ivCircleMy.load(uri.toString()) {
                     crossfade(true)

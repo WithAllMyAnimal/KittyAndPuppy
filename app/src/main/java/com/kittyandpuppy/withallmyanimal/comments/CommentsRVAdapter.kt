@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.R
 import com.kittyandpuppy.withallmyanimal.databinding.ItemCommentsBinding
@@ -37,7 +39,7 @@ class CommentsRVAdapter(
             Log.d(TAG, commentDataList.toString())
 
 
-            if (baseModel.uid == currentUserUid) {
+            if (baseModel.uid == Firebase.auth.uid) {
                 binding.ivCommentsDelete.visibility = View.VISIBLE
                 binding.ivCommentsDelete.setOnClickListener {
                     Log.d("currentList값", "currentList:${currentList}")
