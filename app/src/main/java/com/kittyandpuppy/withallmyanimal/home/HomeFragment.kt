@@ -33,6 +33,7 @@ import com.kittyandpuppy.withallmyanimal.write.Behavior
 import com.kittyandpuppy.withallmyanimal.write.Daily
 import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
+import java.util.Collections
 
 class HomeFragment : Fragment() {
 
@@ -298,7 +299,7 @@ class HomeFragment : Fragment() {
             }
 
             else -> {
-                Pair(QueryType.DEFAULT, boardRef.orderByChild("timestamp"))
+                Pair(QueryType.DEFAULT, boardRef)
             }
         }
 
@@ -366,8 +367,11 @@ class HomeFragment : Fragment() {
                 })
             }
         }
-        boardList.reverse()
-        rvAdapter?.submitList(boardList.toList())
+        boardList.shuffle()
+        val newList = boardList.toList()
+        rvAdapter?.submitList(newList) {
+            binding.rvHome.scrollToPosition(0)
+        }
     }
 
     fun onSpinnerItemSelected() {
