@@ -61,6 +61,34 @@ class LoginAddItemFragment : DialogFragment() {
 
         auth = Firebase.auth
 
+        binding.btnLoginSignup.setOnClickListener {
+            val email = binding.etLoginAddItemIdHint.text.toString()
+
+            if (email.isEmpty()) {
+                Toast.makeText(context, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val database = Firebase.database
+            val usersRef = database.getReference("users")
+            val emailRef = usersRef.orderByChild("email").equalTo(email)
+
+            emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Toast.makeText(context, "이미 사용 중인 이메일입니다", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "사용 가능한 이메일입니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, "Database Error: ${databaseError.toException()}")
+                    Toast.makeText(context, "데이터베이스 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
         binding.btnSaveDialog.setOnClickListener {
             var isGoToJoin = true
 
@@ -89,6 +117,7 @@ class LoginAddItemFragment : DialogFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 isGoToJoin = false
+            }
 
                 if (isGoToJoin) {
                     auth.createUserWithEmailAndPassword(email, password1)
@@ -115,35 +144,6 @@ class LoginAddItemFragment : DialogFragment() {
                             }
                         }
                 }
-            }
-
-            binding.btnLoginSignup.setOnClickListener {
-                val email = binding.etLoginAddItemIdHint.text.toString()
-
-                if (email.isEmpty()) {
-                    Toast.makeText(context, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val database = Firebase.database
-                val usersRef = database.getReference("users")
-                val emailRef = usersRef.orderByChild("email").equalTo(email)
-
-                emailRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            Toast.makeText(context, "이미 사용 중인 이메일입니다", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, "사용 가능한 이메일입니다", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Log.e(TAG, "Database Error: ${databaseError.toException()}")
-                        Toast.makeText(context, "데이터베이스 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
-                    }
-                })
-            }
 
         }
     }
