@@ -1,8 +1,12 @@
 package com.kittyandpuppy.withallmyanimal.mypage
 
 import android.app.Activity
+import android.content.ContentUris
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +40,7 @@ import com.kittyandpuppy.withallmyanimal.write.Hospital
 import com.kittyandpuppy.withallmyanimal.write.Pet
 import java.util.Calendar
 
-class MypageFragment : Fragment() {
+class MypageFragment : Fragment(), DialogProfileChange.ChangeImage {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!!
@@ -109,7 +113,7 @@ class MypageFragment : Fragment() {
         })
 
         binding.btnMypageChange.setOnClickListener {
-            val dialogFragment = DialogProfileChange()
+            val dialogFragment = DialogProfileChange(this)
             val transaction = parentFragmentManager.beginTransaction()
             dialogFragment.show(transaction, "ProfileChangeDialog")
         }
@@ -359,5 +363,12 @@ class MypageFragment : Fragment() {
     override fun onDestroy() {
         startForResult = null
         super.onDestroy()
+    }
+
+    override fun change(uri: Uri) {
+        binding.imgMypageProfile.load(uri) {
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
     }
 }

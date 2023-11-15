@@ -30,10 +30,11 @@ import com.kittyandpuppy.withallmyanimal.databinding.FragmentDialogProfilechange
 import com.kittyandpuppy.withallmyanimal.util.Constants
 import java.util.Calendar
 
-class DialogProfileChange : DialogFragment() {
+class DialogProfileChange(val listener:ChangeImage) : DialogFragment() {
     private lateinit var binding: FragmentDialogProfilechangeBinding
     private lateinit var userRef: DatabaseReference
     private val GALLERY_REQUEST_CODE = 2
+    private var selectUri:Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -142,6 +143,9 @@ class DialogProfileChange : DialogFragment() {
         // 변경하기 버튼
         binding.btnSettinglogoutCheckbutton.setOnClickListener {
             saveUserInfoToDatabase()
+            if(selectUri != null) {
+                listener.change(selectUri!!)
+            }
             dismiss()
         }
 
@@ -167,6 +171,7 @@ class DialogProfileChange : DialogFragment() {
                 if (selectedImage != null) {
                     binding.ivCircleMy.setImageURI(selectedImage)
                     uploadImageToFirebase(selectedImage)
+                    selectUri=selectedImage
                 }
             }
         }
@@ -257,5 +262,8 @@ class DialogProfileChange : DialogFragment() {
             }.addOnFailureListener {
             }
         }
+    }
+    interface ChangeImage {
+        fun change(uri: Uri)
     }
 }
