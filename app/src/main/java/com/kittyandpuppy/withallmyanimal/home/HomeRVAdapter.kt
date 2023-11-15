@@ -72,7 +72,6 @@ class HomeRVAdapter(val boardList: MutableList<BaseModel>, private val startForR
                 val reference = database.getReference("board").get()
                 reference.addOnSuccessListener {
                     if (it.exists()) {
-                        Log.d("ABCD", "abcdef")
 
                         val intent: Intent
                         when (category) {

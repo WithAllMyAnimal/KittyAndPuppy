@@ -157,7 +157,6 @@
                     android:textSize="14sp"
                     android:maxLines="1"
                     android:padding="15dp"
-                    android:inputType="date"
                     android:fontFamily="@font/cafe24"
                     android:background="@drawable/mypage_diary_edittext"
                     app:layout_constraintBottom_toTopOf="@id/tv_mypage_hospital_expense"

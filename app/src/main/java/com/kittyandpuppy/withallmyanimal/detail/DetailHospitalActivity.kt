@@ -48,11 +48,11 @@ class DetailHospitalActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val imageUri = result.data?.getStringExtra("imageUri") ?: return@registerForActivityResult
                 val title = result.data?.getStringExtra("title") ?: return@registerForActivityResult
-                val date = result.data?.getStringExtra("date") ?: return@registerForActivityResult
                 val disease = result.data?.getStringExtra("disease") ?: return@registerForActivityResult
                 val location = result.data?.getStringExtra("location") ?: return@registerForActivityResult
                 val price = result.data?.getStringExtra("price") ?: return@registerForActivityResult
                 val content = result.data?.getStringExtra("content") ?: return@registerForActivityResult
+                val date = result.data?.getStringExtra("date") ?: return@registerForActivityResult
                 loadUpdatedImage(imageUri, title, date, disease, location, price, content)
             }
         }
