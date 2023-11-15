@@ -4,8 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -86,36 +87,42 @@ class MyPageRVAdapter(
         }
 
         fun bind(model: BaseModel) {
-            binding.tvMypageListTitle.text = model.title
-            binding.tvMypageListDate.text = model.time
-            binding.tvMypageListReview.text = model.content
+            if (list.isNotEmpty()) {
+                binding.root.visibility = View.VISIBLE
 
-            val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid)
-                .child("profile")
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userProfileImageKey =
-                        snapshot.child("profileImage").getValue(String::class.java)
-                    val userIdName = snapshot.child("userIdname").getValue(String::class.java)
+                binding.tvMypageListTitle.text = model.title
+                binding.tvMypageListDate.text = model.time
+                binding.tvMypageListReview.text = model.content
 
-                    userProfileImageKey?.let { key ->
-                        val storageRef = Firebase.storage.reference.child("profileImages")
-                            .child("${model.uid}.png")
-                        storageRef.downloadUrl.addOnSuccessListener { uri ->
-                            binding.ivMypageListProfile.load(uri.toString()) {
-                                crossfade(true)
-                                transformations(CircleCropTransformation())
+                val userRef = FirebaseDatabase.getInstance().getReference("users").child(model.uid)
+                    .child("profile")
+                userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userProfileImageKey =
+                            snapshot.child("profileImage").getValue(String::class.java)
+                        val userIdName = snapshot.child("userIdname").getValue(String::class.java)
+
+                        userProfileImageKey?.let { key ->
+                            val storageRef = Firebase.storage.reference.child("profileImages")
+                                .child("${model.uid}.png")
+                            storageRef.downloadUrl.addOnSuccessListener { uri ->
+                                binding.ivMypageListProfile.load(uri.toString()) {
+                                    crossfade(true)
+                                    transformations(CircleCropTransformation())
+                                }
+                            }.addOnFailureListener {
                             }
-                        }.addOnFailureListener {
                         }
+                        binding.tvMypageListNickname.text = userIdName ?: ""
                     }
-                    binding.tvMypageListNickname.text = userIdName ?: ""
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d(TAG, "Failed to read user info", error.toException())
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d(TAG, "Failed to read user info", error.toException())
+                    }
+                })
+            } else {
+                binding.root.visibility = View.GONE
+            }
         }
     }
 
