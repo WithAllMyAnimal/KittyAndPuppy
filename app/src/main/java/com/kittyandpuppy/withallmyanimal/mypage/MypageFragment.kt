@@ -240,25 +240,28 @@ class MypageFragment : Fragment(), DialogProfileChange.ChangeImage {
         FBRef.users.child(currentUserId).child("likedlist")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val likedPostKeys = snapshot.children.map { it.key!! }
+                    if (snapshot.exists()) {
+                        val likedPostKeys = snapshot.children.map { it.key!! }
+                        for (postKey in likedPostKeys) {
+                            FBRef.boardRef.child(postKey)
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val post = snapshot.getValue(BaseModel::class.java)
+                                        post?.let { list.add(it) }
+                                        rvAdapter.submitList(list.toList())
+                                    }
 
-                    for (postKey in likedPostKeys) {
-                        FBRef.boardRef.child(postKey)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val post = snapshot.getValue(BaseModel::class.java)
-                                    post?.let { list.add(it) }
-                                    rvAdapter.submitList(list.toList())
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.w(
-                                        "MyPageFragment",
-                                        "loadPost:onCancelled",
-                                        error.toException()
-                                    )
-                                }
-                            })
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Log.w(
+                                            "MyPageFragment",
+                                            "loadPost:onCancelled",
+                                            error.toException()
+                                        )
+                                    }
+                                })
+                        }
+                    } else {
+                        rvAdapter.submitList(emptyList<BaseModel>())
                     }
                 }
 

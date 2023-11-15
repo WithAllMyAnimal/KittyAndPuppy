@@ -44,6 +44,7 @@ class MypageOtherUsers : AppCompatActivity() {
         startForResult = null
         super.onDestroy()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -202,30 +203,34 @@ class MypageOtherUsers : AppCompatActivity() {
             }
         })
     }
+
     private fun getLikedPosts() {
         list.clear()
         FBRef.users.child(uid).child("likedlist")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val likedPostKeys = snapshot.children.map { it.key!! }
+                    if (snapshot.exists()) {
+                        val likedPostKeys = snapshot.children.map { it.key!! }
+                        for (postKey in likedPostKeys) {
+                            FBRef.boardRef.child(postKey)
+                                .addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        val post = snapshot.getValue(BaseModel::class.java)
+                                        post?.let { list.add(it) }
+                                        rvAdapter.submitList(list.toList())
+                                    }
 
-                    for (postKey in likedPostKeys) {
-                        FBRef.boardRef.child(postKey)
-                            .addListenerForSingleValueEvent(object : ValueEventListener {
-                                override fun onDataChange(snapshot: DataSnapshot) {
-                                    val post = snapshot.getValue(BaseModel::class.java)
-                                    post?.let { list.add(it) }
-                                    rvAdapter.submitList(list.toList())
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    Log.w(
-                                        "MypageOtherUsers",
-                                        "loadPost:onCancelled",
-                                        error.toException()
-                                    )
-                                }
-                            })
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Log.w(
+                                            "MypageOtherUsers",
+                                            "loadPost:onCancelled",
+                                            error.toException()
+                                        )
+                                    }
+                                })
+                        }
+                    } else {
+                        rvAdapter.submitList(emptyList<BaseModel>())
                     }
                 }
 
