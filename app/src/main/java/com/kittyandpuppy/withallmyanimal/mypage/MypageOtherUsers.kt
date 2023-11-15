@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.kittyandpuppy.withallmyanimal.databinding.ActivityMypageOtherUsersBinding
+import com.kittyandpuppy.withallmyanimal.firebase.FBAuth
 import com.kittyandpuppy.withallmyanimal.firebase.FBRef
 import com.kittyandpuppy.withallmyanimal.write.BaseModel
 import com.kittyandpuppy.withallmyanimal.write.Behavior
@@ -72,6 +73,7 @@ class MypageOtherUsers : AppCompatActivity() {
                         gridLayoutManager.spanCount = 3
                         binding.conOtherUserTag.visibility = View.VISIBLE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_MY_LIST)
+                        getMyData()
 
                     }
 
@@ -79,6 +81,7 @@ class MypageOtherUsers : AppCompatActivity() {
                         gridLayoutManager.spanCount = 1
                         binding.conOtherUserTag.visibility = View.GONE
                         rvAdapter.selectedTab(MyPageRVAdapter.TYPE_LIKES)
+                        getLikedPosts()
                     }
 
                     else -> {}
@@ -198,6 +201,38 @@ class MypageOtherUsers : AppCompatActivity() {
                 Log.w("MyPageFragment", "loadPost:onCancelled", error.toException())
             }
         })
+    }
+    private fun getLikedPosts() {
+        list.clear()
+        FBRef.users.child(uid).child("likedlist")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val likedPostKeys = snapshot.children.map { it.key!! }
+
+                    for (postKey in likedPostKeys) {
+                        FBRef.boardRef.child(postKey)
+                            .addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    val post = snapshot.getValue(BaseModel::class.java)
+                                    post?.let { list.add(it) }
+                                    rvAdapter.submitList(list.toList())
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    Log.w(
+                                        "MypageOtherUsers",
+                                        "loadPost:onCancelled",
+                                        error.toException()
+                                    )
+                                }
+                            })
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                }
+            })
     }
 
     private fun loadUserData() {
