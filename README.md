@@ -52,7 +52,9 @@
 <img src= https://github.com/WithAllMyAnimal/KittyAndPuppy/assets/139103652/58aeec05-4016-4d67-8fdb-1703040f7be0  width="1600" height="500">
   
 </details>
-## 📗 Platforms & Languages 📒
+
+
+##   📗 Platforms & Languages 📒
 <img src="https://img.shields.io/badge/android-3DDC84?style=flat-square&logo=android&logoColor=white"/>  <img src="https://img.shields.io/badge/kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white"/>
 
 ## 📕 Tools 📘
