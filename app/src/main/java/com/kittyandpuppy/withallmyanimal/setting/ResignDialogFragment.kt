@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.kittyandpuppy.withallmyanimal.LoginPage.LoginActivity
 import com.kittyandpuppy.withallmyanimal.databinding.FragmentResignDialogBinding
@@ -44,6 +45,10 @@ class ResignDialogFragment : DialogFragment() {
             user?.delete()
                 ?.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        val databaseRef = Firebase.database.reference
+                        val userRef = databaseRef.child("users").child(user.uid.orEmpty())
+                        userRef.removeValue()
+
                         Firebase.auth.signOut()
                         dismiss()
                         Toast.makeText(requireContext(), "탈퇴가 완료되었습니다.", Toast.LENGTH_SHORT).show()
