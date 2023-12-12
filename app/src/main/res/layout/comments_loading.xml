@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_loading_user_likes"
+        android:layout_width="47dp"
+        android:layout_height="40dp"
+        android:layout_marginVertical="10dp"
+        android:src="@drawable/pet_unlike"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_first"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/loading_profile_circle"
+        app:layout_constraintBottom_toTopOf="@id/iv_loading_profile_second"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_user_likes"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_first_nickname"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:background="#C9C9C9"
+        app:layout_constraintTop_toTopOf="@id/iv_loading_profile_first"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_first"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_first_comment"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#C9C9C9"
+        app:layout_constraintBottom_toBottomOf="@id/iv_loading_profile_first"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_first"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_profile_first_nickname"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_second"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/loading_profile_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_profile_first"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_second_nickname"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:background="#C9C9C9"
+        app:layout_constraintTop_toTopOf="@id/iv_loading_profile_second"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_second"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_second_comment"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#C9C9C9"
+        app:layout_constraintBottom_toBottomOf="@id/iv_loading_profile_second"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_second"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_profile_second_nickname"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_third"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/loading_profile_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_profile_second"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_third_nickname"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:background="#C9C9C9"
+        app:layout_constraintTop_toTopOf="@id/iv_loading_profile_third"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_third"
+        />
+
+    <ImageView
+        android:id="@+id/iv_loading_profile_third_comment"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="#C9C9C9"
+        app:layout_constraintBottom_toBottomOf="@id/iv_loading_profile_third"
+        app:layout_constraintStart_toEndOf="@id/iv_loading_profile_third"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_loading_profile_third_nickname"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
