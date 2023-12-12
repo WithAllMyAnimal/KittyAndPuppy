@@ -67,4 +67,6 @@ dependencies {
     implementation("io.coil-kt:coil:2.4.0")
     // 새로고침
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    // 스켈레톤 로딩화면
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
 }
